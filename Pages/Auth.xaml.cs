@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +15,8 @@ namespace EpsteinsMarket.Pages
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var login = tbLogin.Text.Trim();
-            var password = pbPassword.Password;
+            string login = tbLogin.Text.Trim();
+            string password = pbPassword.Password;
 
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             {
@@ -23,16 +24,32 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            var user = AppConnect.model01.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
-            if (user == null)
+            try
             {
-                tbStatus.Text = "Неверный логин или пароль.";
-                return;
-            }
+                var user = AppConnect.model01.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
+                if (user == null)
+                {
+                    tbStatus.Text = "Неверный логин или пароль.";
+                    return;
+                }
 
-            AppSession.CurrentUser = user;
-            tbStatus.Text = user.RoleID == 1 ? "Вход выполнен как администратор." : "Вход выполнен как пользователь.";
-            AppFrame.frmMain.Navigate(new PageTask());
+                AppSession.CurrentUser = user;
+
+                if (AppSession.IsAdmin)
+                {
+                    tbStatus.Text = "Авторизация успешна: администратор.";
+                }
+                else
+                {
+                    tbStatus.Text = "Авторизация успешна: пользователь.";
+                }
+
+                AppFrame.frmMain.Navigate(new PageTask());
+            }
+            catch (Exception ex)
+            {
+                tbStatus.Text = $"Ошибка авторизации: {ex.Message}";
+            }
         }
 
         private void btnReg_Click(object sender, RoutedEventArgs e)

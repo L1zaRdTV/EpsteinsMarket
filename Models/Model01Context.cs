@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
 namespace EpsteinsMarket.Models
 {
-    // Database First: в реальном проекте этот контекст и сущности обычно генерируются из EDMX.
-    // Оставлено в явном виде, чтобы логика страниц работала через AppConnect.model01.
+    // Database First: контекст и сущности проекта используются через AppConnect.model01.
     public partial class model01Entities : DbContext
     {
-        public model01Entities() : base("name=EpsteinsMarketEntities")
+        public model01Entities() : base("name=model01Entities")
         {
         }
 
