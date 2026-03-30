@@ -3,7 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Auth">
     <Grid>
-        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.3"/>
+        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.35"/>
+        <Border VerticalAlignment="Top"
+                Height="120"
+                Margin="0,0,0,-50"
+                Background="{StaticResource AccentWaveBrush}"
+                Opacity="0.35"
+                CornerRadius="0,0,40,40"/>
         <Grid Margin="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.2*"/>
@@ -11,13 +17,18 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel VerticalAlignment="Center" Margin="0,0,24,0">
-                <TextBlock Text="🌴 Epsteins Market" FontSize="40" FontWeight="Bold" Foreground="#FFFFFF"/>
+                <TextBlock Text="🌴 Epsteins Market" Style="{StaticResource HeroTitleStyle}"/>
                 <TextBlock Margin="0,14,0,0"
-                           Text="Сине-белая тропическая атмосфера: пляж, остров и свежий бриз покупок."
+                           Text="Премиальная островная эстетика: лазурная вода, тёплый песок и атмосфера private resort."
                            FontSize="20"
                            TextWrapping="Wrap"
                            Foreground="#EEFFFFFF"/>
-                <TextBlock Margin="0,24,0,0" Text="🏝️  ☀️  🌊" FontSize="46"/>
+                <Border Margin="0,24,0,0" Padding="12,8"
+                        Background="#2CF8E8C9"
+                        CornerRadius="14"
+                        HorizontalAlignment="Left">
+                    <TextBlock Text="🏝️  ☀️  🌊  🍹" FontSize="38"/>
+                </Border>
             </StackPanel>
 
             <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" MaxWidth="420" HorizontalAlignment="Right" VerticalAlignment="Center">
