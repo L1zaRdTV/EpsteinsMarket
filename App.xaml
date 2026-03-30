@@ -4,9 +4,9 @@
              xmlns:local="clr-namespace:EpsteinsMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Color x:Key="OceanBlue">#176BB3</Color>
-        <Color x:Key="DeepOceanBlue">#0E4E85</Color>
-        <Color x:Key="FoamWhite">#F8FCFF</Color>
+        <SolidColorBrush x:Key="OceanBlue" Color="#176BB3"/>
+        <SolidColorBrush x:Key="DeepOceanBlue" Color="#0E4E85"/>
+        <SolidColorBrush x:Key="FoamWhite" Color="#F8FCFF"/>
 
         <LinearGradientBrush x:Key="MainBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#D5EEFF" Offset="0"/>
