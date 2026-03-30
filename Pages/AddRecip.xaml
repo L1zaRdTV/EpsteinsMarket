@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AddRecip">
     <Grid>
-        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.2"/>
+        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.28"/>
+
         <Grid Margin="20" HorizontalAlignment="Center" MaxWidth="760">
             <Border Style="{StaticResource CardBorderStyle}">
                 <Grid>
@@ -18,7 +19,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="tbTitle" FontSize="30" FontWeight="Bold" Foreground="#0A4A7E"/>
+                    <TextBlock x:Name="tbTitle" FontSize="30" FontWeight="Bold" Foreground="#08497D"/>
 
                     <TextBox Grid.Row="1" Margin="0,10,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox Grid.Row="2" Margin="0,10,0,0" Height="96" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
@@ -31,13 +32,13 @@
                         <Button Content="▶" Width="40" Margin="5,0,0,0" Click="btnNextImage_Click"/>
                     </StackPanel>
 
-                    <Border Grid.Row="6" Margin="0,10,0,0" Background="#E6F5FF" CornerRadius="12" Padding="8">
+                    <Border Grid.Row="6" Margin="0,10,0,0" Background="#EBF7FF" BorderBrush="#96C8EA" BorderThickness="1.2" CornerRadius="14" Padding="8">
                         <Image x:Name="imgProduct" Height="210" Stretch="Uniform"/>
                     </Border>
 
                     <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="0,12,0,0">
                         <Button Content="Сохранить" Width="140" Click="btnSave_Click"/>
-                        <Button Content="Назад" Width="140" Margin="10,0,0,0" Click="btnBack_Click"/>
+                        <Button Content="Назад" Width="140" Margin="10,0,0,0" Background="#157BC8" Click="btnBack_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
