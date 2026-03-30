@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище EpsteinsMarketModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="AuthorID" />
+          </Key>
+          <Property Name="AuthorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductImages">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Image" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="AuthorID" Type="int" />
+          <Property Name="CreationTime" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductSteps">
+          <Key>
+            <PropertyRef Name="StepID" />
+          </Key>
+          <Property Name="StepID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="StepNumber" Type="int" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="Experience" Type="int" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Role" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__Favorites__Produ__33D4B598">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Favorites__UserI__32E0915F">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIm__Produ__300424B4">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductImages">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__Author__2D27B809">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__Catego__2C3393D0">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Produ__36B12243">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductSteps" Type="Self.ProductSteps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductSteps">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище EpsteinsMarketModelContainer">
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSteps" EntityType="Self.ProductSteps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Favorites__Produ__33D4B598" Association="Self.FK__Favorites__Produ__33D4B598">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Favorites__UserI__32E0915F" Association="Self.FK__Favorites__UserI__32E0915F">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIm__Produ__300424B4" Association="Self.FK__ProductIm__Produ__300424B4">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductImages" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__Author__2D27B809" Association="Self.FK__Products__Author__2D27B809">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__Catego__2C3393D0" Association="Self.FK__Products__Catego__2C3393D0">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Produ__36B12243" Association="Self.FK__ProductSt__Produ__36B12243">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSteps" EntitySet="ProductSteps" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EpsteinsMarketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="AuthorID" />
+          </Key>
+          <Property Name="AuthorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Author__2D27B809" FromRole="Authors" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Catego__2C3393D0" FromRole="Categories" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Favorites__Produ__33D4B598" FromRole="Favorites" ToRole="Products" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Favorites__UserI__32E0915F" FromRole="Favorites" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ProductImages">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="ImagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__ProductIm__Produ__300424B4" FromRole="ProductImages" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="AuthorID" Type="Int32" />
+          <Property Name="CreationTime" Type="Int32" />
+          <NavigationProperty Name="Authors" Relationship="Self.FK__Products__Author__2D27B809" FromRole="Products" ToRole="Authors" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK__Products__Catego__2C3393D0" FromRole="Products" ToRole="Categories" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__Produ__33D4B598" FromRole="Products" ToRole="Favorites" />
+          <NavigationProperty Name="ProductImages" Relationship="Self.FK__ProductIm__Produ__300424B4" FromRole="Products" ToRole="ProductImages" />
+          <NavigationProperty Name="ProductSteps" Relationship="Self.FK__ProductSt__Produ__36B12243" FromRole="Products" ToRole="ProductSteps" />
+        </EntityType>
+        <EntityType Name="ProductSteps">
+          <Key>
+            <PropertyRef Name="StepID" />
+          </Key>
+          <Property Name="StepID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="StepNumber" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__ProductSt__Produ__36B12243" FromRole="ProductSteps" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Experience" Type="Int32" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__UserI__32E0915F" FromRole="Users" ToRole="Favorites" />
+        </EntityType>
+        <Association Name="FK__Products__Author__2D27B809">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__Catego__2C3393D0">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Favorites__Produ__33D4B598">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Favorites__UserI__32E0915F">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductIm__Produ__300424B4">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductImages">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Produ__36B12243">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductSteps" Type="Self.ProductSteps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductSteps">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EpsteinsMarketEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="Self.Authors" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorites" />
+          <EntitySet Name="ProductImages" EntityType="Self.ProductImages" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="ProductSteps" EntityType="Self.ProductSteps" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK__Products__Author__2D27B809" Association="Self.FK__Products__Author__2D27B809">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__Catego__2C3393D0" Association="Self.FK__Products__Catego__2C3393D0">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Favorites__Produ__33D4B598" Association="Self.FK__Favorites__Produ__33D4B598">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Favorites__UserI__32E0915F" Association="Self.FK__Favorites__UserI__32E0915F">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductIm__Produ__300424B4" Association="Self.FK__ProductIm__Produ__300424B4">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductImages" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Produ__36B12243" Association="Self.FK__ProductSt__Produ__36B12243">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSteps" EntitySet="ProductSteps" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище EpsteinsMarketModelContainer" CdmEntityContainer="EpsteinsMarketEntities1">
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.Authors">
+              <MappingFragment StoreEntitySet="Authors">
+                <ScalarProperty Name="AuthorID" ColumnName="AuthorID" />
+                <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favorites">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.Favorites">
+              <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="FavoriteID" ColumnName="FavoriteID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImages">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.ProductImages">
+              <MappingFragment StoreEntitySet="ProductImages">
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="AuthorID" ColumnName="AuthorID" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSteps">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.ProductSteps">
+              <MappingFragment StoreEntitySet="ProductSteps">
+                <ScalarProperty Name="StepID" ColumnName="StepID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="StepNumber" ColumnName="StepNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="EpsteinsMarketModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

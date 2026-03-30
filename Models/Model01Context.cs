@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+
+namespace EpsteinsMarket.Models
+{
+    // Database First: в реальном проекте этот контекст и сущности обычно генерируются из EDMX.
+    // Оставлено в явном виде, чтобы логика страниц работала через AppConnect.model01.
+    public partial class model01Entities : DbContext
+    {
+        public model01Entities() : base("name=EpsteinsMarketEntities")
+        {
+        }
+
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Favorite> Favorites { get; set; }
+    }
+
+    [Table("Users")]
+    public partial class User
+    {
+        [Key]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string UserName { get; set; }
+
+        public DateTime BirthDate { get; set; }
+
+        [MaxLength(120)]
+        public string Experience { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Login { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Password { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(40)]
+        public string Phone { get; set; }
+
+        public int RoleID { get; set; }
+    }
+
+    [Table("Roles")]
+    public partial class Role
+    {
+        [Key]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(80)]
+        public string Name { get; set; }
+    }
+
+    [Table("Products")]
+    public partial class Product
+    {
+        [Key]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(250)]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Price { get; set; }
+
+        [MaxLength(500)]
+        public string Image { get; set; }
+
+        public int CategoryID { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+
+    [Table("Categories")]
+    public partial class Category
+    {
+        [Key]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string Name { get; set; }
+    }
+
+    [Table("Favorites")]
+    public partial class Favorite
+    {
+        [Key]
+        public int ID { get; set; }
+
+        public int UserID { get; set; }
+
+        public int ProductID { get; set; }
+    }
+}
