@@ -14,17 +14,6 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="🏖️ Регистрация в Beach Club"
@@ -32,20 +21,37 @@
                                    FontWeight="Bold"
                                    Foreground="#084A7E" />
 
-                        <TextBox x:Name="tbUserName" Grid.Row="1" Margin="0,10,0,0" TextChanged="AnyField_TextChanged" />
-                        <DatePicker x:Name="dpBirthDate" Grid.Row="2" Margin="0,10,0,0" SelectedDateChanged="dpBirthDate_SelectedDateChanged" />
-                        <TextBox x:Name="tbExperience" Grid.Row="3" Margin="0,10,0,0" TextChanged="AnyField_TextChanged" />
-                        <TextBox x:Name="tbLogin" Grid.Row="4" Margin="0,10,0,0" TextChanged="tbLogin_TextChanged" />
-                        <PasswordBox x:Name="pbPassword" Grid.Row="5" Margin="0,10,0,0" PasswordChanged="PasswordChanged" />
-                        <PasswordBox x:Name="pbConfirmPassword" Grid.Row="6" Margin="0,10,0,0" PasswordChanged="PasswordChanged" />
-                        <TextBox x:Name="tbEmail" Grid.Row="7" Margin="0,10,0,0" TextChanged="AnyField_TextChanged" />
-                        <TextBox x:Name="tbPhone" Grid.Row="8" Margin="0,10,0,0" TextChanged="AnyField_TextChanged" />
+                        <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                            <TextBlock Text="ФИО" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <TextBox x:Name="tbUserName" Margin="0,0,0,10" TextChanged="AnyField_TextChanged" ToolTip="Введите имя и фамилию" />
 
-                        <Button x:Name="btnRegister" Grid.Row="9" Margin="0,12,0,0" Height="38" Content="Зарегистрироваться" Click="btnRegister_Click" IsEnabled="False" />
-                        <Button x:Name="btnBack" Grid.Row="10" Margin="0,8,0,0" Height="38" Background="#157BC8" Content="Назад" Click="btnBack_Click" />
+                            <TextBlock Text="Дата рождения" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <DatePicker x:Name="dpBirthDate" Margin="0,0,0,10" SelectedDateChanged="dpBirthDate_SelectedDateChanged" ToolTip="Выберите дату рождения" />
 
-                        <TextBlock x:Name="tbStatus" Grid.Row="11" Margin="0,12,0,0" TextWrapping="Wrap" Foreground="#0A4C81" />
-                        <TextBlock x:Name="tbLoginHint" Grid.Row="12" Margin="0,5,0,0" TextWrapping="Wrap" Foreground="#0A4C81" />
+                            <TextBlock Text="Опыт работы (лет)" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <TextBox x:Name="tbExperience" Margin="0,0,0,10" TextChanged="AnyField_TextChanged" ToolTip="Например: 3" />
+
+                            <TextBlock Text="Логин" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <TextBox x:Name="tbLogin" Margin="0,0,0,10" TextChanged="tbLogin_TextChanged" ToolTip="Введите логин" />
+
+                            <TextBlock Text="Пароль" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <PasswordBox x:Name="pbPassword" Margin="0,0,0,10" PasswordChanged="PasswordChanged" ToolTip="Введите пароль" />
+
+                            <TextBlock Text="Подтверждение пароля" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <PasswordBox x:Name="pbConfirmPassword" Margin="0,0,0,10" PasswordChanged="PasswordChanged" ToolTip="Повторите пароль" />
+
+                            <TextBlock Text="Email" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <TextBox x:Name="tbEmail" Margin="0,0,0,10" TextChanged="AnyField_TextChanged" ToolTip="Например: user@mail.com" />
+
+                            <TextBlock Text="Телефон" Foreground="#0A4C81" Margin="0,0,0,4"/>
+                            <TextBox x:Name="tbPhone" Margin="0,0,0,12" TextChanged="AnyField_TextChanged" ToolTip="Например: +7 (900) 123-45-67" />
+
+                            <Button x:Name="btnRegister" Margin="0,0,0,8" Height="38" Content="Зарегистрироваться" Click="btnRegister_Click" IsEnabled="False" />
+                            <Button x:Name="btnBack" Margin="0,0,0,0" Height="38" Background="#157BC8" Content="Назад" Click="btnBack_Click" />
+
+                            <TextBlock x:Name="tbStatus" Margin="0,12,0,0" TextWrapping="Wrap" Foreground="#0A4C81" />
+                            <TextBlock x:Name="tbLoginHint" Margin="0,5,0,0" TextWrapping="Wrap" Foreground="#0A4C81" />
+                        </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
