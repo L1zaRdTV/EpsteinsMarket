@@ -3,35 +3,40 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Auth">
     <Grid>
-        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.35"/>
-        <Border VerticalAlignment="Top"
-                Height="120"
-                Margin="0,0,0,-50"
-                Background="{StaticResource AccentWaveBrush}"
-                Opacity="0.35"
-                CornerRadius="0,0,40,40"/>
-        <Grid Margin="30">
+        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.4"/>
+
+        <Grid Margin="28">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="1.3*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel VerticalAlignment="Center" Margin="0,0,24,0">
-                <TextBlock Text="🌴 Epsteins Market" Style="{StaticResource HeroTitleStyle}"/>
+            <StackPanel VerticalAlignment="Center" Margin="8,0,30,0">
+                <TextBlock Text="🌴 EPSTEINS MARKET" Style="{StaticResource HeroTitleStyle}"/>
                 <TextBlock Margin="0,14,0,0"
-                           Text="Премиальная островная эстетика: лазурная вода, тёплый песок и атмосфера private resort."
-                           FontSize="20"
-                           TextWrapping="Wrap"
-                           Foreground="#EEFFFFFF"/>
-                <Border Margin="0,24,0,0" Padding="12,8"
-                        Background="#2CF8E8C9"
-                        CornerRadius="14"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           Foreground="#F8FFFFFF"
+                           Text="Сине-белый resort стиль: полоски, пляж, пальмы и ощущение островного отдыха."/>
+                <Border Margin="0,28,0,0"
+                        Background="#2EF5E7CA"
+                        CornerRadius="16"
+                        Padding="16,10"
                         HorizontalAlignment="Left">
-                    <TextBlock Text="🏝️  ☀️  🌊  🍹" FontSize="38"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="☀️" FontSize="34" Margin="0,0,12,0"/>
+                        <TextBlock Text="🌊" FontSize="34" Margin="0,0,12,0"/>
+                        <TextBlock Text="🏝️" FontSize="34" Margin="0,0,12,0"/>
+                        <TextBlock Text="🌴" FontSize="34"/>
+                    </StackPanel>
                 </Border>
             </StackPanel>
 
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" MaxWidth="420" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Border Grid.Column="1"
+                    Style="{StaticResource CardBorderStyle}"
+                    MaxWidth="430"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -42,15 +47,15 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Авторизация" FontSize="30" FontWeight="Bold" Foreground="#0B4D84"/>
-                    <TextBlock Grid.Row="1" Margin="0,8,0,0" Text="Логин"/>
+                    <TextBlock Text="Вход на остров" FontSize="30" FontWeight="Bold" Foreground="#08497E"/>
+                    <TextBlock Grid.Row="1" Margin="0,10,0,0" Text="Логин" FontWeight="SemiBold"/>
                     <TextBox x:Name="tbLogin" Grid.Row="2" Margin="0,6,0,0" TextChanged="tbLogin_TextChanged"/>
-                    <TextBlock Grid.Row="3" Margin="0,12,0,0" Text="Пароль"/>
+                    <TextBlock Grid.Row="3" Margin="0,12,0,0" Text="Пароль" FontWeight="SemiBold"/>
                     <PasswordBox x:Name="pbPassword" Grid.Row="4" Margin="0,6,0,0" PasswordChanged="pbPassword_PasswordChanged"/>
 
                     <StackPanel Grid.Row="5" Margin="0,18,0,0">
                         <Button x:Name="btnLogin" Height="38" Content="Войти" Click="btnLogin_Click"/>
-                        <Button x:Name="btnReg" Margin="0,8,0,0" Height="38" Content="Регистрация" Click="btnReg_Click"/>
+                        <Button x:Name="btnReg" Margin="0,8,0,0" Height="38" Background="#157BC8" Content="Регистрация" Click="btnReg_Click"/>
                         <TextBlock x:Name="tbStatus" Margin="0,10,0,0" TextWrapping="Wrap" Foreground="#0B4D84"/>
                     </StackPanel>
                 </Grid>

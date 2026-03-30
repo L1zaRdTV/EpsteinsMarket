@@ -4,63 +4,70 @@
              xmlns:local="clr-namespace:EpsteinsMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="OceanBlue" Color="#1C6FAF"/>
-        <SolidColorBrush x:Key="DeepOceanBlue" Color="#0C3F67"/>
-        <SolidColorBrush x:Key="FoamWhite" Color="#F6FBFF"/>
-        <SolidColorBrush x:Key="PalmSand" Color="#F8E8C9"/>
-        <SolidColorBrush x:Key="LagoonMint" Color="#BFF6E8"/>
-        <SolidColorBrush x:Key="SunsetGold" Color="#F4C96E"/>
+        <SolidColorBrush x:Key="OceanBlue" Color="#0A5FA8"/>
+        <SolidColorBrush x:Key="DeepOceanBlue" Color="#07406E"/>
+        <SolidColorBrush x:Key="SkyBlue" Color="#DDF1FF"/>
+        <SolidColorBrush x:Key="FoamWhite" Color="#F9FDFF"/>
+        <SolidColorBrush x:Key="PalmLeaf" Color="#2A8C6D"/>
+        <SolidColorBrush x:Key="SandTone" Color="#F5E7CA"/>
 
         <LinearGradientBrush x:Key="MainBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#BDE7FF" Offset="0"/>
-            <GradientStop Color="#91D0F9" Offset="0.45"/>
-            <GradientStop Color="#63B7EA" Offset="0.72"/>
-            <GradientStop Color="#3A89B8" Offset="1"/>
+            <GradientStop Color="#EAF7FF" Offset="0"/>
+            <GradientStop Color="#B7E3FF" Offset="0.38"/>
+            <GradientStop Color="#5EB4EA" Offset="0.78"/>
+            <GradientStop Color="#1D7BB9" Offset="1"/>
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="AccentWaveBrush" StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="#C7FFF1" Offset="0"/>
-            <GradientStop Color="#9EF2FF" Offset="0.5"/>
-            <GradientStop Color="#FFE3A5" Offset="1"/>
+            <GradientStop Color="#FFFFFF" Offset="0"/>
+            <GradientStop Color="#D7EEFF" Offset="0.4"/>
+            <GradientStop Color="#B6E0FF" Offset="0.7"/>
+            <GradientStop Color="#FFFFFF" Offset="1"/>
         </LinearGradientBrush>
 
         <VisualBrush x:Key="StripeOverlayBrush"
                      TileMode="Tile"
-                     Viewport="0,0,28,28"
+                     Viewport="0,0,44,44"
                      ViewportUnits="Absolute"
-                     Viewbox="0,0,28,28"
+                     Viewbox="0,0,44,44"
                      ViewboxUnits="Absolute"
-                     Opacity="0.16"
+                     Opacity="0.48"
                      Stretch="None">
             <VisualBrush.Visual>
-                <Grid Width="28" Height="28">
-                    <Rectangle Fill="#00FFFFFF"/>
-                    <Path Fill="#66FFFFFF" Data="M0,22 C8,14 15,12 28,8 L28,28 L0,28 Z"/>
-                    <Ellipse Width="9" Height="9" Fill="#44FFFFFF" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>
+                <Grid Width="44" Height="44" Background="#00FFFFFF">
+                    <Rectangle Fill="#14FFFFFF" Width="44" Height="44"/>
+                    <Rectangle Fill="#32FFFFFF" Width="44" Height="13" VerticalAlignment="Top"/>
+                    <Rectangle Fill="#24BCE3FF" Width="44" Height="9" Margin="0,18,0,0" VerticalAlignment="Top"/>
+                    <Rectangle Fill="#36FFFFFF" Width="44" Height="8" Margin="0,32,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </VisualBrush.Visual>
         </VisualBrush>
 
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="{StaticResource MainBackgroundBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="TextElement.Foreground" Value="#04355E"/>
+        </Style>
+
         <Style TargetType="Page">
             <Setter Property="Background" Value="{StaticResource MainBackgroundBrush}"/>
-            <Setter Property="TextElement.Foreground" Value="#05315B"/>
+            <Setter Property="TextElement.Foreground" Value="#04355E"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
         </Style>
 
         <Style x:Key="CardBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="#F0FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#A7FFFFFF"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="CornerRadius" Value="20"/>
-            <Setter Property="Padding" Value="20"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Background" Value="#EEFFFFFF"/>
+            <Setter Property="BorderBrush" Value="#9CCBEC"/>
+            <Setter Property="BorderThickness" Value="1.6"/>
+            <Setter Property="CornerRadius" Value="22"/>
+            <Setter Property="Padding" Value="22"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#4A0C3F67"
-                                      BlurRadius="18"
-                                      ShadowDepth="6"
+                    <DropShadowEffect Color="#3A0B4A7D"
+                                      BlurRadius="22"
+                                      ShadowDepth="7"
                                       Direction="270"
-                                      Opacity="0.45"/>
+                                      Opacity="0.55"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -78,24 +85,19 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="btnBorder"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="12">
+                                CornerRadius="14">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="btnBorder" Property="Background" Value="{StaticResource DeepOceanBlue}"/>
-                                <Setter TargetName="btnBorder" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect Color="#660C3F67" BlurRadius="10" ShadowDepth="3" Opacity="0.7"/>
-                                    </Setter.Value>
-                                </Setter>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.85"/>
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.84"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.55"/>
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.5"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -104,51 +106,51 @@
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="MinHeight" Value="34"/>
-            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="10,7"/>
             <Setter Property="Background" Value="{StaticResource FoamWhite}"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="BorderBrush" Value="#8BC0E8"/>
-            <Setter Property="Foreground" Value="#05315B"/>
+            <Setter Property="BorderThickness" Value="1.4"/>
+            <Setter Property="BorderBrush" Value="#8CBFE3"/>
+            <Setter Property="Foreground" Value="#04355E"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Style.Triggers>
                 <Trigger Property="IsKeyboardFocused" Value="True">
-                    <Setter Property="BorderBrush" Value="#1C6FAF"/>
+                    <Setter Property="BorderBrush" Value="#0A5FA8"/>
                     <Setter Property="Background" Value="#FFFFFF"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style TargetType="PasswordBox">
-            <Setter Property="MinHeight" Value="34"/>
-            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="10,7"/>
             <Setter Property="Background" Value="{StaticResource FoamWhite}"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="BorderBrush" Value="#8BC0E8"/>
-            <Setter Property="Foreground" Value="#05315B"/>
+            <Setter Property="BorderThickness" Value="1.4"/>
+            <Setter Property="BorderBrush" Value="#8CBFE3"/>
+            <Setter Property="Foreground" Value="#04355E"/>
             <Style.Triggers>
                 <Trigger Property="IsKeyboardFocused" Value="True">
-                    <Setter Property="BorderBrush" Value="#1C6FAF"/>
+                    <Setter Property="BorderBrush" Value="#0A5FA8"/>
                     <Setter Property="Background" Value="#FFFFFF"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="MinHeight" Value="34"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="Background" Value="{StaticResource FoamWhite}"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="BorderBrush" Value="#8BC0E8"/>
+            <Setter Property="BorderThickness" Value="1.4"/>
+            <Setter Property="BorderBrush" Value="#8CBFE3"/>
         </Style>
 
         <Style x:Key="HeroTitleStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="42"/>
+            <Setter Property="FontSize" Value="44"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="#6B0C3F67" BlurRadius="8" ShadowDepth="3" Opacity="0.9"/>
+                    <DropShadowEffect Color="#70063F68" BlurRadius="10" ShadowDepth="3" Opacity="0.9"/>
                 </Setter.Value>
             </Setter>
         </Style>
