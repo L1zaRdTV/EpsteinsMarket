@@ -17,23 +17,23 @@ namespace EpsteinsMarket.Pages
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateAllFields(out var error))
+            if (!ValidateAllFields(out string errorText))
             {
-                tbStatus.Text = error;
+                tbStatus.Text = errorText;
                 return;
             }
 
-            var login = tbLogin.Text.Trim();
-            bool exists = AppConnect.model01.Users.Any(u => u.Login == login);
-            if (exists)
+            string login = tbLogin.Text.Trim();
+
+            if (AppConnect.model01.Users.Any(u => u.Login == login))
             {
                 tbStatus.Text = "Пользователь с таким логином уже существует.";
                 return;
             }
 
-            int userRoleId = AppConnect.model01.Roles.FirstOrDefault(r => r.Name == "Пользователь")?.ID ?? 2;
+            int roleId = AppConnect.model01.Roles.FirstOrDefault(r => r.Name == "Пользователь")?.ID ?? 2;
 
-            var user = new User
+            var newUser = new User
             {
                 UserName = tbUserName.Text.Trim(),
                 BirthDate = dpBirthDate.SelectedDate.Value,
@@ -42,19 +42,20 @@ namespace EpsteinsMarket.Pages
                 Password = pbPassword.Password,
                 Email = tbEmail.Text.Trim(),
                 Phone = tbPhone.Text.Trim(),
-                RoleID = userRoleId
+                RoleID = roleId
             };
 
-            AppConnect.model01.Users.Add(user);
+            AppConnect.model01.Users.Add(newUser);
             AppConnect.model01.SaveChanges();
 
-            tbStatus.Text = "Пользователь зарегистрирован. Выполните вход.";
+            MessageBox.Show("Регистрация выполнена успешно.");
             AppFrame.frmMain.Navigate(new Auth());
         }
 
         private bool ValidateAllFields(out string message)
         {
             message = string.Empty;
+
             if (string.IsNullOrWhiteSpace(tbUserName.Text)
                 || !dpBirthDate.SelectedDate.HasValue
                 || string.IsNullOrWhiteSpace(tbExperience.Text)
@@ -64,29 +65,35 @@ namespace EpsteinsMarket.Pages
                 || string.IsNullOrWhiteSpace(tbEmail.Text)
                 || string.IsNullOrWhiteSpace(tbPhone.Text))
             {
-                message = "Заполните все поля формы.";
+                message = "Заполните все поля формы регистрации.";
+                return false;
+            }
+
+            if (dpBirthDate.SelectedDate.Value > DateTime.Now.Date)
+            {
+                message = "Дата рождения не может быть больше текущей даты.";
                 return false;
             }
 
             if (pbPassword.Password != pbConfirmPassword.Password)
             {
-                message = "Пароли не совпадают.";
+                message = "Пароль и подтверждение не совпадают.";
                 return false;
             }
 
-            if (dpBirthDate.SelectedDate > DateTime.Now)
+            if (pbPassword.Password.Length < 4)
             {
-                message = "Дата рождения не может быть в будущем.";
+                message = "Пароль должен содержать минимум 4 символа.";
                 return false;
             }
 
             if (!Regex.IsMatch(tbEmail.Text.Trim(), @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                message = "Некорректный формат электронной почты.";
+                message = "Некорректный формат email.";
                 return false;
             }
 
-            if (!Regex.IsMatch(tbPhone.Text.Trim(), @"^[0-9\+\-\(\)\s]{6,20}$"))
+            if (!Regex.IsMatch(tbPhone.Text.Trim(), @"^\+?[0-9\-\s\(\)]{6,20}$"))
             {
                 message = "Некорректный формат телефона.";
                 return false;
@@ -97,13 +104,24 @@ namespace EpsteinsMarket.Pages
 
         private void PasswordChanged(object sender, RoutedEventArgs e)
         {
-            bool passwordsMatch = pbPassword.Password == pbConfirmPassword.Password && !string.IsNullOrWhiteSpace(pbPassword.Password);
+            bool passwordsMatch = !string.IsNullOrWhiteSpace(pbPassword.Password)
+                                  && pbPassword.Password == pbConfirmPassword.Password;
             btnRegister.IsEnabled = passwordsMatch;
-            tbStatus.Text = passwordsMatch ? string.Empty : "Кнопка регистрации активируется после совпадения паролей.";
+
+            if (!passwordsMatch)
+            {
+                tbStatus.Text = "Кнопка регистрации станет активной после совпадения паролей.";
+            }
+            else
+            {
+                tbStatus.Text = string.Empty;
+            }
         }
 
         private void tbLogin_TextChanged(object sender, TextChangedEventArgs e)
         {
+            tbStatus.Text = string.Empty;
+
             string login = tbLogin.Text.Trim();
             if (string.IsNullOrWhiteSpace(login))
             {
@@ -111,8 +129,8 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            bool exists = AppConnect.model01.Users.Any(u => u.Login == login);
-            tbLoginHint.Text = exists ? "Логин уже занят." : "Логин свободен.";
+            bool loginExists = AppConnect.model01.Users.Any(u => u.Login == login);
+            tbLoginHint.Text = loginExists ? "Логин уже занят." : "Логин свободен.";
         }
 
         private void AnyField_TextChanged(object sender, TextChangedEventArgs e)

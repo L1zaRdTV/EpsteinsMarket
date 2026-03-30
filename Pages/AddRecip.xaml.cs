@@ -5,9 +5,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using EpsteinsMarket.ApplicationData;
 using EpsteinsMarket.Models;
+using Microsoft.Win32;
 
 namespace EpsteinsMarket.Pages
 {
@@ -32,32 +32,54 @@ namespace EpsteinsMarket.Pages
             if (_productId == 0)
             {
                 tbTitle.Text = "Добавление товара";
-                _currentProduct = new Product { CreatedAt = DateTime.Now };
+                _currentProduct = new Product
+                {
+                    CreatedAt = DateTime.Now
+                };
             }
             else
             {
                 tbTitle.Text = "Редактирование товара";
-                _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId) ?? new Product();
+                _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId);
+
+                if (_currentProduct == null)
+                {
+                    MessageBox.Show("Товар не найден.");
+                    AppFrame.frmMain.Navigate(new PageTask());
+                    return;
+                }
             }
 
             DataContext = _currentProduct;
-            SetupImages();
-            SelectCategory();
+            LoadImageList();
+            SetSelectedCategory();
         }
 
-        private void SetupImages()
+        private void LoadImageList()
         {
             _images.Clear();
             if (!string.IsNullOrWhiteSpace(_currentProduct.Image))
             {
-                _images.AddRange(_currentProduct.Image.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
+                _images.AddRange(_currentProduct.Image
+                    .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Distinct());
             }
 
             _currentIndex = 0;
-            RefreshImage();
+            ShowCurrentImage();
         }
 
-        private void RefreshImage()
+        private void SetSelectedCategory()
+        {
+            if (_currentProduct == null)
+            {
+                return;
+            }
+
+            cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
+        }
+
+        private void ShowCurrentImage()
         {
             if (_images.Count == 0)
             {
@@ -68,26 +90,26 @@ namespace EpsteinsMarket.Pages
             string imageFileName = _images[_currentIndex];
             string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images", imageFileName);
 
-            if (File.Exists(fullPath))
-            {
-                imgProduct.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
-            }
-            else
+            if (!File.Exists(fullPath))
             {
                 imgProduct.Source = null;
+                return;
             }
-        }
 
-        private void SelectCategory()
-        {
-            cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(fullPath, UriKind.Absolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+
+            imgProduct.Source = bitmap;
         }
 
         private void btnLoadImage_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog
             {
-                Filter = "Изображения|*.png;*.jpg;*.jpeg;*.bmp",
+                Filter = "Изображения (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
                 Multiselect = true
             };
 
@@ -96,20 +118,20 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            string targetDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images");
-            Directory.CreateDirectory(targetDir);
+            string imagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images");
+            Directory.CreateDirectory(imagesDirectory);
 
-            foreach (var file in dialog.FileNames)
+            foreach (string file in dialog.FileNames)
             {
-                string uniqueName = $"{Guid.NewGuid():N}{Path.GetExtension(file)}";
-                string targetPath = Path.Combine(targetDir, uniqueName);
-                File.Copy(file, targetPath, true);
-                _images.Add(uniqueName);
+                string newFileName = $"{Guid.NewGuid():N}{Path.GetExtension(file)}";
+                string destinationPath = Path.Combine(imagesDirectory, newFileName);
+                File.Copy(file, destinationPath, true);
+                _images.Add(newFileName);
             }
 
             _currentProduct.Image = string.Join(";", _images);
             _currentIndex = _images.Count - 1;
-            RefreshImage();
+            ShowCurrentImage();
         }
 
         private void btnPrevImage_Click(object sender, RoutedEventArgs e)
@@ -120,7 +142,7 @@ namespace EpsteinsMarket.Pages
             }
 
             _currentIndex = (_currentIndex - 1 + _images.Count) % _images.Count;
-            RefreshImage();
+            ShowCurrentImage();
         }
 
         private void btnNextImage_Click(object sender, RoutedEventArgs e)
@@ -131,27 +153,33 @@ namespace EpsteinsMarket.Pages
             }
 
             _currentIndex = (_currentIndex + 1) % _images.Count;
-            RefreshImage();
+            ShowCurrentImage();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_currentProduct.Name))
             {
-                MessageBox.Show("Название товара не может быть пустым.");
+                MessageBox.Show("Введите название товара.");
                 return;
             }
 
-            if (!(cbCategory.SelectedItem is Category category))
+            if (_currentProduct.Price < 0)
+            {
+                MessageBox.Show("Цена не может быть отрицательной.");
+                return;
+            }
+
+            if (!(cbCategory.SelectedItem is Category selectedCategory))
             {
                 MessageBox.Show("Выберите категорию.");
                 return;
             }
 
-            var dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == category.ID);
+            Category dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == selectedCategory.ID);
             if (dbCategory == null)
             {
-                MessageBox.Show("Категория не найдена в базе данных.");
+                MessageBox.Show("Выбранная категория не найдена в базе данных.");
                 return;
             }
 
@@ -174,7 +202,7 @@ namespace EpsteinsMarket.Pages
 
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Событие оставлено для соответствия требованиям.
+            // Событие сохранено в соответствии с требованиями задания.
         }
     }
 }
