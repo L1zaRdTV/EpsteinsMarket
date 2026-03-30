@@ -24,7 +24,10 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="🏝️ Регистрация" FontSize="30" FontWeight="Bold" Foreground="#0A4C81" />
+                        <TextBlock Text="🏝️ Регистрация на острове"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   Foreground="#0A4C81" />
 
                         <TextBox x:Name="tbUserName" Grid.Row="1" Margin="0,10,0,0" TextChanged="AnyField_TextChanged" />
                         <DatePicker x:Name="dpBirthDate" Grid.Row="2" Margin="0,10,0,0" SelectedDateChanged="dpBirthDate_SelectedDateChanged" />
