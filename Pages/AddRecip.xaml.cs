@@ -32,10 +32,7 @@ namespace EpsteinsMarket.Pages
             if (_productId == 0)
             {
                 tbTitle.Text = "Добавление товара";
-                _currentProduct = new Product
-                {
-                    CreatedAt = DateTime.Now
-                };
+                _currentProduct = new Product();
             }
             else
             {
@@ -171,7 +168,13 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            if (_currentProduct.Price < 0)
+            if (!_currentProduct.Price.HasValue)
+            {
+                MessageBox.Show("Введите цену товара.");
+                return;
+            }
+
+            if (_currentProduct.Price.Value < 0)
             {
                 MessageBox.Show("Цена не может быть отрицательной.");
                 return;

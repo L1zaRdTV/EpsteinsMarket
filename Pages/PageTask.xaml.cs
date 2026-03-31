@@ -70,7 +70,7 @@ namespace EpsteinsMarket.Pages
                         query = query.OrderByDescending(p => p.Price);
                         break;
                     case "new":
-                        query = query.OrderByDescending(p => p.CreatedAt);
+                        query = query.OrderByDescending(p => p.ID);
                         break;
                     default:
                         query = query.OrderBy(p => p.Name);
