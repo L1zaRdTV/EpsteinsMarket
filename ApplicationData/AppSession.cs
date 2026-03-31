@@ -6,6 +6,7 @@ namespace EpsteinsMarket.ApplicationData
     {
         public static User CurrentUser { get; set; }
 
-        public static bool IsAdmin => CurrentUser != null && CurrentUser.RoleID == 1;
+        public static bool IsAdmin => CurrentUser != null
+            && string.Equals(CurrentUser.Role, "Администратор", System.StringComparison.OrdinalIgnoreCase);
     }
 }

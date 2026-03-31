@@ -172,7 +172,7 @@ namespace EpsteinsMarket.Pages
             try
             {
                 bool favoriteExists = AppConnect.model01.Favorites
-                    .Any(f => f.UserID == AppSession.CurrentUser.ID && f.ProductID == productId);
+                    .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == productId);
 
                 if (favoriteExists)
                 {
@@ -182,7 +182,7 @@ namespace EpsteinsMarket.Pages
 
                 AppConnect.model01.Favorites.Add(new Favorite
                 {
-                    UserID = AppSession.CurrentUser.ID,
+                    UserID = AppSession.CurrentUser.UserID,
                     ProductID = productId
                 });
 
