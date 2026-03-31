@@ -27,7 +27,15 @@ namespace EpsteinsMarket.Pages
 
         private void InitializePage()
         {
-            cbCategory.ItemsSource = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
+            if (!AppConnect.TryExecute(() =>
+            {
+                cbCategory.ItemsSource = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
+            }, out string categoryError))
+            {
+                MessageBox.Show($"Ошибка загрузки категорий: {categoryError}");
+                AppFrame.frmMain.Navigate(new PageTask());
+                return;
+            }
 
             if (_productId == 0)
             {
@@ -37,7 +45,10 @@ namespace EpsteinsMarket.Pages
             else
             {
                 tbTitle.Text = "Редактирование товара";
-                _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId);
+                AppConnect.TryExecute(() =>
+                {
+                    _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId);
+                }, out _);
 
                 if (_currentProduct == null)
                 {
@@ -73,7 +84,10 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
+            AppConnect.TryExecute(() =>
+            {
+                cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
+            }, out _);
         }
 
         private void ShowCurrentImage()
@@ -186,13 +200,12 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            try
+            if (!AppConnect.TryExecute(() =>
             {
                 Category dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == selectedCategory.ID);
                 if (dbCategory == null)
                 {
-                    MessageBox.Show("Выбранная категория не найдена в базе данных.");
-                    return;
+                    throw new InvalidOperationException("Выбранная категория не найдена в базе данных.");
                 }
 
                 _currentProduct.CategoryID = dbCategory.ID;
@@ -204,12 +217,13 @@ namespace EpsteinsMarket.Pages
                 }
 
                 AppConnect.model01.SaveChanges();
-                AppFrame.frmMain.Navigate(new PageTask());
-            }
-            catch (Exception ex)
+            }, out string error))
             {
-                MessageBox.Show($"Ошибка сохранения товара: {ex.Message}");
+                MessageBox.Show($"Ошибка сохранения товара: {error}");
+                return;
             }
+
+            AppFrame.frmMain.Navigate(new PageTask());
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

@@ -5,8 +5,9 @@
         Height="700"
         Width="1200"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.22"/>
-        <Frame x:Name="frmMain" NavigationUIVisibility="Hidden" />
+    <Grid Margin="12">
+        <Border Style="{StaticResource CardBorderStyle}" Padding="0">
+            <Frame x:Name="frmMain" NavigationUIVisibility="Hidden"/>
+        </Border>
     </Grid>
 </Window>

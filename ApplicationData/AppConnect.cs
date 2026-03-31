@@ -27,13 +27,17 @@ namespace EpsteinsMarket.ApplicationData
             return new model01Entities($"name={configuredName}");
         }
 
+        public static void ResetContext()
+        {
+            _model01?.Dispose();
+            _model01 = CreateConnection();
+        }
+
         public static bool TryReconnect(out string error)
         {
             try
             {
-                _model01?.Dispose();
-                _model01 = CreateConnection();
-
+                ResetContext();
                 _model01.Database.Connection.Open();
                 _model01.Database.Connection.Close();
 
@@ -43,6 +47,36 @@ namespace EpsteinsMarket.ApplicationData
             catch (Exception ex)
             {
                 error = ex.Message;
+                return false;
+            }
+        }
+
+        public static bool TryExecute(Action action, out string error)
+        {
+            try
+            {
+                action();
+                error = string.Empty;
+                return true;
+            }
+            catch
+            {
+                if (TryReconnect(out _))
+                {
+                    try
+                    {
+                        action();
+                        error = string.Empty;
+                        return true;
+                    }
+                    catch (Exception retryEx)
+                    {
+                        error = retryEx.Message;
+                        return false;
+                    }
+                }
+
+                error = "Не удалось восстановить подключение к базе данных.";
                 return false;
             }
         }
