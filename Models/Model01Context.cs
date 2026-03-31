@@ -60,6 +60,7 @@ namespace EpsteinsMarket.Models
     public partial class Product
     {
         [Key]
+        [Column("ProductID")]
         public int ID { get; set; }
 
         [Required]
@@ -68,23 +69,23 @@ namespace EpsteinsMarket.Models
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [MaxLength(500)]
         public string Image { get; set; }
 
-        public int CategoryID { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public int? CategoryID { get; set; }
     }
 
     [Table("Categories")]
     public partial class Category
     {
         [Key]
+        [Column("CategoryID")]
         public int ID { get; set; }
 
         [Required]
+        [Column("CategoryName")]
         [MaxLength(150)]
         public string Name { get; set; }
     }
@@ -93,6 +94,7 @@ namespace EpsteinsMarket.Models
     public partial class Favorite
     {
         [Key]
+        [Column("FavoriteID")]
         public int ID { get; set; }
 
         public int UserID { get; set; }
