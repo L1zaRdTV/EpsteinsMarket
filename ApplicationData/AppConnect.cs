@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using EpsteinsMarket.Models;
 
 namespace EpsteinsMarket.ApplicationData
@@ -11,7 +12,19 @@ namespace EpsteinsMarket.ApplicationData
 
         private static model01Entities CreateConnection()
         {
-            return new model01Entities();
+            string externalConnection = Environment.GetEnvironmentVariable("EPSTEINSMARKET_CONNECTION_STRING");
+            if (!string.IsNullOrWhiteSpace(externalConnection))
+            {
+                return new model01Entities(externalConnection);
+            }
+
+            string configuredName = ConfigurationManager.AppSettings["ActiveConnectionStringName"];
+            if (string.IsNullOrWhiteSpace(configuredName))
+            {
+                configuredName = "model01Entities";
+            }
+
+            return new model01Entities($"name={configuredName}");
         }
 
         public static bool TryReconnect(out string error)

@@ -23,33 +23,40 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            string login = tbLogin.Text.Trim();
-
-            if (AppConnect.model01.Users.Any(u => u.Login == login))
+            try
             {
-                tbStatus.Text = "Пользователь с таким логином уже существует.";
-                return;
+                string login = tbLogin.Text.Trim();
+
+                if (AppConnect.model01.Users.Any(u => u.Login == login))
+                {
+                    tbStatus.Text = "Пользователь с таким логином уже существует.";
+                    return;
+                }
+
+                int roleId = AppConnect.model01.Roles.FirstOrDefault(r => r.Name == "Пользователь")?.ID ?? 2;
+
+                var newUser = new User
+                {
+                    UserName = tbUserName.Text.Trim(),
+                    BirthDate = dpBirthDate.SelectedDate.Value,
+                    Experience = tbExperience.Text.Trim(),
+                    Login = login,
+                    Password = pbPassword.Password,
+                    Email = tbEmail.Text.Trim(),
+                    Phone = tbPhone.Text.Trim(),
+                    RoleID = roleId
+                };
+
+                AppConnect.model01.Users.Add(newUser);
+                AppConnect.model01.SaveChanges();
+
+                MessageBox.Show("Регистрация выполнена успешно.");
+                AppFrame.frmMain.Navigate(new Auth());
             }
-
-            int roleId = AppConnect.model01.Roles.FirstOrDefault(r => r.Name == "Пользователь")?.ID ?? 2;
-
-            var newUser = new User
+            catch (Exception ex)
             {
-                UserName = tbUserName.Text.Trim(),
-                BirthDate = dpBirthDate.SelectedDate.Value,
-                Experience = tbExperience.Text.Trim(),
-                Login = login,
-                Password = pbPassword.Password,
-                Email = tbEmail.Text.Trim(),
-                Phone = tbPhone.Text.Trim(),
-                RoleID = roleId
-            };
-
-            AppConnect.model01.Users.Add(newUser);
-            AppConnect.model01.SaveChanges();
-
-            MessageBox.Show("Регистрация выполнена успешно.");
-            AppFrame.frmMain.Navigate(new Auth());
+                tbStatus.Text = $"Ошибка регистрации: {ex.Message}";
+            }
         }
 
         private bool ValidateAllFields(out string message)

@@ -20,9 +20,16 @@ namespace EpsteinsMarket.Pages
 
         private void InitializePage()
         {
-            InitializeFilters();
-            LoadProducts();
-            UpdateCounter();
+            try
+            {
+                InitializeFilters();
+                LoadProducts();
+                UpdateCounter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка инициализации страницы: {ex.Message}");
+            }
         }
 
         private void InitializeFilters()
@@ -38,41 +45,48 @@ namespace EpsteinsMarket.Pages
 
         private void LoadProducts()
         {
-            var query = AppConnect.model01.Products.AsQueryable();
-
-            string searchText = tbSearch.Text?.Trim() ?? string.Empty;
-            if (!string.IsNullOrWhiteSpace(searchText))
+            try
             {
-                query = query.Where(p => p.Name.Contains(searchText));
-            }
+                var query = AppConnect.model01.Products.AsQueryable();
 
-            if (cbCategory.SelectedItem is Category selectedCategory && selectedCategory.ID > 0)
+                string searchText = tbSearch.Text?.Trim() ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(searchText))
+                {
+                    query = query.Where(p => p.Name.Contains(searchText));
+                }
+
+                if (cbCategory.SelectedItem is Category selectedCategory && selectedCategory.ID > 0)
+                {
+                    query = query.Where(p => p.CategoryID == selectedCategory.ID);
+                }
+
+                string sortMode = (cbSort.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
+                switch (sortMode)
+                {
+                    case "price_asc":
+                        query = query.OrderBy(p => p.Price);
+                        break;
+                    case "price_desc":
+                        query = query.OrderByDescending(p => p.Price);
+                        break;
+                    case "new":
+                        query = query.OrderByDescending(p => p.CreatedAt);
+                        break;
+                    default:
+                        query = query.OrderBy(p => p.Name);
+                        break;
+                }
+
+                _products = query.ToList();
+                lvProducts.ItemsSource = _products;
+                icProducts.ItemsSource = _products;
+
+                UpdateCounter();
+            }
+            catch (Exception ex)
             {
-                query = query.Where(p => p.CategoryID == selectedCategory.ID);
+                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}");
             }
-
-            string sortMode = (cbSort.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
-            switch (sortMode)
-            {
-                case "price_asc":
-                    query = query.OrderBy(p => p.Price);
-                    break;
-                case "price_desc":
-                    query = query.OrderByDescending(p => p.Price);
-                    break;
-                case "new":
-                    query = query.OrderByDescending(p => p.CreatedAt);
-                    break;
-                default:
-                    query = query.OrderBy(p => p.Name);
-                    break;
-            }
-
-            _products = query.ToList();
-            lvProducts.ItemsSource = _products;
-            icProducts.ItemsSource = _products;
-
-            UpdateCounter();
         }
 
         private void UpdateCounter()
@@ -155,23 +169,30 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            bool favoriteExists = AppConnect.model01.Favorites
-                .Any(f => f.UserID == AppSession.CurrentUser.ID && f.ProductID == productId);
-
-            if (favoriteExists)
+            try
             {
-                MessageBox.Show("Товар уже есть в избранном.");
-                return;
+                bool favoriteExists = AppConnect.model01.Favorites
+                    .Any(f => f.UserID == AppSession.CurrentUser.ID && f.ProductID == productId);
+
+                if (favoriteExists)
+                {
+                    MessageBox.Show("Товар уже есть в избранном.");
+                    return;
+                }
+
+                AppConnect.model01.Favorites.Add(new Favorite
+                {
+                    UserID = AppSession.CurrentUser.ID,
+                    ProductID = productId
+                });
+
+                AppConnect.model01.SaveChanges();
+                MessageBox.Show("Товар добавлен в избранное.");
             }
-
-            AppConnect.model01.Favorites.Add(new Favorite
+            catch (Exception ex)
             {
-                UserID = AppSession.CurrentUser.ID,
-                ProductID = productId
-            });
-
-            AppConnect.model01.SaveChanges();
-            MessageBox.Show("Товар добавлен в избранное.");
+                MessageBox.Show($"Ошибка добавления в избранное: {ex.Message}");
+            }
         }
 
         private void lvProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
