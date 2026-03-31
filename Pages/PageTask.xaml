@@ -3,8 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="PageTask">
     <Grid>
-        <Rectangle Fill="{StaticResource StripeOverlayBrush}" Opacity="0.26"/>
-
         <Grid Margin="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -12,38 +10,38 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Style="{StaticResource CardBorderStyle}" Padding="18">
+            <Border Style="{StaticResource CardBorderStyle}" Padding="16">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="🌊 Island Catalog — Palm &amp; Beach Collection" FontSize="28" FontWeight="Bold" Foreground="#08497E"/>
+                    <TextBlock Text="Каталог товаров" FontSize="24" FontWeight="Bold"/>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,14,0,0">
-                        <TextBox x:Name="tbSearch" Width="210" Margin="0,0,10,0" TextChanged="tbSearch_TextChanged" />
-                        <ComboBox x:Name="cbCategory" Width="210" Margin="0,0,10,0" SelectionChanged="cbCategory_SelectionChanged" DisplayMemberPath="Name" />
-                        <ComboBox x:Name="cbSort" Width="210" Margin="0,0,10,0" SelectionChanged="cbSort_SelectionChanged">
+                        <TextBox x:Name="tbSearch" Width="220" Margin="0,0,10,0" TextChanged="tbSearch_TextChanged" />
+                        <ComboBox x:Name="cbCategory" Width="220" Margin="0,0,10,0" SelectionChanged="cbCategory_SelectionChanged" DisplayMemberPath="Name" />
+                        <ComboBox x:Name="cbSort" Width="220" Margin="0,0,10,0" SelectionChanged="cbSort_SelectionChanged">
                             <ComboBoxItem Content="По умолчанию" Tag="default" IsSelected="True"/>
                             <ComboBoxItem Content="Цена по возрастанию" Tag="price_asc"/>
                             <ComboBoxItem Content="Цена по убыванию" Tag="price_desc"/>
                             <ComboBoxItem Content="Сначала новые" Tag="new"/>
                         </ComboBox>
-                        <Button Content="Список" Width="96" Margin="0,0,5,0" Click="btnList_Click"/>
-                        <Button Content="Плитка" Width="96" Margin="0,0,5,0" Click="btnTile_Click"/>
-                        <Button Content="Добавить товар" Width="148" Click="btnAdd_Click"/>
+                        <Button Content="Список" Width="90" Margin="0,0,5,0" Click="btnList_Click"/>
+                        <Button Content="Плитка" Width="90" Margin="0,0,5,0" Click="btnTile_Click"/>
+                        <Button Content="Добавить" Width="110" Click="btnAdd_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <TextBlock x:Name="tbCounter" Grid.Row="1" Margin="10,12,0,10" FontSize="14" FontWeight="SemiBold" Foreground="#0C4678"/>
+            <TextBlock x:Name="tbCounter" Grid.Row="1" Margin="10,12,0,10" FontSize="14" FontWeight="SemiBold"/>
 
             <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Padding="8">
                 <Grid>
-                    <ListView x:Name="lvProducts" Visibility="Visible" SelectionChanged="lvProducts_SelectionChanged" Background="#F8FCFF">
+                    <ListView x:Name="lvProducts" Visibility="Visible" SelectionChanged="lvProducts_SelectionChanged" Background="White">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="230"/>
-                                <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}" Width="330"/>
+                                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="220"/>
+                                <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}" Width="320"/>
                                 <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}" Width="120"/>
                             </GridView>
                         </ListView.View>
@@ -57,14 +55,14 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="6" Padding="10" BorderBrush="#79AED9" BorderThickness="1.3" CornerRadius="16" Width="230" Background="#F7FCFF">
+                                <Border Margin="6" Padding="10" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="8" Width="230" Background="{StaticResource SurfaceSoft}">
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold"><Run Text="🏝️ "/><Run Text="{Binding Name}"/></TextBlock>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
                                         <TextBlock Text="{Binding Description}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                                         <TextBlock Text="{Binding Price}" Margin="0,5,0,0" FontWeight="SemiBold"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                             <Button Content="В избранное" Click="btnFavorite_Click" Tag="{Binding ID}" Margin="0,0,5,0"/>
-                                            <Button Content="Изменить" Click="btnEdit_Click" Tag="{Binding ID}"/>
+                                            <Button Content="Изменить" Click="btnEdit_Click" Tag="{Binding ID}" Background="#374151"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

@@ -20,23 +20,22 @@ namespace EpsteinsMarket.Pages
 
         private void InitializePage()
         {
-            try
-            {
-                InitializeFilters();
-                LoadProducts();
-                UpdateCounter();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка инициализации страницы: {ex.Message}");
-            }
+            InitializeFilters();
+            LoadProducts();
+            UpdateCounter();
         }
 
         private void InitializeFilters()
         {
-            var categories = AppConnect.model01.Categories
-                .OrderBy(c => c.Name)
-                .ToList();
+            List<Category> categories = null;
+            if (!AppConnect.TryExecute(() =>
+            {
+                categories = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
+            }, out string error))
+            {
+                MessageBox.Show($"Ошибка загрузки категорий: {error}");
+                return;
+            }
 
             categories.Insert(0, new Category { ID = 0, Name = "Все категории" });
             cbCategory.ItemsSource = categories;
@@ -45,7 +44,7 @@ namespace EpsteinsMarket.Pages
 
         private void LoadProducts()
         {
-            try
+            if (!AppConnect.TryExecute(() =>
             {
                 var query = AppConnect.model01.Products.AsQueryable();
 
@@ -78,15 +77,15 @@ namespace EpsteinsMarket.Pages
                 }
 
                 _products = query.ToList();
-                lvProducts.ItemsSource = _products;
-                icProducts.ItemsSource = _products;
-
-                UpdateCounter();
-            }
-            catch (Exception ex)
+            }, out string error))
             {
-                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}");
+                MessageBox.Show($"Ошибка загрузки товаров: {error}");
+                _products = new List<Product>();
             }
+
+            lvProducts.ItemsSource = _products;
+            icProducts.ItemsSource = _products;
+            UpdateCounter();
         }
 
         private void UpdateCounter()
@@ -94,29 +93,22 @@ namespace EpsteinsMarket.Pages
             tbCounter.Text = $"Найдено товаров: {_products.Count}";
         }
 
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            LoadProducts();
-        }
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
 
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded)
+            if (IsLoaded)
             {
-                return;
+                LoadProducts();
             }
-
-            LoadProducts();
         }
 
         private void cbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded)
+            if (IsLoaded)
             {
-                return;
+                LoadProducts();
             }
-
-            LoadProducts();
         }
 
         private void btnList_Click(object sender, RoutedEventArgs e)
@@ -169,15 +161,14 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            try
+            if (!AppConnect.TryExecute(() =>
             {
                 bool favoriteExists = AppConnect.model01.Favorites
                     .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == productId);
 
                 if (favoriteExists)
                 {
-                    MessageBox.Show("Товар уже есть в избранном.");
-                    return;
+                    throw new InvalidOperationException("Товар уже есть в избранном.");
                 }
 
                 AppConnect.model01.Favorites.Add(new Favorite
@@ -187,12 +178,13 @@ namespace EpsteinsMarket.Pages
                 });
 
                 AppConnect.model01.SaveChanges();
-                MessageBox.Show("Товар добавлен в избранное.");
-            }
-            catch (Exception ex)
+            }, out string error))
             {
-                MessageBox.Show($"Ошибка добавления в избранное: {ex.Message}");
+                MessageBox.Show($"Ошибка добавления в избранное: {error}");
+                return;
             }
+
+            MessageBox.Show("Товар добавлен в избранное.");
         }
 
         private void lvProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)

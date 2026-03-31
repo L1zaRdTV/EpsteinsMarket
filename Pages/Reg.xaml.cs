@@ -23,21 +23,19 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            try
-            {
-                string login = tbLogin.Text.Trim();
+            string login = tbLogin.Text.Trim();
 
+            if (!AppConnect.TryExecute(() =>
+            {
                 if (AppConnect.model01.Users.Any(u => u.Login == login))
                 {
-                    tbStatus.Text = "Пользователь с таким логином уже существует.";
-                    return;
+                    throw new InvalidOperationException("Пользователь с таким логином уже существует.");
                 }
 
                 int? experience = ParseExperience(tbExperience.Text.Trim());
                 if (!experience.HasValue)
                 {
-                    tbStatus.Text = "Опыт работы должен быть числом.";
-                    return;
+                    throw new InvalidOperationException("Опыт работы должен быть числом.");
                 }
 
                 var newUser = new User
@@ -54,14 +52,14 @@ namespace EpsteinsMarket.Pages
 
                 AppConnect.model01.Users.Add(newUser);
                 AppConnect.model01.SaveChanges();
-
-                MessageBox.Show("Регистрация выполнена успешно.");
-                AppFrame.frmMain.Navigate(new Auth());
-            }
-            catch (Exception ex)
+            }, out string error))
             {
-                tbStatus.Text = $"Ошибка регистрации: {ex.Message}";
+                tbStatus.Text = $"Ошибка регистрации: {error}";
+                return;
             }
+
+            MessageBox.Show("Регистрация выполнена успешно.");
+            AppFrame.frmMain.Navigate(new Auth());
         }
 
 
@@ -151,8 +149,16 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            bool loginExists = AppConnect.model01.Users.Any(u => u.Login == login);
-            tbLoginHint.Text = loginExists ? "Логин уже занят." : "Логин свободен.";
+            if (AppConnect.TryExecute(() =>
+            {
+                bool loginExists = AppConnect.model01.Users.Any(u => u.Login == login);
+                tbLoginHint.Text = loginExists ? "Логин уже занят." : "Логин свободен.";
+            }, out _))
+            {
+                return;
+            }
+
+            tbLoginHint.Text = "Проверка логина недоступна (ошибка БД).";
         }
 
         private void AnyField_TextChanged(object sender, TextChangedEventArgs e)
