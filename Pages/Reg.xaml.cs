@@ -33,18 +33,23 @@ namespace EpsteinsMarket.Pages
                     return;
                 }
 
-                int roleId = AppConnect.model01.Roles.FirstOrDefault(r => r.Name == "Пользователь")?.ID ?? 2;
+                int? experience = ParseExperience(tbExperience.Text.Trim());
+                if (!experience.HasValue)
+                {
+                    tbStatus.Text = "Опыт работы должен быть числом.";
+                    return;
+                }
 
                 var newUser = new User
                 {
-                    UserName = tbUserName.Text.Trim(),
+                    FullName = tbUserName.Text.Trim(),
                     BirthDate = dpBirthDate.SelectedDate.Value,
-                    Experience = tbExperience.Text.Trim(),
+                    Experience = experience.Value,
                     Login = login,
                     Password = pbPassword.Password,
                     Email = tbEmail.Text.Trim(),
                     Phone = tbPhone.Text.Trim(),
-                    RoleID = roleId
+                    Role = "Пользователь"
                 };
 
                 AppConnect.model01.Users.Add(newUser);
@@ -59,6 +64,16 @@ namespace EpsteinsMarket.Pages
             }
         }
 
+
+        private int? ParseExperience(string value)
+        {
+            if (int.TryParse(value, out int years) && years >= 0)
+            {
+                return years;
+            }
+
+            return null;
+        }
         private bool ValidateAllFields(out string message)
         {
             message = string.Empty;

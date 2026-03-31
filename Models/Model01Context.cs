@@ -17,7 +17,6 @@ namespace EpsteinsMarket.Models
         }
 
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
@@ -27,45 +26,34 @@ namespace EpsteinsMarket.Models
     public partial class User
     {
         [Key]
-        public int ID { get; set; }
+        [Column("UserID")]
+        public int UserID { get; set; }
 
         [Required]
-        [MaxLength(150)]
-        public string UserName { get; set; }
-
-        public DateTime BirthDate { get; set; }
-
-        [MaxLength(120)]
-        public string Experience { get; set; }
-
-        [Required]
+        [Column("FullName")]
         [MaxLength(100)]
+        public string FullName { get; set; }
+
+        public DateTime? BirthDate { get; set; }
+
+        public int? Experience { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string Login { get; set; }
 
         [Required]
         [MaxLength(100)]
         public string Password { get; set; }
 
-        [Required]
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string Email { get; set; }
 
-        [Required]
-        [MaxLength(40)]
+        [MaxLength(20)]
         public string Phone { get; set; }
 
-        public int RoleID { get; set; }
-    }
-
-    [Table("Roles")]
-    public partial class Role
-    {
-        [Key]
-        public int ID { get; set; }
-
-        [Required]
-        [MaxLength(80)]
-        public string Name { get; set; }
+        [MaxLength(20)]
+        public string Role { get; set; }
     }
 
     [Table("Products")]
