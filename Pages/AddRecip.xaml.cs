@@ -27,12 +27,13 @@ namespace EpsteinsMarket.Pages
 
         private void InitializePage()
         {
-            if (!AppConnect.TryExecute(() =>
+            try
             {
                 cbCategory.ItemsSource = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
-            }, out string categoryError))
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки категорий: {categoryError}");
+                MessageBox.Show($"Ошибка загрузки категорий: {ex.Message}");
                 AppFrame.frmMain.Navigate(new PageTask());
                 return;
             }
@@ -45,10 +46,7 @@ namespace EpsteinsMarket.Pages
             else
             {
                 tbTitle.Text = "Редактирование товара";
-                AppConnect.TryExecute(() =>
-                {
-                    _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId);
-                }, out _);
+                _currentProduct = AppConnect.model01.Products.FirstOrDefault(p => p.ID == _productId);
 
                 if (_currentProduct == null)
                 {
@@ -84,10 +82,7 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            AppConnect.TryExecute(() =>
-            {
-                cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
-            }, out _);
+            cbCategory.SelectedItem = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == _currentProduct.CategoryID);
         }
 
         private void ShowCurrentImage()
@@ -200,7 +195,7 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            if (!AppConnect.TryExecute(() =>
+            try
             {
                 Category dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == selectedCategory.ID);
                 if (dbCategory == null)
@@ -217,9 +212,10 @@ namespace EpsteinsMarket.Pages
                 }
 
                 AppConnect.model01.SaveChanges();
-            }, out string error))
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка сохранения товара: {error}");
+                MessageBox.Show($"Ошибка сохранения товара: {ex.Message}");
                 return;
             }
 
