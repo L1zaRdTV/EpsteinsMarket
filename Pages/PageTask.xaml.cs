@@ -27,24 +27,23 @@ namespace EpsteinsMarket.Pages
 
         private void InitializeFilters()
         {
-            List<Category> categories = null;
-            if (!AppConnect.TryExecute(() =>
+            try
             {
-                categories = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
-            }, out string error))
-            {
-                MessageBox.Show($"Ошибка загрузки категорий: {error}");
-                return;
-            }
+                List<Category> categories = AppConnect.model01.Categories.OrderBy(c => c.Name).ToList();
+                categories.Insert(0, new Category { ID = 0, Name = "Все категории" });
+                cbCategory.ItemsSource = categories;
+                cbCategory.SelectedIndex = 0;
 
-            categories.Insert(0, new Category { ID = 0, Name = "Все категории" });
-            cbCategory.ItemsSource = categories;
-            cbCategory.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки категорий: {ex.Message}");
+            }
         }
 
         private void LoadProducts()
         {
-            if (!AppConnect.TryExecute(() =>
+            try
             {
                 var query = AppConnect.model01.Products.AsQueryable();
 
@@ -77,9 +76,10 @@ namespace EpsteinsMarket.Pages
                 }
 
                 _products = query.ToList();
-            }, out string error))
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки товаров: {error}");
+                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}");
                 _products = new List<Product>();
             }
 
@@ -161,7 +161,7 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            if (!AppConnect.TryExecute(() =>
+            try
             {
                 bool favoriteExists = AppConnect.model01.Favorites
                     .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == productId);
@@ -178,9 +178,10 @@ namespace EpsteinsMarket.Pages
                 });
 
                 AppConnect.model01.SaveChanges();
-            }, out string error))
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка добавления в избранное: {error}");
+                MessageBox.Show($"Ошибка добавления в избранное: {ex.Message}");
                 return;
             }
 

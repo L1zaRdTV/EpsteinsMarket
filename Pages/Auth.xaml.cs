@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,29 +24,27 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            User user = null;
+            try
+            {
+                User user = AppConnect.model01.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
 
-            if (!AppConnect.TryExecute(() =>
-            {
-                user = AppConnect.model01.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
-            }, out string error))
-            {
-                tbStatus.Text = $"Ошибка авторизации: {error}";
-                return;
+                if (user == null)
+                {
+                    tbStatus.Text = "Неверный логин или пароль.";
+                    return;
+                }
+
+                AppSession.CurrentUser = user;
+                tbStatus.Text = AppSession.IsAdmin
+                    ? "Авторизация успешна: администратор."
+                    : "Авторизация успешна: пользователь.";
+
+                AppFrame.frmMain.Navigate(new PageTask());
             }
-
-            if (user == null)
+            catch (System.Exception ex)
             {
-                tbStatus.Text = "Неверный логин или пароль.";
-                return;
+                tbStatus.Text = $"Ошибка авторизации: {ex.Message}";
             }
-
-            AppSession.CurrentUser = user;
-            tbStatus.Text = AppSession.IsAdmin
-                ? "Авторизация успешна: администратор."
-                : "Авторизация успешна: пользователь.";
-
-            AppFrame.frmMain.Navigate(new PageTask());
         }
 
         private void btnReg_Click(object sender, RoutedEventArgs e)

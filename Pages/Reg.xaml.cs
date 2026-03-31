@@ -25,7 +25,7 @@ namespace EpsteinsMarket.Pages
 
             string login = tbLogin.Text.Trim();
 
-            if (!AppConnect.TryExecute(() =>
+            try
             {
                 if (AppConnect.model01.Users.Any(u => u.Login == login))
                 {
@@ -52,9 +52,10 @@ namespace EpsteinsMarket.Pages
 
                 AppConnect.model01.Users.Add(newUser);
                 AppConnect.model01.SaveChanges();
-            }, out string error))
+            }
+            catch (Exception ex)
             {
-                tbStatus.Text = $"Ошибка регистрации: {error}";
+                tbStatus.Text = $"Ошибка регистрации: {ex.Message}";
                 return;
             }
 
@@ -149,16 +150,15 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            if (AppConnect.TryExecute(() =>
+            try
             {
                 bool loginExists = AppConnect.model01.Users.Any(u => u.Login == login);
                 tbLoginHint.Text = loginExists ? "Логин уже занят." : "Логин свободен.";
-            }, out _))
-            {
-                return;
             }
-
-            tbLoginHint.Text = "Проверка логина недоступна (ошибка БД).";
+            catch
+            {
+                tbLoginHint.Text = "Проверка логина недоступна (ошибка БД).";
+            }
         }
 
         private void AnyField_TextChanged(object sender, TextChangedEventArgs e)
