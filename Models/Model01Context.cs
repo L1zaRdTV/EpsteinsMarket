@@ -8,7 +8,11 @@ namespace EpsteinsMarket.Models
     // Database First: контекст и сущности проекта используются через AppConnect.model01.
     public partial class model01Entities : DbContext
     {
-        public model01Entities() : base("name=model01Entities")
+        public model01Entities() : this("name=model01Entities")
+        {
+        }
+
+        public model01Entities(string connectionStringOrName) : base(connectionStringOrName)
         {
         }
 

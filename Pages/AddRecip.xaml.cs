@@ -118,20 +118,27 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            string imagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images");
-            Directory.CreateDirectory(imagesDirectory);
-
-            foreach (string file in dialog.FileNames)
+            try
             {
-                string newFileName = $"{Guid.NewGuid():N}{Path.GetExtension(file)}";
-                string destinationPath = Path.Combine(imagesDirectory, newFileName);
-                File.Copy(file, destinationPath, true);
-                _images.Add(newFileName);
-            }
+                string imagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images");
+                Directory.CreateDirectory(imagesDirectory);
 
-            _currentProduct.Image = string.Join(";", _images);
-            _currentIndex = _images.Count - 1;
-            ShowCurrentImage();
+                foreach (string file in dialog.FileNames)
+                {
+                    string newFileName = $"{Guid.NewGuid():N}{Path.GetExtension(file)}";
+                    string destinationPath = Path.Combine(imagesDirectory, newFileName);
+                    File.Copy(file, destinationPath, true);
+                    _images.Add(newFileName);
+                }
+
+                _currentProduct.Image = string.Join(";", _images);
+                _currentIndex = _images.Count - 1;
+                ShowCurrentImage();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки изображения: {ex.Message}");
+            }
         }
 
         private void btnPrevImage_Click(object sender, RoutedEventArgs e)
@@ -176,23 +183,30 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            Category dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == selectedCategory.ID);
-            if (dbCategory == null)
+            try
             {
-                MessageBox.Show("Выбранная категория не найдена в базе данных.");
-                return;
+                Category dbCategory = AppConnect.model01.Categories.FirstOrDefault(c => c.ID == selectedCategory.ID);
+                if (dbCategory == null)
+                {
+                    MessageBox.Show("Выбранная категория не найдена в базе данных.");
+                    return;
+                }
+
+                _currentProduct.CategoryID = dbCategory.ID;
+                _currentProduct.Image = string.Join(";", _images);
+
+                if (_productId == 0)
+                {
+                    AppConnect.model01.Products.Add(_currentProduct);
+                }
+
+                AppConnect.model01.SaveChanges();
+                AppFrame.frmMain.Navigate(new PageTask());
             }
-
-            _currentProduct.CategoryID = dbCategory.ID;
-            _currentProduct.Image = string.Join(";", _images);
-
-            if (_productId == 0)
+            catch (Exception ex)
             {
-                AppConnect.model01.Products.Add(_currentProduct);
+                MessageBox.Show($"Ошибка сохранения товара: {ex.Message}");
             }
-
-            AppConnect.model01.SaveChanges();
-            AppFrame.frmMain.Navigate(new PageTask());
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
