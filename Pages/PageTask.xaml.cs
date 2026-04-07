@@ -42,7 +42,6 @@ namespace EpsteinsMarket.Pages
                 categories.Insert(0, new Category { ID = 0, Name = "Все категории" });
                 cbCategory.ItemsSource = categories;
                 cbCategory.SelectedIndex = 0;
-
             }
             catch (Exception ex)
             {
@@ -98,7 +97,7 @@ namespace EpsteinsMarket.Pages
 
         private void UpdateCounter()
         {
-            tbCounter.Text = $"Найдено товаров: {_products.Count}";
+            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count}";
         }
 
         private Product GetProductByButtonTag(object sender)
@@ -155,8 +154,54 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
+            if (AppSession.CartProducts.Any(p => p.ID == product.ID))
+            {
+                MessageBox.Show($"\"{product.Name}\" уже в корзине.");
+                return;
+            }
+
             AppSession.CartProducts.Add(product);
+            UpdateCounter();
             MessageBox.Show($"\"{product.Name}\" добавлен в корзину.");
+        }
+
+        private void btnAddToFavorite_Click(object sender, RoutedEventArgs e)
+        {
+            if (AppSession.CurrentUser == null)
+            {
+                MessageBox.Show("Сначала выполните вход.");
+                return;
+            }
+
+            Product product = GetProductByButtonTag(sender);
+            if (product == null)
+            {
+                return;
+            }
+
+            bool alreadyAdded = AppConnect.model01.Favorites
+                .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == product.ID);
+
+            if (alreadyAdded)
+            {
+                MessageBox.Show($"\"{product.Name}\" уже в избранном.");
+                return;
+            }
+
+            try
+            {
+                AppConnect.model01.Favorites.Add(new Favorite
+                {
+                    UserID = AppSession.CurrentUser.UserID,
+                    ProductID = product.ID
+                });
+                AppConnect.model01.SaveChanges();
+                MessageBox.Show($"\"{product.Name}\" добавлен в избранное.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка добавления в избранное: {ex.Message}");
+            }
         }
 
         private void btnCabinet_Click(object sender, RoutedEventArgs e)
