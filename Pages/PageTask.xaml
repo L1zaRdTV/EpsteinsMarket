@@ -33,14 +33,7 @@
                                    Foreground="{StaticResource TextMuted}"/>
                     </StackPanel>
 
-                    <WrapPanel Grid.Column="1" VerticalAlignment="Top" ItemHeight="42">
-                        <Border Padding="12,8" Margin="0,0,10,10" Background="#EAF1ED" BorderBrush="#C5D4CC" BorderThickness="1" CornerRadius="10">
-                            <StackPanel>
-                                <TextBlock Text="Личный кабинет" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
-                                <TextBlock x:Name="tbProfileName" FontSize="13"/>
-                                <TextBlock x:Name="tbProfileRole" FontSize="12" Foreground="{StaticResource TextMuted}"/>
-                            </StackPanel>
-                        </Border>
+                    <WrapPanel Grid.Column="1" VerticalAlignment="Top">
                         <Button Content="Выйти" Width="94" Height="42" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnLogout_Click"/>
                         <Button x:Name="btnAdd" Content="Добавить товар" MinWidth="160" Height="42" Margin="0,0,0,10" Click="btnAdd_Click"/>
                     </WrapPanel>
