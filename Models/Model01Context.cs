@@ -24,7 +24,11 @@ namespace EpsteinsMarket.Models
         public virtual DbSet<UserAddress> UserAddresses { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<ProductSupplier> ProductSuppliers { get; set; }
+        public virtual DbSet<Warehouse> Warehouses { get; set; }
+        public virtual DbSet<InventoryBalance> InventoryBalances { get; set; }
+        public virtual DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Shipment> Shipments { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<PaymentTransaction> PaymentTransactions { get; set; }
     }
@@ -212,6 +216,85 @@ namespace EpsteinsMarket.Models
         public string Status { get; set; }
 
         public decimal TotalAmount { get; set; }
+    }
+
+    [Table("Warehouses")]
+    public partial class Warehouse
+    {
+        [Key]
+        [Column("WarehouseID")]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string WarehouseName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string City { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string Street { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Building { get; set; }
+    }
+
+    [Table("InventoryBalances")]
+    public partial class InventoryBalance
+    {
+        [Key]
+        [Column("InventoryID")]
+        public int ID { get; set; }
+
+        public int ProductID { get; set; }
+
+        public int WarehouseID { get; set; }
+
+        public int Quantity { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+    }
+
+    [Table("DeliveryMethods")]
+    public partial class DeliveryMethod
+    {
+        [Key]
+        [Column("DeliveryMethodID")]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string MethodName { get; set; }
+
+        public decimal BaseCost { get; set; }
+
+        public int EstimatedDays { get; set; }
+    }
+
+    [Table("Shipments")]
+    public partial class Shipment
+    {
+        [Key]
+        [Column("ShipmentID")]
+        public int ID { get; set; }
+
+        public int OrderID { get; set; }
+
+        public int DeliveryMethodID { get; set; }
+
+        [MaxLength(50)]
+        public string TrackingNumber { get; set; }
+
+        public DateTime? ShippedAt { get; set; }
+
+        public DateTime? DeliveredAt { get; set; }
+
+        [Required]
+        [MaxLength(30)]
+        public string ShipmentStatus { get; set; }
     }
 
     [Table("OrderItems")]
