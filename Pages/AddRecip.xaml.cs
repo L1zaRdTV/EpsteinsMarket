@@ -227,9 +227,5 @@ namespace EpsteinsMarket.Pages
             AppFrame.frmMain.Navigate(new PageTask());
         }
 
-        private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Событие сохранено в соответствии с требованиями задания.
-        }
     }
 }

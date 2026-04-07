@@ -14,20 +14,21 @@ namespace EpsteinsMarket.Pages
 {
     public partial class PageTask : Page
     {
-        private List<Product> _products = new List<Product>();
+        private List<Product> _allProducts = new List<Product>();
+        private List<Product> _filteredProducts = new List<Product>();
         private HashSet<int> _favoriteProductIds = new HashSet<int>();
 
         public PageTask()
         {
             InitializeComponent();
-            InitializePage();
+            InitPage();
         }
 
-        private void InitializePage()
+        private void InitPage()
         {
-            InitializeFilters();
-            LoadFavoritesForCurrentUser();
-            LoadProducts();
+            LoadCategories();
+            LoadFavorites();
+            LoadData();
             ApplyRolePermissions();
         }
 
@@ -36,7 +37,7 @@ namespace EpsteinsMarket.Pages
             btnAdd.Visibility = AppSession.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void InitializeFilters()
+        private void LoadCategories()
         {
             try
             {
@@ -51,7 +52,7 @@ namespace EpsteinsMarket.Pages
             }
         }
 
-        private void LoadFavoritesForCurrentUser()
+        private void LoadFavorites()
         {
             _favoriteProductIds.Clear();
             if (AppSession.CurrentUser == null)
@@ -59,17 +60,79 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
+            _favoriteProductIds = AppConnect.model01.Favorites
+                .Where(f => f.UserID == AppSession.CurrentUser.UserID)
+                .Select(f => f.ProductID)
+                .ToHashSet();
+        }
+
+        private void LoadData()
+        {
             try
             {
-                _favoriteProductIds = AppConnect.model01.Favorites
-                    .Where(f => f.UserID == AppSession.CurrentUser.UserID)
-                    .Select(f => f.ProductID)
-                    .ToHashSet();
+                _allProducts = AppConnect.model01.Products.AsNoTracking().ToList();
+                ApplyFiltersAndSort();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки избранного: {ex.Message}");
+                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}");
+                _allProducts = new List<Product>();
+                _filteredProducts = new List<Product>();
+                icProducts.ItemsSource = _filteredProducts;
+                UpdateCounter();
             }
+        }
+
+        private void ApplyFiltersAndSort()
+        {
+            IEnumerable<Product> query = _allProducts;
+
+            string searchText = tbSearch.Text?.Trim() ?? string.Empty;
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                query = query.Where(p =>
+                    (p.Name ?? string.Empty).IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    (p.Description ?? string.Empty).IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            decimal? minPrice = ParsePrice(tbMinPrice.Text);
+            decimal? maxPrice = ParsePrice(tbMaxPrice.Text);
+
+            if (minPrice.HasValue)
+            {
+                query = query.Where(p => (p.Price ?? 0m) >= minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(p => (p.Price ?? 0m) <= maxPrice.Value);
+            }
+
+            if (cbCategory.SelectedItem is Category selectedCategory && selectedCategory.ID > 0)
+            {
+                query = query.Where(p => p.CategoryID == selectedCategory.ID);
+            }
+
+            string sortMode = (cbSort.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
+            switch (sortMode)
+            {
+                case "price_asc":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                case "new":
+                    query = query.OrderByDescending(p => p.ID);
+                    break;
+                default:
+                    query = query.OrderBy(p => p.Name);
+                    break;
+            }
+
+            _filteredProducts = query.ToList();
+            icProducts.ItemsSource = _filteredProducts;
+            UpdateCounter();
         }
 
         private decimal? ParsePrice(string text)
@@ -79,8 +142,7 @@ namespace EpsteinsMarket.Pages
                 return null;
             }
 
-            if (decimal.TryParse(text.Trim(), NumberStyles.Number, CultureInfo.CurrentCulture, out decimal price)
-                && price >= 0)
+            if (decimal.TryParse(text.Trim(), NumberStyles.Number, CultureInfo.CurrentCulture, out decimal price) && price >= 0)
             {
                 return price;
             }
@@ -88,69 +150,9 @@ namespace EpsteinsMarket.Pages
             return null;
         }
 
-        private void LoadProducts()
-        {
-            try
-            {
-                var query = AppConnect.model01.Products.AsNoTracking().AsQueryable();
-
-                string searchText = tbSearch.Text?.Trim() ?? string.Empty;
-                if (!string.IsNullOrWhiteSpace(searchText))
-                {
-                    query = query.Where(p => p.Name.Contains(searchText) || p.Description.Contains(searchText));
-                }
-
-                decimal? minPrice = ParsePrice(tbMinPrice.Text);
-                decimal? maxPrice = ParsePrice(tbMaxPrice.Text);
-
-                if (minPrice.HasValue)
-                {
-                    query = query.Where(p => (p.Price ?? 0m) >= minPrice.Value);
-                }
-
-                if (maxPrice.HasValue)
-                {
-                    query = query.Where(p => (p.Price ?? 0m) <= maxPrice.Value);
-                }
-
-                if (cbCategory.SelectedItem is Category selectedCategory && selectedCategory.ID > 0)
-                {
-                    query = query.Where(p => p.CategoryID == selectedCategory.ID);
-                }
-
-                string sortMode = (cbSort.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
-                switch (sortMode)
-                {
-                    case "price_asc":
-                        query = query.OrderBy(p => p.Price);
-                        break;
-                    case "price_desc":
-                        query = query.OrderByDescending(p => p.Price);
-                        break;
-                    case "new":
-                        query = query.OrderByDescending(p => p.ID);
-                        break;
-                    default:
-                        query = query.OrderBy(p => p.Name);
-                        break;
-                }
-
-                _products = query.ToList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}");
-                _products = new List<Product>();
-            }
-
-            icProducts.ItemsSource = _products;
-            UpdateCounter();
-        }
-
         private void UpdateCounter()
         {
-            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count}";
-            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
+            tbCounter.Text = $"Найдено товаров: {_filteredProducts.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
         }
 
         private Product GetProductByButtonTag(object sender)
@@ -160,19 +162,19 @@ namespace EpsteinsMarket.Pages
                 return null;
             }
 
-            return _products.FirstOrDefault(p => p.ID == productId)
-                ?? AppConnect.model01.Products.FirstOrDefault(p => p.ID == productId);
+            return _filteredProducts.FirstOrDefault(p => p.ID == productId)
+                ?? _allProducts.FirstOrDefault(p => p.ID == productId);
         }
 
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e) => ApplyFiltersAndSort();
 
-        private void tbPrice_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
+        private void tbPrice_TextChanged(object sender, TextChangedEventArgs e) => ApplyFiltersAndSort();
 
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (IsLoaded)
             {
-                LoadProducts();
+                ApplyFiltersAndSort();
             }
         }
 
@@ -180,7 +182,7 @@ namespace EpsteinsMarket.Pages
         {
             if (IsLoaded)
             {
-                LoadProducts();
+                ApplyFiltersAndSort();
             }
         }
 
@@ -234,11 +236,10 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            bool alreadyAdded = AppConnect.model01.Favorites
-                .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == product.ID);
+            bool alreadyAdded = AppConnect.model01.Favorites.Any(f =>
+                f.UserID == AppSession.CurrentUser.UserID && f.ProductID == product.ID);
 
-            if (alreadyAdded)
-            if (_favoriteProductIds.Contains(product.ID))
+            if (alreadyAdded || _favoriteProductIds.Contains(product.ID))
             {
                 MessageBox.Show($"\"{product.Name}\" уже в избранном.");
                 return;
