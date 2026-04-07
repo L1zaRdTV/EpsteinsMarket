@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media.Imaging;
 using EpsteinsMarket.ApplicationData;
 using EpsteinsMarket.Models;
 
@@ -20,9 +24,23 @@ namespace EpsteinsMarket.Pages
 
         private void InitializePage()
         {
+            LoadProfile();
             InitializeFilters();
             LoadProducts();
             UpdateCounter();
+        }
+
+        private void LoadProfile()
+        {
+            if (AppSession.CurrentUser == null)
+            {
+                tbProfileName.Text = "Гость";
+                tbProfileRole.Text = "Не авторизован";
+                return;
+            }
+
+            tbProfileName.Text = AppSession.CurrentUser.FullName;
+            tbProfileRole.Text = $"{AppSession.CurrentUser.Role} · {AppSession.CurrentUser.Login}";
         }
 
         private void InitializeFilters()
@@ -83,7 +101,6 @@ namespace EpsteinsMarket.Pages
                 _products = new List<Product>();
             }
 
-            lvProducts.ItemsSource = _products;
             icProducts.ItemsSource = _products;
             UpdateCounter();
         }
@@ -109,18 +126,6 @@ namespace EpsteinsMarket.Pages
             {
                 LoadProducts();
             }
-        }
-
-        private void btnList_Click(object sender, RoutedEventArgs e)
-        {
-            lvProducts.Visibility = Visibility.Visible;
-            icProducts.Visibility = Visibility.Collapsed;
-        }
-
-        private void btnTile_Click(object sender, RoutedEventArgs e)
-        {
-            lvProducts.Visibility = Visibility.Collapsed;
-            icProducts.Visibility = Visibility.Visible;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -188,17 +193,38 @@ namespace EpsteinsMarket.Pages
             MessageBox.Show("Товар добавлен в избранное.");
         }
 
-        private void lvProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
-            if (!AppSession.IsAdmin)
+            AppSession.CurrentUser = null;
+            AppFrame.frmMain.Navigate(new Auth());
+        }
+    }
+
+    public class ProductImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string firstImage = value?.ToString()?
+                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(firstImage))
             {
-                return;
+                return null;
             }
 
-            if (lvProducts.SelectedItem is Product selectedProduct)
+            string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Images", firstImage);
+            if (!File.Exists(fullPath))
             {
-                AppFrame.frmMain.Navigate(new AddRecip(selectedProduct.ID));
+                return null;
             }
+
+            return new BitmapImage(new Uri(fullPath, UriKind.Absolute));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

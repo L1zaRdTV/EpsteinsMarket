@@ -11,19 +11,6 @@
         <Border Margin="0,0,18,0" Style="{StaticResource CardBorderStyle}" Background="#EEF2FF" BorderBrush="#C7D2FE">
             <StackPanel VerticalAlignment="Center" Margin="6">
                 <TextBlock Text="Epsteins Market" FontSize="42" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
-                <TextBlock Text="Современная торговая платформа с быстрым доступом к товарам, категориям и заказам."
-                           Margin="0,16,0,0"
-                           FontSize="17"
-                           Foreground="{StaticResource TextMuted}"
-                           TextWrapping="Wrap"/>
-
-                <Border Margin="0,24,0,0" CornerRadius="12" Padding="14" Background="#FFFFFF" BorderBrush="#D9E2FF" BorderThickness="1">
-                    <StackPanel>
-                        <TextBlock Text="• Красивый и быстрый интерфейс" FontWeight="SemiBold"/>
-                        <TextBlock Margin="0,6,0,0" Text="• Удобные фильтры и сортировка" FontWeight="SemiBold"/>
-                        <TextBlock Margin="0,6,0,0" Text="• Добавление и редактирование в пару кликов" FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Border>
             </StackPanel>
         </Border>
 
