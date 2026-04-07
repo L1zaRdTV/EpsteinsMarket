@@ -27,7 +27,7 @@ namespace EpsteinsMarket.Pages
             LoadProfile();
             InitializeFilters();
             LoadProducts();
-            UpdateCounter();
+            ApplyRolePermissions();
         }
 
         private void LoadProfile()
@@ -41,6 +41,11 @@ namespace EpsteinsMarket.Pages
 
             tbProfileName.Text = AppSession.CurrentUser.FullName;
             tbProfileRole.Text = $"{AppSession.CurrentUser.Role} · {AppSession.CurrentUser.Login}";
+        }
+
+        private void ApplyRolePermissions()
+        {
+            btnAdd.Visibility = AppSession.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void InitializeFilters()
