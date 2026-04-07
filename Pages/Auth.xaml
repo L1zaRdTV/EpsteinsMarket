@@ -16,7 +16,7 @@
                                FontSize="17"
                                TextWrapping="Wrap"
                                Foreground="{StaticResource TextMuted}"
-                               Text="Спокойный и удобный интерфейс для работы с каталогом товаров на любом разрешении экрана."/>
+                               Text="Биржа маленьких гномиков: покупай, продавай и находи самых редких в пару кликов!"/>
                 </StackPanel>
             </Grid>
         </Border>
