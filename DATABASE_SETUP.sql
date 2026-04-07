@@ -13,13 +13,17 @@ GO
 
 /* Пересоздаём таблицы в правильном порядке */
 IF OBJECT_ID(N'dbo.PaymentTransactions', N'U') IS NOT NULL DROP TABLE dbo.PaymentTransactions;
+IF OBJECT_ID(N'dbo.Shipments', N'U') IS NOT NULL DROP TABLE dbo.Shipments;
 IF OBJECT_ID(N'dbo.OrderItems', N'U') IS NOT NULL DROP TABLE dbo.OrderItems;
 IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL DROP TABLE dbo.Orders;
+IF OBJECT_ID(N'dbo.DeliveryMethods', N'U') IS NOT NULL DROP TABLE dbo.DeliveryMethods;
+IF OBJECT_ID(N'dbo.InventoryBalances', N'U') IS NOT NULL DROP TABLE dbo.InventoryBalances;
 IF OBJECT_ID(N'dbo.ProductSuppliers', N'U') IS NOT NULL DROP TABLE dbo.ProductSuppliers;
 IF OBJECT_ID(N'dbo.Reviews', N'U') IS NOT NULL DROP TABLE dbo.Reviews;
 IF OBJECT_ID(N'dbo.Favorites', N'U') IS NOT NULL DROP TABLE dbo.Favorites;
 IF OBJECT_ID(N'dbo.UserAddresses', N'U') IS NOT NULL DROP TABLE dbo.UserAddresses;
 IF OBJECT_ID(N'dbo.Products', N'U') IS NOT NULL DROP TABLE dbo.Products;
+IF OBJECT_ID(N'dbo.Warehouses', N'U') IS NOT NULL DROP TABLE dbo.Warehouses;
 IF OBJECT_ID(N'dbo.Suppliers', N'U') IS NOT NULL DROP TABLE dbo.Suppliers;
 IF OBJECT_ID(N'dbo.Categories', N'U') IS NOT NULL DROP TABLE dbo.Categories;
 IF OBJECT_ID(N'dbo.Users', N'U') IS NOT NULL DROP TABLE dbo.Users;
@@ -125,6 +129,41 @@ CREATE TABLE dbo.ProductSuppliers
 );
 GO
 
+CREATE TABLE dbo.Warehouses
+(
+    WarehouseID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    WarehouseName NVARCHAR(150) NOT NULL UNIQUE,
+    City NVARCHAR(100) NOT NULL,
+    Street NVARCHAR(150) NOT NULL,
+    Building NVARCHAR(20) NOT NULL
+);
+GO
+
+CREATE TABLE dbo.InventoryBalances
+(
+    InventoryID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    ProductID INT NOT NULL,
+    WarehouseID INT NOT NULL,
+    Quantity INT NOT NULL CONSTRAINT DF_InventoryBalances_Quantity DEFAULT (0),
+    UpdatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_InventoryBalances_UpdatedAt DEFAULT SYSDATETIME(),
+    CONSTRAINT FK_InventoryBalances_Products FOREIGN KEY (ProductID) REFERENCES dbo.Products(ProductID),
+    CONSTRAINT FK_InventoryBalances_Warehouses FOREIGN KEY (WarehouseID) REFERENCES dbo.Warehouses(WarehouseID),
+    CONSTRAINT UQ_InventoryBalances_ProductWarehouse UNIQUE(ProductID, WarehouseID),
+    CONSTRAINT CK_InventoryBalances_Quantity CHECK (Quantity >= 0)
+);
+GO
+
+CREATE TABLE dbo.DeliveryMethods
+(
+    DeliveryMethodID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    MethodName NVARCHAR(100) NOT NULL UNIQUE,
+    BaseCost DECIMAL(18,2) NOT NULL,
+    EstimatedDays INT NOT NULL,
+    CONSTRAINT CK_DeliveryMethods_BaseCost CHECK (BaseCost >= 0),
+    CONSTRAINT CK_DeliveryMethods_EstimatedDays CHECK (EstimatedDays >= 0)
+);
+GO
+
 CREATE TABLE dbo.Orders
 (
     OrderID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -136,6 +175,21 @@ CREATE TABLE dbo.Orders
     CONSTRAINT FK_Orders_Users FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID),
     CONSTRAINT FK_Orders_UserAddresses FOREIGN KEY (AddressID) REFERENCES dbo.UserAddresses(AddressID),
     CONSTRAINT CK_Orders_TotalAmount CHECK (TotalAmount >= 0)
+);
+GO
+
+CREATE TABLE dbo.Shipments
+(
+    ShipmentID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderID INT NOT NULL,
+    DeliveryMethodID INT NOT NULL,
+    TrackingNumber NVARCHAR(50) NULL UNIQUE,
+    ShippedAt DATETIME2(0) NULL,
+    DeliveredAt DATETIME2(0) NULL,
+    ShipmentStatus NVARCHAR(30) NOT NULL CONSTRAINT DF_Shipments_Status DEFAULT N'Создана',
+    CONSTRAINT FK_Shipments_Orders FOREIGN KEY (OrderID) REFERENCES dbo.Orders(OrderID),
+    CONSTRAINT FK_Shipments_DeliveryMethods FOREIGN KEY (DeliveryMethodID) REFERENCES dbo.DeliveryMethods(DeliveryMethodID),
+    CONSTRAINT CK_Shipments_Dates CHECK (DeliveredAt IS NULL OR ShippedAt IS NULL OR DeliveredAt >= ShippedAt)
 );
 GO
 
@@ -173,9 +227,12 @@ CREATE INDEX IX_UserAddresses_UserID ON dbo.UserAddresses(UserID);
 CREATE INDEX IX_Reviews_ProductID ON dbo.Reviews(ProductID);
 CREATE INDEX IX_Reviews_UserID ON dbo.Reviews(UserID);
 CREATE INDEX IX_ProductSuppliers_SupplierID ON dbo.ProductSuppliers(SupplierID);
+CREATE INDEX IX_InventoryBalances_ProductID ON dbo.InventoryBalances(ProductID);
+CREATE INDEX IX_InventoryBalances_WarehouseID ON dbo.InventoryBalances(WarehouseID);
 CREATE INDEX IX_Orders_UserID ON dbo.Orders(UserID);
 CREATE INDEX IX_OrderItems_OrderID ON dbo.OrderItems(OrderID);
 CREATE INDEX IX_PaymentTransactions_OrderID ON dbo.PaymentTransactions(OrderID);
+CREATE INDEX IX_Shipments_OrderID ON dbo.Shipments(OrderID);
 GO
 
 /* Пользователи */
@@ -308,6 +365,34 @@ VALUES
 (47, 2, 7600.00, 10);
 GO
 
+/* Склады */
+INSERT INTO dbo.Warehouses (WarehouseName, City, Street, Building)
+VALUES
+(N'Центральный склад', N'Москва', N'Промышленная', N'8'),
+(N'Северный склад', N'Санкт-Петербург', N'Кубинская', N'75'),
+(N'Уральский склад', N'Екатеринбург', N'Космонавтов', N'16');
+GO
+
+/* Остатки товаров на складах */
+INSERT INTO dbo.InventoryBalances (ProductID, WarehouseID, Quantity)
+VALUES
+(1, 1, 25),
+(9, 1, 18),
+(25, 2, 14),
+(33, 2, 40),
+(41, 3, 9),
+(47, 1, 6),
+(48, 3, 11);
+GO
+
+/* Способы доставки */
+INSERT INTO dbo.DeliveryMethods (MethodName, BaseCost, EstimatedDays)
+VALUES
+(N'Курьер', 490.00, 2),
+(N'Пункт выдачи', 290.00, 3),
+(N'Почта', 390.00, 5);
+GO
+
 /* Заказы */
 INSERT INTO dbo.Orders (UserID, AddressID, OrderDate, [Status], TotalAmount)
 VALUES
@@ -335,6 +420,14 @@ VALUES
 (3, N'Наличные при получении', 12990.00, N'Ожидает оплаты', NULL);
 GO
 
+/* Отгрузки */
+INSERT INTO dbo.Shipments (OrderID, DeliveryMethodID, TrackingNumber, ShippedAt, DeliveredAt, ShipmentStatus)
+VALUES
+(1, 1, N'TRK-000001', DATEADD(DAY, -11, SYSDATETIME()), DATEADD(DAY, -9, SYSDATETIME()), N'Доставлена'),
+(2, 2, N'TRK-000002', DATEADD(DAY, -4, SYSDATETIME()), NULL, N'В пути'),
+(3, 3, NULL, NULL, NULL, N'Создана');
+GO
+
 /* Быстрая проверка наполненности */
 SELECT
     (SELECT COUNT(*) FROM dbo.Users) AS UsersCount,
@@ -345,7 +438,11 @@ SELECT
     (SELECT COUNT(*) FROM dbo.UserAddresses) AS UserAddressesCount,
     (SELECT COUNT(*) FROM dbo.Reviews) AS ReviewsCount,
     (SELECT COUNT(*) FROM dbo.ProductSuppliers) AS ProductSuppliersCount,
+    (SELECT COUNT(*) FROM dbo.Warehouses) AS WarehousesCount,
+    (SELECT COUNT(*) FROM dbo.InventoryBalances) AS InventoryBalancesCount,
+    (SELECT COUNT(*) FROM dbo.DeliveryMethods) AS DeliveryMethodsCount,
     (SELECT COUNT(*) FROM dbo.Orders) AS OrdersCount,
     (SELECT COUNT(*) FROM dbo.OrderItems) AS OrderItemsCount,
-    (SELECT COUNT(*) FROM dbo.PaymentTransactions) AS PaymentTransactionsCount;
+    (SELECT COUNT(*) FROM dbo.PaymentTransactions) AS PaymentTransactionsCount,
+    (SELECT COUNT(*) FROM dbo.Shipments) AS ShipmentsCount;
 GO
