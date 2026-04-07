@@ -15,6 +15,7 @@ namespace EpsteinsMarket.Pages
     public partial class PageTask : Page
     {
         private List<Product> _products = new List<Product>();
+        private HashSet<int> _favoriteProductIds = new HashSet<int>();
 
         public PageTask()
         {
@@ -25,6 +26,7 @@ namespace EpsteinsMarket.Pages
         private void InitializePage()
         {
             InitializeFilters();
+            LoadFavoritesForCurrentUser();
             LoadProducts();
             ApplyRolePermissions();
         }
@@ -42,12 +44,48 @@ namespace EpsteinsMarket.Pages
                 categories.Insert(0, new Category { ID = 0, Name = "Все категории" });
                 cbCategory.ItemsSource = categories;
                 cbCategory.SelectedIndex = 0;
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка загрузки категорий: {ex.Message}");
             }
+        }
+
+        private void LoadFavoritesForCurrentUser()
+        {
+            _favoriteProductIds.Clear();
+            if (AppSession.CurrentUser == null)
+            {
+                return;
+            }
+
+            try
+            {
+                _favoriteProductIds = AppConnect.model01.Favorites
+                    .Where(f => f.UserID == AppSession.CurrentUser.UserID)
+                    .Select(f => f.ProductID)
+                    .ToHashSet();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки избранного: {ex.Message}");
+            }
+        }
+
+        private decimal? ParsePrice(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
+
+            if (decimal.TryParse(text.Trim(), NumberStyles.Number, CultureInfo.CurrentCulture, out decimal price)
+                && price >= 0)
+            {
+                return price;
+            }
+
+            return null;
         }
 
         private void LoadProducts()
@@ -59,7 +97,20 @@ namespace EpsteinsMarket.Pages
                 string searchText = tbSearch.Text?.Trim() ?? string.Empty;
                 if (!string.IsNullOrWhiteSpace(searchText))
                 {
-                    query = query.Where(p => p.Name.Contains(searchText));
+                    query = query.Where(p => p.Name.Contains(searchText) || p.Description.Contains(searchText));
+                }
+
+                decimal? minPrice = ParsePrice(tbMinPrice.Text);
+                decimal? maxPrice = ParsePrice(tbMaxPrice.Text);
+
+                if (minPrice.HasValue)
+                {
+                    query = query.Where(p => (p.Price ?? 0m) >= minPrice.Value);
+                }
+
+                if (maxPrice.HasValue)
+                {
+                    query = query.Where(p => (p.Price ?? 0m) <= maxPrice.Value);
                 }
 
                 if (cbCategory.SelectedItem is Category selectedCategory && selectedCategory.ID > 0)
@@ -98,7 +149,7 @@ namespace EpsteinsMarket.Pages
 
         private void UpdateCounter()
         {
-            tbCounter.Text = $"Найдено товаров: {_products.Count}";
+            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
         }
 
         private Product GetProductByButtonTag(object sender)
@@ -113,6 +164,8 @@ namespace EpsteinsMarket.Pages
         }
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
+
+        private void tbPrice_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
 
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -155,8 +208,90 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
+            if (AppSession.CartProducts.Any(p => p.ID == product.ID))
+            {
+                MessageBox.Show($"\"{product.Name}\" уже в корзине.");
+                return;
+            }
+
             AppSession.CartProducts.Add(product);
+            UpdateCounter();
             MessageBox.Show($"\"{product.Name}\" добавлен в корзину.");
+        }
+
+        private void btnAddToFavorite_Click(object sender, RoutedEventArgs e)
+        {
+            if (AppSession.CurrentUser == null)
+            {
+                MessageBox.Show("Сначала выполните вход.");
+                return;
+            }
+
+            Product product = GetProductByButtonTag(sender);
+            if (product == null)
+            {
+                return;
+            }
+
+            if (_favoriteProductIds.Contains(product.ID))
+            {
+                MessageBox.Show($"\"{product.Name}\" уже в избранном.");
+                return;
+            }
+
+            try
+            {
+                AppConnect.model01.Favorites.Add(new Favorite
+                {
+                    UserID = AppSession.CurrentUser.UserID,
+                    ProductID = product.ID
+                });
+                AppConnect.model01.SaveChanges();
+                _favoriteProductIds.Add(product.ID);
+                UpdateCounter();
+                MessageBox.Show($"\"{product.Name}\" добавлен в избранное.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка добавления в избранное: {ex.Message}");
+            }
+        }
+
+        private void btnRemoveFromFavorite_Click(object sender, RoutedEventArgs e)
+        {
+            if (AppSession.CurrentUser == null)
+            {
+                MessageBox.Show("Сначала выполните вход.");
+                return;
+            }
+
+            Product product = GetProductByButtonTag(sender);
+            if (product == null)
+            {
+                return;
+            }
+
+            Favorite favorite = AppConnect.model01.Favorites
+                .FirstOrDefault(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == product.ID);
+
+            if (favorite == null)
+            {
+                MessageBox.Show("Товар не найден в избранном.");
+                return;
+            }
+
+            try
+            {
+                AppConnect.model01.Favorites.Remove(favorite);
+                AppConnect.model01.SaveChanges();
+                _favoriteProductIds.Remove(product.ID);
+                UpdateCounter();
+                MessageBox.Show($"\"{product.Name}\" удален из избранного.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка удаления из избранного: {ex.Message}");
+            }
         }
 
         private void btnCabinet_Click(object sender, RoutedEventArgs e)
