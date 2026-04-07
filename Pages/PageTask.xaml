@@ -27,8 +27,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Каталог товаров" FontSize="31" FontWeight="Bold"/>
-                        <TextBlock Text="Поиск, фильтрация по цене и быстрые действия с избранным/корзиной."
+                        <TextBlock Text="Каталог десертов" FontSize="31" FontWeight="Bold"/>
+                        <TextBlock Text="Поиск и фильтрация товаров в стиле проекта Konditerka."
                                    Margin="0,5,0,0"
                                    Foreground="{StaticResource TextMuted}"/>
                     </StackPanel>
@@ -36,12 +36,12 @@
                     <WrapPanel Grid.Column="1" VerticalAlignment="Top">
                         <Button Content="Личный кабинет" MinWidth="170" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnCabinet_Click"/>
                         <Button Content="Выйти" Width="94" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnLogout_Click"/>
-                        <Button x:Name="btnAdd" Content="Добавить товар" MinWidth="160" Margin="0,0,0,10" Click="btnAdd_Click"/>
+                        <Button x:Name="btnAdd" Content="Добавить десерт" MinWidth="170" Margin="0,0,0,10" Click="btnAdd_Click"/>
                     </WrapPanel>
                 </Grid>
 
                 <WrapPanel Grid.Row="1" Margin="0,16,0,0" ItemHeight="40">
-                    <TextBox x:Name="tbSearch" Width="260" Margin="0,0,10,8" TextChanged="tbSearch_TextChanged"/>
+                    <TextBox x:Name="tbSearch" Width="260" Margin="0,0,10,8" TextChanged="tbSearch_TextChanged" ToolTip="Поиск по названию или описанию"/>
                     <TextBox x:Name="tbMinPrice" Width="130" Margin="0,0,10,8" TextChanged="tbPrice_TextChanged" ToolTip="Минимальная цена"/>
                     <TextBox x:Name="tbMaxPrice" Width="130" Margin="0,0,10,8" TextChanged="tbPrice_TextChanged" ToolTip="Максимальная цена"/>
                     <ComboBox x:Name="cbCategory" Width="210" Margin="0,0,10,8" SelectionChanged="cbCategory_SelectionChanged" DisplayMemberPath="Name"/>
@@ -55,7 +55,7 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Margin="0,12,0,12" Padding="12,8" CornerRadius="10" Background="#EAF1ED" BorderBrush="#C5D4CC" BorderThickness="1">
+        <Border Grid.Row="1" Margin="0,12,0,12" Padding="12,8" CornerRadius="10" Background="#FFF8ECE3" BorderBrush="#FFE7CDBC" BorderThickness="1">
             <TextBlock x:Name="tbCounter" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource AccentDark}"/>
         </Border>
 
@@ -71,17 +71,15 @@
                         <DataTemplate>
                             <Border Margin="8" Padding="12" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Width="290" Background="{StaticResource SurfaceSoft}">
                                 <StackPanel>
-                                    <Border Height="176" Background="#EAF1ED" CornerRadius="10" BorderBrush="#C5D4CC" BorderThickness="1">
+                                    <Border Height="176" Background="#FFF8ECE3" CornerRadius="10" BorderBrush="#FFE8D3C5" BorderThickness="1">
                                         <Image Source="{Binding Image, Converter={StaticResource ProductImageConverter}}" Stretch="UniformToFill"/>
                                     </Border>
                                     <TextBlock Margin="0,10,0,0" FontWeight="Bold" FontSize="16" Text="{Binding Name}" TextWrapping="Wrap"/>
                                     <TextBlock Text="{Binding Description}" Margin="0,5,0,0" TextWrapping="Wrap" Foreground="{StaticResource TextMuted}" MaxHeight="58"/>
-                                    <Border Margin="0,8,0,0" Padding="8,4" HorizontalAlignment="Left" Background="#DBE8E1" CornerRadius="8">
+                                    <Border Margin="0,8,0,0" Padding="8,4" HorizontalAlignment="Left" Background="#FFF8E0D3" CornerRadius="8">
                                         <TextBlock Text="{Binding Price}" FontWeight="SemiBold" Foreground="{StaticResource AccentDark}"/>
                                     </Border>
                                     <WrapPanel Margin="0,10,0,0">
-                                        <Button Content="В корзину" Click="btnAddToCart_Click" Tag="{Binding ID}" Margin="0,0,8,0"/>
-                                        <Button Content="В избранное" Click="btnAddToFavorite_Click" Tag="{Binding ID}" Style="{StaticResource GhostButtonStyle}"/>
                                         <Button Content="В корзину" Click="btnAddToCart_Click" Tag="{Binding ID}" Margin="0,0,8,8"/>
                                         <Button Content="В избранное" Click="btnAddToFavorite_Click" Tag="{Binding ID}" Margin="0,0,8,8" Style="{StaticResource GhostButtonStyle}"/>
                                         <Button Content="Убрать" Click="btnRemoveFromFavorite_Click" Tag="{Binding ID}" Margin="0,0,0,8" Style="{StaticResource GhostButtonStyle}"/>
