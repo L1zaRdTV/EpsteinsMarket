@@ -122,27 +122,27 @@
                         </Grid>
                     </TabItem>
 
-                    <TabItem Header="Профиль">
-                        <StackPanel Margin="8">
-                            <TextBlock Text="ФИО" FontWeight="SemiBold"/>
-                            <TextBox x:Name="tbEditName" Margin="0,6,0,10"/>
-                            <TextBlock Text="Email" FontWeight="SemiBold"/>
-                            <TextBox x:Name="tbEditEmail" Margin="0,6,0,10"/>
-                            <TextBlock Text="Телефон" FontWeight="SemiBold"/>
-                            <TextBox x:Name="tbEditPhone" Margin="0,6,0,10"/>
-                            <Button Height="38" Content="Сохранить профиль" Click="btnSaveProfile_Click"/>
-                        </StackPanel>
-                    </TabItem>
+                    <TabItem Header="Личный кабинет">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="ФИО" FontWeight="SemiBold"/>
+                                <TextBox x:Name="tbEditName" Margin="0,6,0,10"/>
+                                <TextBlock Text="Email" FontWeight="SemiBold"/>
+                                <TextBox x:Name="tbEditEmail" Margin="0,6,0,10"/>
+                                <TextBlock Text="Телефон" FontWeight="SemiBold"/>
+                                <TextBox x:Name="tbEditPhone" Margin="0,6,0,12"/>
+                                <Button Height="38" Content="Сохранить профиль" Click="btnSaveProfile_Click"/>
 
-                    <TabItem Header="QR-профиль">
-                        <StackPanel Margin="8">
-                            <TextBlock Text="Ссылка на публичный профиль" FontWeight="SemiBold"/>
-                            <TextBox x:Name="tbProfileLink" Margin="0,6,0,10" IsReadOnly="True" TextWrapping="Wrap"/>
-                            <Border Height="220" BorderThickness="1" BorderBrush="#C5D4CC" CornerRadius="8" Background="#F4F8F6" Padding="8">
-                                <Image x:Name="imgQrCode" Stretch="Uniform"/>
-                            </Border>
-                            <TextBlock Margin="0,8,0,0" Text="Любой человек может отсканировать QR и открыть ваш профиль." Foreground="{StaticResource TextMuted}" TextWrapping="Wrap"/>
-                        </StackPanel>
+                                <Separator Margin="0,14,0,14"/>
+
+                                <TextBlock Text="Ссылка на публичный профиль" FontWeight="SemiBold"/>
+                                <TextBox x:Name="tbProfileLink" Margin="0,6,0,10" IsReadOnly="True" TextWrapping="Wrap"/>
+                                <Border Height="220" BorderThickness="1" BorderBrush="#C5D4CC" CornerRadius="8" Background="#F4F8F6" Padding="8">
+                                    <Image x:Name="imgQrCode" Stretch="Uniform"/>
+                                </Border>
+                                <TextBlock Margin="0,8,0,0" Text="Любой человек может отсканировать QR и открыть ваш профиль." Foreground="{StaticResource TextMuted}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
                 </TabControl>
             </Border>
