@@ -4,6 +4,6 @@ namespace EpsteinsMarket.ApplicationData
 {
     public static class AppConnect
     {
-        public static model01Entities model01 = new model01Entities();
+        public static readonly model01Entities model01 = new model01Entities();
     }
 }
