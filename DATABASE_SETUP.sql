@@ -12,8 +12,15 @@ USE EpsteinsMarket;
 GO
 
 /* Пересоздаём таблицы в правильном порядке */
+IF OBJECT_ID(N'dbo.PaymentTransactions', N'U') IS NOT NULL DROP TABLE dbo.PaymentTransactions;
+IF OBJECT_ID(N'dbo.OrderItems', N'U') IS NOT NULL DROP TABLE dbo.OrderItems;
+IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL DROP TABLE dbo.Orders;
+IF OBJECT_ID(N'dbo.ProductSuppliers', N'U') IS NOT NULL DROP TABLE dbo.ProductSuppliers;
+IF OBJECT_ID(N'dbo.Reviews', N'U') IS NOT NULL DROP TABLE dbo.Reviews;
 IF OBJECT_ID(N'dbo.Favorites', N'U') IS NOT NULL DROP TABLE dbo.Favorites;
+IF OBJECT_ID(N'dbo.UserAddresses', N'U') IS NOT NULL DROP TABLE dbo.UserAddresses;
 IF OBJECT_ID(N'dbo.Products', N'U') IS NOT NULL DROP TABLE dbo.Products;
+IF OBJECT_ID(N'dbo.Suppliers', N'U') IS NOT NULL DROP TABLE dbo.Suppliers;
 IF OBJECT_ID(N'dbo.Categories', N'U') IS NOT NULL DROP TABLE dbo.Categories;
 IF OBJECT_ID(N'dbo.Users', N'U') IS NOT NULL DROP TABLE dbo.Users;
 GO
@@ -37,6 +44,16 @@ CREATE TABLE dbo.Categories
 (
     CategoryID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     CategoryName NVARCHAR(150) NOT NULL UNIQUE
+);
+GO
+
+CREATE TABLE dbo.Suppliers
+(
+    SupplierID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    SupplierName NVARCHAR(150) NOT NULL UNIQUE,
+    ContactName NVARCHAR(100) NULL,
+    Email NVARCHAR(100) NULL,
+    Phone NVARCHAR(20) NULL
 );
 GO
 
@@ -65,9 +82,100 @@ CREATE TABLE dbo.Favorites
 );
 GO
 
+CREATE TABLE dbo.UserAddresses
+(
+    AddressID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    UserID INT NOT NULL,
+    City NVARCHAR(100) NOT NULL,
+    Street NVARCHAR(150) NOT NULL,
+    Building NVARCHAR(20) NOT NULL,
+    Apartment NVARCHAR(20) NULL,
+    PostalCode NVARCHAR(20) NULL,
+    IsPrimary BIT NOT NULL CONSTRAINT DF_UserAddresses_IsPrimary DEFAULT (0),
+    CONSTRAINT FK_UserAddresses_Users FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID)
+);
+GO
+
+CREATE TABLE dbo.Reviews
+(
+    ReviewID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    UserID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Rating TINYINT NOT NULL,
+    ReviewText NVARCHAR(1000) NULL,
+    CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_Reviews_CreatedAt DEFAULT SYSDATETIME(),
+    CONSTRAINT FK_Reviews_Users FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID),
+    CONSTRAINT FK_Reviews_Products FOREIGN KEY (ProductID) REFERENCES dbo.Products(ProductID),
+    CONSTRAINT CK_Reviews_Rating CHECK (Rating BETWEEN 1 AND 5)
+);
+GO
+
+CREATE TABLE dbo.ProductSuppliers
+(
+    ProductSupplierID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    ProductID INT NOT NULL,
+    SupplierID INT NOT NULL,
+    PurchasePrice DECIMAL(18,2) NOT NULL,
+    LeadTimeDays INT NOT NULL,
+    CONSTRAINT FK_ProductSuppliers_Products FOREIGN KEY (ProductID) REFERENCES dbo.Products(ProductID),
+    CONSTRAINT FK_ProductSuppliers_Suppliers FOREIGN KEY (SupplierID) REFERENCES dbo.Suppliers(SupplierID),
+    CONSTRAINT UQ_ProductSuppliers_ProductSupplier UNIQUE(ProductID, SupplierID),
+    CONSTRAINT CK_ProductSuppliers_Price CHECK (PurchasePrice >= 0),
+    CONSTRAINT CK_ProductSuppliers_LeadTime CHECK (LeadTimeDays >= 0)
+);
+GO
+
+CREATE TABLE dbo.Orders
+(
+    OrderID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    UserID INT NOT NULL,
+    AddressID INT NULL,
+    OrderDate DATETIME2(0) NOT NULL CONSTRAINT DF_Orders_OrderDate DEFAULT SYSDATETIME(),
+    [Status] NVARCHAR(30) NOT NULL CONSTRAINT DF_Orders_Status DEFAULT N'Создан',
+    TotalAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_Orders_TotalAmount DEFAULT (0),
+    CONSTRAINT FK_Orders_Users FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID),
+    CONSTRAINT FK_Orders_UserAddresses FOREIGN KEY (AddressID) REFERENCES dbo.UserAddresses(AddressID),
+    CONSTRAINT CK_Orders_TotalAmount CHECK (TotalAmount >= 0)
+);
+GO
+
+CREATE TABLE dbo.OrderItems
+(
+    OrderItemID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(18,2) NOT NULL,
+    CONSTRAINT FK_OrderItems_Orders FOREIGN KEY (OrderID) REFERENCES dbo.Orders(OrderID),
+    CONSTRAINT FK_OrderItems_Products FOREIGN KEY (ProductID) REFERENCES dbo.Products(ProductID),
+    CONSTRAINT CK_OrderItems_Quantity CHECK (Quantity > 0),
+    CONSTRAINT CK_OrderItems_UnitPrice CHECK (UnitPrice >= 0)
+);
+GO
+
+CREATE TABLE dbo.PaymentTransactions
+(
+    TransactionID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    OrderID INT NOT NULL,
+    PaymentMethod NVARCHAR(30) NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    PaymentStatus NVARCHAR(30) NOT NULL,
+    PaidAt DATETIME2(0) NULL,
+    CONSTRAINT FK_PaymentTransactions_Orders FOREIGN KEY (OrderID) REFERENCES dbo.Orders(OrderID),
+    CONSTRAINT CK_PaymentTransactions_Amount CHECK (Amount >= 0)
+);
+GO
+
 CREATE INDEX IX_Products_CategoryID ON dbo.Products(CategoryID);
 CREATE INDEX IX_Favorites_UserID ON dbo.Favorites(UserID);
 CREATE INDEX IX_Favorites_ProductID ON dbo.Favorites(ProductID);
+CREATE INDEX IX_UserAddresses_UserID ON dbo.UserAddresses(UserID);
+CREATE INDEX IX_Reviews_ProductID ON dbo.Reviews(ProductID);
+CREATE INDEX IX_Reviews_UserID ON dbo.Reviews(UserID);
+CREATE INDEX IX_ProductSuppliers_SupplierID ON dbo.ProductSuppliers(SupplierID);
+CREATE INDEX IX_Orders_UserID ON dbo.Orders(UserID);
+CREATE INDEX IX_OrderItems_OrderID ON dbo.OrderItems(OrderID);
+CREATE INDEX IX_PaymentTransactions_OrderID ON dbo.PaymentTransactions(OrderID);
 GO
 
 /* Пользователи */
@@ -92,6 +200,14 @@ VALUES
 (N'Гномы с подсветкой'),
 (N'Аксессуары для гномов'),
 (N'Подарочные наборы');
+GO
+
+/* Поставщики */
+INSERT INTO dbo.Suppliers (SupplierName, ContactName, Email, Phone)
+VALUES
+(N'ГномДекор Поставка', N'Павел Суриков', N'sales@gnomdekor.local', N'+74951230001'),
+(N'Северный Полистоун', N'Ирина Мельникова', N'order@northstone.local', N'+74951230002'),
+(N'СветФигура', N'Дмитрий Ясенев', N'info@lightfigure.local', N'+74951230003');
 GO
 
 /* Большой каталог товаров */
@@ -164,10 +280,72 @@ VALUES
 (8, 5), (8, 11), (8, 21), (8, 34), (8, 44);
 GO
 
+/* Адреса пользователей */
+INSERT INTO dbo.UserAddresses (UserID, City, Street, Building, Apartment, PostalCode, IsPrimary)
+VALUES
+(2, N'Москва', N'Лесная', N'12', N'15', N'125047', 1),
+(3, N'Санкт-Петербург', N'Невский проспект', N'42', N'18', N'191025', 1),
+(4, N'Екатеринбург', N'Мира', N'10', N'24', N'620014', 1),
+(5, N'Казань', N'Баумана', N'7', N'3', N'420111', 1);
+GO
+
+/* Отзывы */
+INSERT INTO dbo.Reviews (UserID, ProductID, Rating, ReviewText)
+VALUES
+(2, 1, 5, N'Очень качественная фигурка, краска держится отлично.'),
+(3, 12, 4, N'Красивый интерьерный гном, но хотелось бы чуть больше размер.'),
+(4, 25, 5, N'Подсветка яркая и приятная, для двора идеален.'),
+(5, 41, 5, N'Подарочный набор превзошёл ожидания.');
+GO
+
+/* Связка товаров и поставщиков */
+INSERT INTO dbo.ProductSuppliers (ProductID, SupplierID, PurchasePrice, LeadTimeDays)
+VALUES
+(1, 1, 1500.00, 5),
+(9, 2, 1200.00, 7),
+(25, 3, 2100.00, 4),
+(41, 1, 3300.00, 6),
+(47, 2, 7600.00, 10);
+GO
+
+/* Заказы */
+INSERT INTO dbo.Orders (UserID, AddressID, OrderDate, [Status], TotalAmount)
+VALUES
+(2, 1, DATEADD(DAY, -12, SYSDATETIME()), N'Доставлен', 5180.00),
+(3, 2, DATEADD(DAY, -5, SYSDATETIME()), N'В пути', 4590.00),
+(5, 4, DATEADD(DAY, -1, SYSDATETIME()), N'Создан', 12990.00);
+GO
+
+/* Позиции заказов */
+INSERT INTO dbo.OrderItems (OrderID, ProductID, Quantity, UnitPrice)
+VALUES
+(1, 1, 1, 2490.00),
+(1, 9, 1, 2190.00),
+(1, 33, 1, 500.00),
+(2, 7, 1, 2590.00),
+(2, 31, 1, 2000.00),
+(3, 47, 1, 12990.00);
+GO
+
+/* Платежи */
+INSERT INTO dbo.PaymentTransactions (OrderID, PaymentMethod, Amount, PaymentStatus, PaidAt)
+VALUES
+(1, N'Банковская карта', 5180.00, N'Оплачен', DATEADD(DAY, -12, SYSDATETIME())),
+(2, N'СБП', 4590.00, N'Оплачен', DATEADD(DAY, -5, SYSDATETIME())),
+(3, N'Наличные при получении', 12990.00, N'Ожидает оплаты', NULL);
+GO
+
 /* Быстрая проверка наполненности */
 SELECT
     (SELECT COUNT(*) FROM dbo.Users) AS UsersCount,
     (SELECT COUNT(*) FROM dbo.Categories) AS CategoriesCount,
     (SELECT COUNT(*) FROM dbo.Products) AS ProductsCount,
-    (SELECT COUNT(*) FROM dbo.Favorites) AS FavoritesCount;
+    (SELECT COUNT(*) FROM dbo.Favorites) AS FavoritesCount,
+    (SELECT COUNT(*) FROM dbo.Suppliers) AS SuppliersCount,
+    (SELECT COUNT(*) FROM dbo.UserAddresses) AS UserAddressesCount,
+    (SELECT COUNT(*) FROM dbo.Reviews) AS ReviewsCount,
+    (SELECT COUNT(*) FROM dbo.ProductSuppliers) AS ProductSuppliersCount,
+    (SELECT COUNT(*) FROM dbo.Orders) AS OrdersCount,
+    (SELECT COUNT(*) FROM dbo.OrderItems) AS OrderItemsCount,
+    (SELECT COUNT(*) FROM dbo.PaymentTransactions) AS PaymentTransactionsCount;
 GO
