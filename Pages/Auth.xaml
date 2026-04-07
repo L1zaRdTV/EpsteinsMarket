@@ -11,12 +11,17 @@
         <Border Margin="0,0,20,0" Style="{StaticResource CardBorderStyle}" Background="#EAF1ED" BorderBrush="#CCDAD2">
             <Grid>
                 <StackPanel VerticalAlignment="Center" MaxWidth="520">
-                    <TextBlock Text="Epsteins Market" FontSize="44" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
-                    <TextBlock Margin="0,16,0,0"
-                               FontSize="17"
+                    <TextBlock Text="Epsteins Market" FontSize="48" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
+                    <TextBlock Margin="0,12,0,0"
+                               FontSize="21"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextMain}"
+                               Text="Биржа маленьких гномиков"/>
+                    <TextBlock Margin="0,14,0,0"
+                               FontSize="16"
                                TextWrapping="Wrap"
                                Foreground="{StaticResource TextMuted}"
-                               Text="Биржа маленьких гномиков: покупай, продавай и находи самых редких в пару кликов!"/>
+                               Text="Покупай, продавай и находи самых редких гномиков в пару кликов."/>
                 </StackPanel>
             </Grid>
         </Border>

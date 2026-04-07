@@ -31,7 +31,7 @@
                     <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <TextBlock Text="Категория" Margin="0,12,0,4"/>
-                    <ComboBox x:Name="cbCategory" DisplayMemberPath="Name" SelectionChanged="cbCategory_SelectionChanged"/>
+                    <ComboBox x:Name="cbCategory" DisplayMemberPath="Name"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="14,18,0,0">
