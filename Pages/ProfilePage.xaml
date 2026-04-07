@@ -90,13 +90,6 @@
                             <TextBox x:Name="tbEditPhone" Margin="0,6,0,0"/>
                             <Button Margin="0,12,0,0" Content="Сохранить профиль" Click="btnSaveProfile_Click"/>
 
-                            <Separator Margin="0,14,0,14"/>
-
-                            <TextBlock Text="Ссылка на публичный профиль" FontWeight="SemiBold"/>
-                            <TextBox x:Name="tbProfileLink" Margin="0,6,0,10" IsReadOnly="True" TextWrapping="Wrap"/>
-                            <Border Height="200" BorderThickness="1" BorderBrush="#C5D4CC" CornerRadius="8" Background="#F4F8F6" Padding="8">
-                                <Image x:Name="imgQrCode" Stretch="Uniform"/>
-                            </Border>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>

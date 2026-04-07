@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using EpsteinsMarket.ApplicationData;
 using EpsteinsMarket.Models;
 
@@ -23,7 +22,6 @@ namespace EpsteinsMarket.Pages
             LoadFavorites();
             LoadPurchaseHistory();
             RefreshLists();
-            LoadQrCode();
         }
 
         private void LoadProfile()
@@ -218,22 +216,6 @@ namespace EpsteinsMarket.Pages
             }
         }
 
-        private void LoadQrCode()
-        {
-            if (AppSession.CurrentUser == null)
-            {
-                tbProfileLink.Text = string.Empty;
-                imgQrCode.Source = null;
-                return;
-            }
-
-            string profileLink = $"https://epsteinsmarket.app/profile/{Uri.EscapeDataString(AppSession.CurrentUser.Login)}";
-            tbProfileLink.Text = profileLink;
-
-            string qrUrl = "https://chart.googleapis.com/chart?cht=qr&chs=280x280&chl=" + Uri.EscapeDataString(profileLink);
-            imgQrCode.Source = new BitmapImage(new Uri(qrUrl, UriKind.Absolute));
-        }
-
         private void btnCheckout_Click(object sender, RoutedEventArgs e)
         {
             if (AppSession.CurrentUser == null)
@@ -278,8 +260,7 @@ namespace EpsteinsMarket.Pages
             {
                 AppConnect.model01.SaveChanges();
                 LoadProfile();
-                LoadQrCode();
-                MessageBox.Show("Данные профиля сохранены.");
+                    MessageBox.Show("Данные профиля сохранены.");
             }
             catch (Exception ex)
             {
