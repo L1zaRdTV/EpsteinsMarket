@@ -36,16 +36,12 @@ namespace EpsteinsMarket.Pages
         {
             if (AppSession.CurrentUser == null)
             {
-                tbProfileName.Text = "Гость";
-                tbProfileRole.Text = "Не авторизован";
                 tbEditName.Text = string.Empty;
                 tbEditEmail.Text = string.Empty;
                 tbEditPhone.Text = string.Empty;
                 return;
             }
 
-            tbProfileName.Text = AppSession.CurrentUser.FullName;
-            tbProfileRole.Text = $"{AppSession.CurrentUser.Role} · {AppSession.CurrentUser.Login}";
             tbEditName.Text = AppSession.CurrentUser.FullName ?? string.Empty;
             tbEditEmail.Text = AppSession.CurrentUser.Email ?? string.Empty;
             tbEditPhone.Text = AppSession.CurrentUser.Phone ?? string.Empty;
