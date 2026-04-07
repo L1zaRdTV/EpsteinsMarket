@@ -149,8 +149,7 @@ namespace EpsteinsMarket.Pages
 
         private void UpdateCounter()
         {
-            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count}";
-            tbCounter.Text = $"Найдено товаров: {_products.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
+            tbCounter.Text = $"Найдено десертов: {_products.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
         }
 
         private Product GetProductByButtonTag(object sender)
@@ -237,8 +236,7 @@ namespace EpsteinsMarket.Pages
             bool alreadyAdded = AppConnect.model01.Favorites
                 .Any(f => f.UserID == AppSession.CurrentUser.UserID && f.ProductID == product.ID);
 
-            if (alreadyAdded)
-            if (_favoriteProductIds.Contains(product.ID))
+            if (alreadyAdded || _favoriteProductIds.Contains(product.ID))
             {
                 MessageBox.Show($"\"{product.Name}\" уже в избранном.");
                 return;
