@@ -152,6 +152,7 @@ namespace EpsteinsMarket.Pages
 
         private void UpdateCounter()
         {
+            tbCounter.Text = $"Найдено товаров: {_filteredProducts.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
             tbCounter.Text = $"Найдено десертов: {_filteredProducts.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
             tbCounter.Text = $"Найдено десертов: {_products.Count} | В корзине: {AppSession.CartProducts.Count} | В избранном: {_favoriteProductIds.Count}";
         }

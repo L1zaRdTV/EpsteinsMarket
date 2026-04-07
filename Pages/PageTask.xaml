@@ -27,6 +27,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
+                        <TextBlock Text="Каталог гномиков" FontSize="31" FontWeight="Bold"/>
+                        <TextBlock Text="Поиск, фильтрация по цене и быстрые действия с избранным и корзиной."
                         <TextBlock Text="Каталог десертов" FontSize="31" FontWeight="Bold"/>
                         <TextBlock Text="Поиск и фильтрация товаров в стиле проекта Konditerka."
                                    Margin="0,5,0,0"
@@ -36,6 +38,7 @@
                     <WrapPanel Grid.Column="1" VerticalAlignment="Top">
                         <Button Content="Личный кабинет" MinWidth="170" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnCabinet_Click"/>
                         <Button Content="Выйти" Width="94" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnLogout_Click"/>
+                        <Button x:Name="btnAdd" Content="Добавить товар" MinWidth="170" Margin="0,0,0,10" Click="btnAdd_Click"/>
                         <Button x:Name="btnAdd" Content="Добавить десерт" MinWidth="170" Margin="0,0,0,10" Click="btnAdd_Click"/>
                     </WrapPanel>
                 </Grid>

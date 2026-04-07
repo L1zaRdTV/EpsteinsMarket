@@ -9,6 +9,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Margin="2,0,0,14">
+            <TextBlock Text="Создание аккаунта" FontSize="34" FontWeight="Bold"/>
+            <TextBlock Text="Заполните данные и получите доступ к каталогу гномиков." Foreground="{StaticResource TextMuted}" Margin="0,6,0,0"/>
             <TextBlock Text="Регистрация сотрудника" FontSize="34" FontWeight="Bold"/>
             <TextBlock Text="Добавьте аккаунт для работы с каталогом кондитерской." Foreground="{StaticResource TextMuted}" Margin="0,6,0,0"/>
         </StackPanel>

@@ -11,16 +11,19 @@
         <Border Margin="0,0,20,0" Style="{StaticResource CardBorderStyle}" Background="#FFF8ECE3" BorderBrush="#FFE8CDBC">
             <Grid>
                 <StackPanel VerticalAlignment="Center" MaxWidth="520">
+                    <TextBlock Text="Epsteins Market" FontSize="48" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
                     <TextBlock Text="Кондитерка" FontSize="48" FontWeight="Bold" Foreground="{StaticResource AccentDark}"/>
                     <TextBlock Margin="0,12,0,0"
                                FontSize="21"
                                FontWeight="SemiBold"
                                Foreground="{StaticResource TextMain}"
+                               Text="Биржа маленьких гномиков"/>
                                Text="Сладкая витрина вашего магазина"/>
                     <TextBlock Margin="0,14,0,0"
                                FontSize="16"
                                TextWrapping="Wrap"
                                Foreground="{StaticResource TextMuted}"
+                               Text="Покупай, продавай и находи самых редких гномиков в пару кликов."/>
                                Text="Вдохновлено проектом Konditerka: оформляйте заказы, ведите каталог десертов и управляйте избранным в едином приложении."/>
                 </StackPanel>
             </Grid>
