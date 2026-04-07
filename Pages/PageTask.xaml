@@ -28,19 +28,20 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Каталог товаров" FontSize="31" FontWeight="Bold"/>
-                        <TextBlock Text="Удобная навигация и чистая подача контента в спокойных тонах."
+                        <TextBlock Text="Удобный каталог с быстрым поиском и крупными карточками товара."
                                    Margin="0,5,0,0"
                                    Foreground="{StaticResource TextMuted}"/>
                     </StackPanel>
 
                     <WrapPanel Grid.Column="1" VerticalAlignment="Top">
-                        <Button Content="Выйти" Width="94" Height="42" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnLogout_Click"/>
-                        <Button x:Name="btnAdd" Content="Добавить товар" MinWidth="160" Height="42" Margin="0,0,0,10" Click="btnAdd_Click"/>
+                        <Button Content="Личный кабинет" MinWidth="170" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnCabinet_Click"/>
+                        <Button Content="Выйти" Width="94" Margin="0,0,10,10" Style="{StaticResource GhostButtonStyle}" Click="btnLogout_Click"/>
+                        <Button x:Name="btnAdd" Content="Добавить товар" MinWidth="160" Margin="0,0,0,10" Click="btnAdd_Click"/>
                     </WrapPanel>
                 </Grid>
 
                 <WrapPanel Grid.Row="1" Margin="0,16,0,0" ItemHeight="40">
-                    <TextBox x:Name="tbSearch" Width="290" Margin="0,0,10,8" TextChanged="tbSearch_TextChanged"/>
+                    <TextBox x:Name="tbSearch" Width="320" Margin="0,0,10,8" TextChanged="tbSearch_TextChanged"/>
                     <ComboBox x:Name="cbCategory" Width="230" Margin="0,0,10,8" SelectionChanged="cbCategory_SelectionChanged" DisplayMemberPath="Name"/>
                     <ComboBox x:Name="cbSort" Width="230" Margin="0,0,10,8" SelectionChanged="cbSort_SelectionChanged">
                         <ComboBoxItem Content="По умолчанию" Tag="default" IsSelected="True"/>
@@ -56,89 +57,33 @@
             <TextBlock x:Name="tbCounter" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource AccentDark}"/>
         </Border>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2.3*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Padding="10" Margin="0,0,12,0">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="icProducts">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Margin="8" Padding="12" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Width="320" Background="{StaticResource SurfaceSoft}">
-                                    <StackPanel>
-                                        <Border Height="176" Background="#EAF1ED" CornerRadius="10" BorderBrush="#C5D4CC" BorderThickness="1">
-                                            <Image Source="{Binding Image, Converter={StaticResource ProductImageConverter}}" Stretch="UniformToFill"/>
-                                        </Border>
-                                        <TextBlock Margin="0,10,0,0" FontWeight="Bold" FontSize="16" Text="{Binding Name}" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Description}" Margin="0,5,0,0" TextWrapping="Wrap" Foreground="{StaticResource TextMuted}" MaxHeight="58"/>
-                                        <Border Margin="0,8,0,0" Padding="8,4" HorizontalAlignment="Left" Background="#DBE8E1" CornerRadius="8">
-                                            <TextBlock Text="{Binding Price}" FontWeight="SemiBold" Foreground="{StaticResource AccentDark}"/>
-                                        </Border>
-                                        <WrapPanel Margin="0,10,0,0">
-                                            <Button Content="В избранное" Click="btnFavorite_Click" Tag="{Binding ID}" Margin="0,0,6,6"/>
-                                            <Button Content="В корзину" Click="btnAddToCart_Click" Tag="{Binding ID}" Margin="0,0,6,6"/>
-                                            <Button Content="Купить" Click="btnBuyNow_Click" Tag="{Binding ID}" Margin="0,0,6,6"/>
-                                            <Button Content="Изменить" Click="btnEdit_Click" Tag="{Binding ID}" Style="{StaticResource GhostButtonStyle}"/>
-                                        </WrapPanel>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Border>
-
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Padding="12">
-                <TabControl>
-                    <TabItem Header="Корзина">
-                        <Grid Margin="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <ListBox x:Name="lbCart" DisplayMemberPath="Name"/>
-                            <Button Grid.Row="1" Margin="0,10,0,0" Height="38" Content="Оформить покупку" Click="btnCheckout_Click"/>
-                        </Grid>
-                    </TabItem>
-
-                    <TabItem Header="Покупки">
-                        <Grid Margin="8">
-                            <ListBox x:Name="lbPurchases" DisplayMemberPath="Name"/>
-                        </Grid>
-                    </TabItem>
-
-                    <TabItem Header="Личный кабинет">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                            <StackPanel Margin="8">
-                                <TextBlock Text="ФИО" FontWeight="SemiBold"/>
-                                <TextBox x:Name="tbEditName" Margin="0,6,0,10"/>
-                                <TextBlock Text="Email" FontWeight="SemiBold"/>
-                                <TextBox x:Name="tbEditEmail" Margin="0,6,0,10"/>
-                                <TextBlock Text="Телефон" FontWeight="SemiBold"/>
-                                <TextBox x:Name="tbEditPhone" Margin="0,6,0,12"/>
-                                <Button Height="38" Content="Сохранить профиль" Click="btnSaveProfile_Click"/>
-
-                                <Separator Margin="0,14,0,14"/>
-
-                                <TextBlock Text="Ссылка на публичный профиль" FontWeight="SemiBold"/>
-                                <TextBox x:Name="tbProfileLink" Margin="0,6,0,10" IsReadOnly="True" TextWrapping="Wrap"/>
-                                <Border Height="220" BorderThickness="1" BorderBrush="#C5D4CC" CornerRadius="8" Background="#F4F8F6" Padding="8">
-                                    <Image x:Name="imgQrCode" Stretch="Uniform"/>
-                                </Border>
-                                <TextBlock Margin="0,8,0,0" Text="Любой человек может отсканировать QR и открыть ваш профиль." Foreground="{StaticResource TextMuted}" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </TabItem>
-                </TabControl>
-            </Border>
-        </Grid>
+        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Padding="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="icProducts">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="8" Padding="12" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Width="290" Background="{StaticResource SurfaceSoft}">
+                                <StackPanel>
+                                    <Border Height="176" Background="#EAF1ED" CornerRadius="10" BorderBrush="#C5D4CC" BorderThickness="1">
+                                        <Image Source="{Binding Image, Converter={StaticResource ProductImageConverter}}" Stretch="UniformToFill"/>
+                                    </Border>
+                                    <TextBlock Margin="0,10,0,0" FontWeight="Bold" FontSize="16" Text="{Binding Name}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Description}" Margin="0,5,0,0" TextWrapping="Wrap" Foreground="{StaticResource TextMuted}" MaxHeight="58"/>
+                                    <Border Margin="0,8,0,0" Padding="8,4" HorizontalAlignment="Left" Background="#DBE8E1" CornerRadius="8">
+                                        <TextBlock Text="{Binding Price}" FontWeight="SemiBold" Foreground="{StaticResource AccentDark}"/>
+                                    </Border>
+                                    <Button Content="В корзину" Click="btnAddToCart_Click" Tag="{Binding ID}" Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Page>
