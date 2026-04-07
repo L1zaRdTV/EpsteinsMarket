@@ -150,6 +150,7 @@ namespace EpsteinsMarket.Pages
                 UnitPrice = product.Price ?? 0m
             }).ToList();
             AppConnect.model01.OrderItems.AddRange(orderItems);
+            UpdateInventoryBalances(orderItems);
 
             AppConnect.model01.PaymentTransactions.Add(new PaymentTransaction
             {
@@ -160,7 +161,61 @@ namespace EpsteinsMarket.Pages
                 PaidAt = DateTime.Now
             });
 
+            DeliveryMethod deliveryMethod = ResolveDeliveryMethod();
+            AppConnect.model01.Shipments.Add(new Shipment
+            {
+                OrderID = order.ID,
+                DeliveryMethodID = deliveryMethod.ID,
+                TrackingNumber = $"AUTO-{order.ID:000000}",
+                ShipmentStatus = "Создана"
+            });
+
             AppConnect.model01.SaveChanges();
+        }
+
+        private DeliveryMethod ResolveDeliveryMethod()
+        {
+            DeliveryMethod pickupMethod = AppConnect.model01.DeliveryMethods
+                .FirstOrDefault(dm => dm.MethodName == "Пункт выдачи");
+            if (pickupMethod != null)
+            {
+                return pickupMethod;
+            }
+
+            DeliveryMethod firstMethod = AppConnect.model01.DeliveryMethods
+                .OrderBy(dm => dm.ID)
+                .FirstOrDefault();
+            if (firstMethod != null)
+            {
+                return firstMethod;
+            }
+
+            throw new InvalidOperationException("В базе нет способов доставки. Проверьте заполнение таблицы DeliveryMethods.");
+        }
+
+        private void UpdateInventoryBalances(List<OrderItem> orderItems)
+        {
+            foreach (OrderItem item in orderItems)
+            {
+                InventoryBalance stock = AppConnect.model01.InventoryBalances
+                    .Where(i => i.ProductID == item.ProductID)
+                    .OrderByDescending(i => i.Quantity)
+                    .ThenBy(i => i.ID)
+                    .FirstOrDefault();
+
+                if (stock == null)
+                {
+                    throw new InvalidOperationException($"Для товара ID={item.ProductID} не найден остаток на складе.");
+                }
+
+                if (stock.Quantity < item.Quantity)
+                {
+                    throw new InvalidOperationException($"Недостаточно остатка для товара ID={item.ProductID}. Доступно: {stock.Quantity}.");
+                }
+
+                stock.Quantity -= item.Quantity;
+                stock.UpdatedAt = DateTime.Now;
+            }
         }
 
         private void LoadQrCode()
