@@ -28,6 +28,7 @@ namespace EpsteinsMarket.Pages
             InitializeFilters();
             LoadProducts();
             ApplyRolePermissions();
+            LoadPurchaseHistory();
             RefreshCabinetLists();
             LoadQrCode();
         }
@@ -126,6 +127,97 @@ namespace EpsteinsMarket.Pages
 
             lbPurchases.ItemsSource = null;
             lbPurchases.ItemsSource = AppSession.PurchasedProducts;
+        }
+
+        private void LoadPurchaseHistory()
+        {
+            AppSession.PurchasedProducts.Clear();
+            if (AppSession.CurrentUser == null)
+            {
+                return;
+            }
+
+            try
+            {
+                List<int> purchasedProductIds = AppConnect.model01.OrderItems
+                    .Join(AppConnect.model01.Orders,
+                        oi => oi.OrderID,
+                        o => o.ID,
+                        (oi, o) => new { oi.ProductID, o.UserID })
+                    .Where(x => x.UserID == AppSession.CurrentUser.UserID)
+                    .Select(x => x.ProductID)
+                    .Distinct()
+                    .ToList();
+
+                if (!purchasedProductIds.Any())
+                {
+                    return;
+                }
+
+                List<Product> purchasedProducts = AppConnect.model01.Products
+                    .Where(p => purchasedProductIds.Contains(p.ID))
+                    .OrderBy(p => p.Name)
+                    .ToList();
+
+                AppSession.PurchasedProducts.AddRange(purchasedProducts);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки истории покупок: {ex.Message}");
+            }
+        }
+
+        private int? EnsurePrimaryAddressId(int userId)
+        {
+            UserAddress primaryAddress = AppConnect.model01.UserAddresses
+                .FirstOrDefault(a => a.UserID == userId && a.IsPrimary);
+            if (primaryAddress != null)
+            {
+                return primaryAddress.ID;
+            }
+
+            UserAddress fallbackAddress = AppConnect.model01.UserAddresses
+                .FirstOrDefault(a => a.UserID == userId);
+            return fallbackAddress?.ID;
+        }
+
+        private void CreateOrderAndPayment(List<Product> products, string paymentMethod)
+        {
+            decimal totalAmount = products.Sum(p => p.Price ?? 0m);
+
+            Order order = new Order
+            {
+                UserID = AppSession.CurrentUser.UserID,
+                AddressID = EnsurePrimaryAddressId(AppSession.CurrentUser.UserID),
+                OrderDate = DateTime.Now,
+                Status = "Создан",
+                TotalAmount = totalAmount
+            };
+
+            AppConnect.model01.Orders.Add(order);
+            AppConnect.model01.SaveChanges();
+
+            foreach (Product product in products)
+            {
+                AppConnect.model01.OrderItems.Add(new OrderItem
+                {
+                    OrderID = order.ID,
+                    ProductID = product.ID,
+                    Quantity = 1,
+                    UnitPrice = product.Price ?? 0m
+                });
+            }
+
+            AppConnect.model01.PaymentTransactions.Add(new PaymentTransaction
+            {
+                OrderID = order.ID,
+                PaymentMethod = paymentMethod,
+                Amount = totalAmount,
+                PaymentStatus = "Оплачен",
+                PaidAt = DateTime.Now
+            });
+
+            AppConnect.model01.SaveChanges();
         }
 
         private void LoadQrCode()
@@ -270,9 +362,17 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            AppSession.PurchasedProducts.Add(product);
-            RefreshCabinetLists();
-            MessageBox.Show($"Покупка оформлена: {product.Name}");
+            try
+            {
+                CreateOrderAndPayment(new List<Product> { product }, "Банковская карта");
+                LoadPurchaseHistory();
+                RefreshCabinetLists();
+                MessageBox.Show($"Покупка оформлена: {product.Name}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка оформления покупки: {ex.Message}");
+            }
         }
 
         private void btnCheckout_Click(object sender, RoutedEventArgs e)
@@ -289,10 +389,18 @@ namespace EpsteinsMarket.Pages
                 return;
             }
 
-            AppSession.PurchasedProducts.AddRange(AppSession.CartProducts);
-            AppSession.CartProducts.Clear();
-            RefreshCabinetLists();
-            MessageBox.Show("Покупка товаров из корзины завершена.");
+            try
+            {
+                CreateOrderAndPayment(AppSession.CartProducts.ToList(), "СБП");
+                AppSession.CartProducts.Clear();
+                LoadPurchaseHistory();
+                RefreshCabinetLists();
+                MessageBox.Show("Покупка товаров из корзины завершена.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка оформления заказа: {ex.Message}");
+            }
         }
 
         private void btnSaveProfile_Click(object sender, RoutedEventArgs e)
