@@ -73,7 +73,7 @@ namespace EpsteinsMarket.Pages
         {
             try
             {
-                var query = AppConnect.model01.Products.AsQueryable();
+                var query = AppConnect.model01.Products.AsNoTracking().AsQueryable();
 
                 string searchText = tbSearch.Text?.Trim() ?? string.Empty;
                 if (!string.IsNullOrWhiteSpace(searchText))
@@ -122,11 +122,11 @@ namespace EpsteinsMarket.Pages
 
         private void RefreshCabinetLists()
         {
-            lbCart.ItemsSource = null;
             lbCart.ItemsSource = AppSession.CartProducts;
+            lbCart.Items.Refresh();
 
-            lbPurchases.ItemsSource = null;
             lbPurchases.ItemsSource = AppSession.PurchasedProducts;
+            lbPurchases.Items.Refresh();
         }
 
         private void LoadPurchaseHistory()
@@ -197,16 +197,14 @@ namespace EpsteinsMarket.Pages
             AppConnect.model01.Orders.Add(order);
             AppConnect.model01.SaveChanges();
 
-            foreach (Product product in products)
+            List<OrderItem> orderItems = products.Select(product => new OrderItem
             {
-                AppConnect.model01.OrderItems.Add(new OrderItem
-                {
-                    OrderID = order.ID,
-                    ProductID = product.ID,
-                    Quantity = 1,
-                    UnitPrice = product.Price ?? 0m
-                });
-            }
+                OrderID = order.ID,
+                ProductID = product.ID,
+                Quantity = 1,
+                UnitPrice = product.Price ?? 0m
+            }).ToList();
+            AppConnect.model01.OrderItems.AddRange(orderItems);
 
             AppConnect.model01.PaymentTransactions.Add(new PaymentTransaction
             {
@@ -243,7 +241,8 @@ namespace EpsteinsMarket.Pages
                 return null;
             }
 
-            return AppConnect.model01.Products.FirstOrDefault(p => p.ID == productId);
+            return _products.FirstOrDefault(p => p.ID == productId)
+                ?? AppConnect.model01.Products.FirstOrDefault(p => p.ID == productId);
         }
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e) => LoadProducts();
