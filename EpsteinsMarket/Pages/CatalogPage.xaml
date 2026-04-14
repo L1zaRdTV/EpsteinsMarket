@@ -16,64 +16,70 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,8">
-            <TextBlock Text="Каталог товаров"
-                       Style="{StaticResource PageHeaderTextStyle}"
-                       Margin="16,12"
-                       DockPanel.Dock="Left"/>
+        <Border Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" CornerRadius="0,0,14,14" Padding="16,12" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8">
-                <Button x:Name="btnAdmin" Content="Админ-панель" Click="btnAdmin_Click"/>
-                <Button x:Name="BtnCart" Content="Корзина" Click="BtnCart_Click"/>
-                <Button x:Name="btnExit" Content="Выйти" Click="btnExit_Click"/>
-                <Button x:Name="btnProfile"
-                        Width="46"
-                        Padding="0"
-                        Click="btnProfile_Click"
-                        BorderBrush="{StaticResource BorderBrushSoft}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Pages/free-icon-user-847969.png"/>
-                    </Button.Background>
-                </Button>
-            </StackPanel>
-        </DockPanel>
+                <TextBlock Text="Каталог товаров" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="0"/>
 
-        <Grid Grid.Row="1" Margin="12,0,12,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Orientation="Vertical">
-                <TextBlock x:Name="tbWelcome"
-                           Text="Добро пожаловать"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource AccentTextBrush}"/>
-                <TextBlock x:Name="tbRole"
-                           Text="Роль:"
-                           Margin="0,6,0,0"
-                           FontSize="16"
-                           Foreground="{StaticResource AccentTextBrush}"/>
-            </StackPanel>
-
-            <WrapPanel Grid.Column="1" VerticalAlignment="Center" ItemHeight="58">
-                <StackPanel Width="170" Margin="4,0">
-                    <TextBlock Text="Сортировка" HorizontalAlignment="Center"/>
-                    <ComboBox x:Name="cmbSort" SelectionChanged="cmbSort_SelectionChanged"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="btnAdmin" Content="Админ-панель" Click="btnAdmin_Click"/>
+                    <Button x:Name="BtnCart" Content="Корзина" Click="BtnCart_Click"/>
+                    <Button x:Name="btnExit" Content="Выйти" Click="btnExit_Click"/>
+                    <Button x:Name="btnProfile"
+                            Width="46"
+                            Padding="0"
+                            Click="btnProfile_Click"
+                            BorderBrush="{StaticResource BorderBrushSoft}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Pages/free-icon-user-847969.png"/>
+                        </Button.Background>
+                    </Button>
                 </StackPanel>
-                <StackPanel Width="170" Margin="4,0">
-                    <TextBlock Text="Категория" HorizontalAlignment="Center"/>
-                    <ComboBox x:Name="cmbCategory" SelectionChanged="cmbCategory_SelectionChanged"/>
-                </StackPanel>
-                <StackPanel Width="170" Margin="4,0">
-                    <TextBlock Text="Поиск" HorizontalAlignment="Center"/>
-                    <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged"/>
-                </StackPanel>
-            </WrapPanel>
-        </Grid>
+            </Grid>
+        </Border>
 
-        <ListView x:Name="lvProducts" Grid.Row="2" Margin="12,0,12,12">
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <TextBlock x:Name="tbWelcome"
+                               Text="Добро пожаловать"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentTextBrush}"/>
+                    <TextBlock x:Name="tbRole"
+                               Text="Роль:"
+                               Margin="0,6,0,0"
+                               FontSize="16"
+                               Foreground="{StaticResource AccentTextBrush}"/>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Width="170" Margin="4,0">
+                        <TextBlock Text="Сортировка" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                        <ComboBox x:Name="cmbSort" SelectionChanged="cmbSort_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel Width="170" Margin="4,0">
+                        <TextBlock Text="Категория" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                        <ComboBox x:Name="cmbCategory" SelectionChanged="cmbCategory_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel Width="200" Margin="4,0">
+                        <TextBlock Text="Поиск" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                        <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged"/>
+                    </StackPanel>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <ListView x:Name="lvProducts" Grid.Row="2" Margin="12,0,12,12" BorderThickness="0" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource CardBorderStyle}">
@@ -81,22 +87,22 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="150"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" Margin="0,0,10,0">
+                            <Border Grid.Column="0" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" Margin="0,0,10,0" CornerRadius="8">
                                 <Image Source="{Binding ImagePath}" Height="120" Stretch="UniformToFill"/>
                             </Border>
 
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="{Binding ProductName}" FontSize="18" FontWeight="Bold" TextWrapping="Wrap"/>
-                                <TextBlock Text="{Binding Price, StringFormat=Цена: {0} ₽}" Margin="0,8,0,0"/>
+                                <TextBlock Text="{Binding Price, StringFormat=Цена: {0} ₽}" Margin="0,8,0,0" FontWeight="SemiBold"/>
                                 <TextBlock Text="{Binding QuantityInStock, StringFormat=Остаток: {0}}" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding Description}" Margin="0,8,0,0" TextWrapping="Wrap" MaxHeight="72"/>
+                                <TextBlock Text="{Binding Description}" Margin="0,8,0,0" TextWrapping="Wrap" MaxHeight="72" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                <Button Content="В корзину" Tag="{Binding SourceProduct}" Margin="0,0,0,8" Click="btnAddToCart_Click"/>
+                                <Button Content="В корзину" Tag="{Binding SourceProduct}" Margin="0,0,0,8" Click="btnAddToCart_Click" Style="{StaticResource PrimaryButtonStyle}"/>
                                 <Button Content="Подробнее" Tag="{Binding SourceProduct}" Click="btnDetails_Click"/>
                             </StackPanel>
                         </Grid>

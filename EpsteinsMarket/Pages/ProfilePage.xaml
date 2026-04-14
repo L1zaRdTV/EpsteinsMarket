@@ -3,175 +3,89 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="ProfilePage">
 
-    <Grid Background="#FFFAFAFA">
+    <Grid Background="{StaticResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="180"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Верхняя панель -->
-        <Grid Grid.Row="0" Background="#FFE4E4E4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="120"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,10">
+            <TextBlock Text="Профиль пользователя" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
+            <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
+        </DockPanel>
 
-            <TextBlock Grid.Column="0"
-                       Text="Профиль пользователя"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       Foreground="#FF2E2E2E"
-                       VerticalAlignment="Center"
-                       Margin="20,0,0,0"/>
-
-            <Button Grid.Column="1"
-                    x:Name="btnBack"
-                    Content="Назад"
-                    Width="90"
-                    Height="35"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnBack_Click"/>
-        </Grid>
-
-        <!-- Данные пользователя -->
-        <Border Grid.Row="1"
-                Margin="10,10,10,69"
-                Padding="15"
-                Background="White"
-                BorderBrush="#FFBDBDBD"
-                BorderThickness="1"
-                CornerRadius="8" Grid.RowSpan="2">
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,10">
             <StackPanel>
-                <TextBlock x:Name="tbFullName"
-                           Text="Имя:"
-                           FontSize="20"
-                           FontWeight="Bold"/>
-
-                <TextBlock x:Name="tbLogin"
-                           Text="Логин:"
-                           Margin="0,10,0,0"
-                           FontSize="16"/>
-
-                <TextBlock x:Name="tbEmail"
-                           Text="Email:"
-                           Margin="0,10,0,0"
-                           FontSize="16"/>
-
-                <TextBlock x:Name="tbPhone"
-                           Text="Телефон:"
-                           Margin="0,10,0,0"
-                           FontSize="16"/>
-
-                <TextBlock x:Name="tbCreatedAt"
-                           Text="Дата регистрации:"
-                           Margin="0,10,0,0"
-                           FontSize="16"/>
+                <TextBlock x:Name="tbFullName" Text="Имя:" FontSize="22" FontWeight="Bold"/>
+                <TextBlock x:Name="tbLogin" Text="Логин:" Margin="0,10,0,0" FontSize="16"/>
+                <TextBlock x:Name="tbEmail" Text="Email:" Margin="0,10,0,0" FontSize="16"/>
+                <TextBlock x:Name="tbPhone" Text="Телефон:" Margin="0,10,0,0" FontSize="16"/>
+                <TextBlock x:Name="tbCreatedAt" Text="Дата регистрации:" Margin="0,10,0,0" FontSize="16"/>
             </StackPanel>
         </Border>
 
-        <!-- История заказов -->
-        <Grid Grid.Row="2" Margin="10">
+        <Grid Grid.Row="2" Margin="12,0,12,10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
-               Text="История заказов"
-               FontSize="22"
-               FontWeight="Bold"
-               VerticalAlignment="Center"/>
-
-            <ListView x:Name="lvOrders"
-              Grid.Row="1"
-              Margin="0,10,0,10">
+            <TextBlock Grid.Row="0" Text="История заказов" FontSize="22" FontWeight="Bold" Margin="0,0,0,6"/>
+            <ListView x:Name="lvOrders" Grid.Row="1" BorderThickness="0" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#FFBDBDBD"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Margin="5"
-                        Padding="10"
-                        Background="White">
+                        <Border Style="{StaticResource CardBorderStyle}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="140"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0"
-                                   Text="{Binding OrderID, StringFormat=Заказ #{0}}"
-                                   VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Column="1"
-                                   Text="{Binding OrderDate, StringFormat=Дата: {0}}"
-                                   VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Column="2"
-                                   Text="{Binding TotalAmount, StringFormat=Сумма: {0} ₽}"
-                                   VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Column="3"
-                                   Text="{Binding OrderStatuses.StatusName}"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" Text="{Binding OrderID, StringFormat=Заказ #{0}}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding OrderDate, StringFormat=Дата: {0}}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding TotalAmount, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="{Binding OrderStatuses.StatusName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+        </Grid>
 
-            <TextBlock Grid.Row="2"
-               Text="Чеки"
-               FontSize="22"
-               FontWeight="Bold"
-               VerticalAlignment="Center"/>
+        <Grid Grid.Row="3" Margin="12,0,12,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <ListView x:Name="lvReceipts"
-              Grid.Row="3"
-              Margin="0,10,0,0">
+            <TextBlock Grid.Row="0" Text="Чеки" FontSize="22" FontWeight="Bold" Margin="0,0,0,6"/>
+            <ListView x:Name="lvReceipts" Grid.Row="1" BorderThickness="0" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#FFBDBDBD"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Margin="5"
-                        Padding="10"
-                        Background="White">
+                        <Border Style="{StaticResource CardBorderStyle}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="200"/>
-                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="120"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0"
-               Text="{Binding ReceiptID, StringFormat=Чек #{0}}"
-               VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Column="1"
-               Text="{Binding CreatedAt, StringFormat=Дата: {0}}"
-               VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Column="2"
-               Text="{Binding PdfPath}"
-               VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" Text="{Binding ReceiptID, StringFormat=Чек #{0}}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding CreatedAt, StringFormat=Дата: {0}}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding PdfPath}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
                                 <Button Grid.Column="3"
-            Content="Открыть"
-            Width="90"
-            Height="30"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Tag="{Binding}"
-            Click="btnOpenReceipt_Click"/>
+                                        Content="Открыть"
+                                        Width="90"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Tag="{Binding}"
+                                        Click="btnOpenReceipt_Click"/>
                             </Grid>
                         </Border>
                     </DataTemplate>

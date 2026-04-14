@@ -10,29 +10,40 @@
       Title="AutorizationPage">
 
     <Grid Background="{StaticResource PageBackgroundBrush}">
-        <Border Style="{StaticResource CardBorderStyle}"
-                Width="400"
-                MaxWidth="400"
-                HorizontalAlignment="Center"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="460"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="1"
+                Style="{StaticResource CardBorderStyle}"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
-                Padding="24">
+                Padding="30">
             <StackPanel>
                 <TextBlock Text="EpsteinsMarket"
                            Foreground="{StaticResource AccentTextBrush}"
-                           FontSize="34"
+                           FontSize="36"
+                           FontWeight="Bold"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,16"/>
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="Вход в аккаунт"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
 
-                <TextBlock Text="Login:" FontSize="15"/>
+                <TextBlock Text="Логин" FontSize="15" FontWeight="SemiBold"/>
                 <TextBox x:Name="txtLogin" MaxLength="50"/>
 
-                <TextBlock Text="Password:" FontSize="15"/>
+                <TextBlock Text="Пароль" FontSize="15" FontWeight="SemiBold"/>
                 <PasswordBox x:Name="txtPassword" MaxLength="50"/>
 
                 <Button x:Name="btnLogin"
                         Content="Войти"
                         Click="btnLogin_Click"
-                        Margin="0,8,0,6"/>
+                        Margin="0,10,0,6"
+                        Style="{StaticResource PrimaryButtonStyle}"/>
                 <Button x:Name="btnReg"
                         Content="Регистрация"
                         Click="btnReg_Click"/>
