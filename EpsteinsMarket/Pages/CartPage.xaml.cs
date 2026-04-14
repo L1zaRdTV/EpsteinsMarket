@@ -173,16 +173,23 @@ namespace EpsteinMarket.Pages
 
             document.Open();
 
-            document.Add(new iTextSharp.text.Paragraph("Чек магазина клонов", boldFont));
-            document.Add(new iTextSharp.text.Paragraph(" ", normalFont));
-            document.Add(new iTextSharp.text.Paragraph("Номер заказа: " + order.OrderID, normalFont));
-            document.Add(new iTextSharp.text.Paragraph("Дата заказа: " + order.OrderDate.ToString("dd.MM.yyyy HH:mm"), normalFont));
-            document.Add(new iTextSharp.text.Paragraph("Покупатель: " + AppConnect.CurrentUser.FullName, normalFont));
-            document.Add(new iTextSharp.text.Paragraph("Логин: " + AppConnect.CurrentUser.Login, normalFont));
-            document.Add(new iTextSharp.text.Paragraph(" ", normalFont));
+            Action<string, iTextSharp.text.Font> addLine = (textLine, font) =>
+            {
+                iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph();
+                paragraph.Add(new iTextSharp.text.Chunk(textLine, font));
+                document.Add(paragraph);
+            };
 
-            document.Add(new iTextSharp.text.Paragraph("Состав заказа:", boldFont));
-            document.Add(new iTextSharp.text.Paragraph(" ", normalFont));
+            addLine("Чек магазина клонов", boldFont);
+            addLine(" ", normalFont);
+            addLine("Номер заказа: " + order.OrderID, normalFont);
+            addLine("Дата заказа: " + order.OrderDate.ToString("dd.MM.yyyy HH:mm"), normalFont);
+            addLine("Покупатель: " + AppConnect.CurrentUser.FullName, normalFont);
+            addLine("Логин: " + AppConnect.CurrentUser.Login, normalFont);
+            addLine(" ", normalFont);
+
+            addLine("Состав заказа:", boldFont);
+            addLine(" ", normalFont);
 
             foreach (var item in cartItems)
             {
@@ -192,11 +199,11 @@ namespace EpsteinMarket.Pages
                     " | Цена: " + item.PriceAtMoment +
                     " | Сумма: " + (item.Quantity * item.PriceAtMoment);
 
-                document.Add(new iTextSharp.text.Paragraph(line, normalFont));
+                addLine(line, normalFont);
             }
 
-            document.Add(new iTextSharp.text.Paragraph(" ", normalFont));
-            document.Add(new iTextSharp.text.Paragraph("Итоговая сумма: " + order.TotalAmount + " ₽", boldFont));
+            addLine(" ", normalFont);
+            addLine("Итоговая сумма: " + order.TotalAmount + " ₽", boldFont);
 
             document.Close();
 
