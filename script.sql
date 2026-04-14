@@ -131,12 +131,6 @@ CREATE TABLE dbo.Receipts (
     CONSTRAINT FK_Receipts_Orders FOREIGN KEY (OrderID) REFERENCES dbo.Orders(OrderID) ON DELETE CASCADE
 );
 
-CREATE TABLE dbo.TelegramLinks (
-    TelegramLinkID INT IDENTITY(1,1) PRIMARY KEY,
-    Url NVARCHAR(255) NOT NULL,
-    QrImagePath NVARCHAR(255) NULL,
-    IsActive BIT NOT NULL DEFAULT(0)
-);
 GO
 
 INSERT INTO dbo.UserRoles (RoleName)
@@ -231,11 +225,6 @@ INSERT INTO dbo.ProductImages (ProductID, ImagePath)
 SELECT ProductID, N'gnome-' + RIGHT('000' + CAST(ProductID AS NVARCHAR(10)), 3) + N'-box.jpg'
 FROM dbo.Products
 WHERE ProductID % 2 = 0;
-
-INSERT INTO dbo.TelegramLinks (Url, QrImagePath, IsActive)
-VALUES
-    (N'https://t.me/epsteins_market', N'telegram-qr-main.png', 1),
-    (N'https://t.me/epsteins_market_backup', N'telegram-qr-backup.png', 0);
 
 INSERT INTO dbo.CartItems (CartID, ProductID, Quantity, PriceAtMoment)
 SELECT TOP (120)

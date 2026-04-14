@@ -25,7 +25,6 @@ namespace EpsteinMarket.ApplicationData
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<OrderItems> OrderItems { get; set; }
         public virtual DbSet<Receipts> Receipts { get; set; }
-        public virtual DbSet<TelegramLinks> TelegramLinks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -302,11 +301,4 @@ namespace EpsteinMarket.ApplicationData
         public virtual Orders Orders { get; set; }
     }
 
-    public class TelegramLinks
-    {
-        public int TelegramLinkID { get; set; }
-        public string Url { get; set; }
-        public string QrImagePath { get; set; }
-        public bool IsActive { get; set; }
-    }
 }

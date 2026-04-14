@@ -41,18 +41,6 @@
                     <ImageBrush ImageSource="/Pages/free-icon-user-847969.png"/>
                 </Button.Background>
             </Button>
-            <Button Grid.Column="0"
-x:Name="btnQr"
-VerticalAlignment="Center"
-Width="40"
-Height="40"
-Margin="0,10,0,0"
-HorizontalAlignment="Right"
- Foreground="#FF2E2E2E" Click="btnQr_Click" BorderBrush="#FFBDBDBD">
-                <Button.Background>
-                    <ImageBrush ImageSource="/Pages/free-icon-help-desk-4961736.png"/>
-                </Button.Background>
-            </Button>
             <Button x:Name="btnAdmin"
                     Grid.Column="2"
                     Content="Админ-панель"
