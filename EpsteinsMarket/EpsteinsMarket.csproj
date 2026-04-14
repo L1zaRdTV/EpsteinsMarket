@@ -48,9 +48,6 @@
       <HintPath>..\packages\iTextSharp.5.5.13.5\lib\net461\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="QRCoder, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
-      <HintPath>..\packages\QRCoder.1.8.0\lib\net40\QRCoder.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -193,11 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pages\free-icon-help-desk-4961736.png" />
-    <Resource Include="Pages\free-icon-support-services-6515925.png" />
-    <Resource Include="Images\qr-code.png" />
     <Resource Include="Pages\free-icon-user-847969.png" />
-    <Resource Include="Pages\free-icon-user-1144760.png" />
-    <Resource Include="Pages\free-icon-profile-9344418.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
