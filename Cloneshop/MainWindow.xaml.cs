@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using CloneShop.ApplicationData;
-using CloneShop.Pages;
+using EpsteinMarket.ApplicationData;
+using EpsteinMarket.Pages;
 
 namespace EpsteinMarket
 {

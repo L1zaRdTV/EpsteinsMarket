@@ -3,12 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CloneShop.Pages"
+      xmlns:local="clr-namespace:EpsteinMarket.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="RegisterPage">
 
-    <Grid Background="#FF202020">
+    <Grid Background="#FFF2F2F2">
         <StackPanel
             Width="350"
             HorizontalAlignment="Center"
@@ -17,20 +17,20 @@
            Text="Регистрация"
            FontSize="26"
            FontWeight="Bold"
-           Foreground="Snow"
+           Foreground="#FF2E2E2E"
            Margin="0,0,0,5"
            HorizontalAlignment="Center"/>
-            <TextBlock TextWrapping="Wrap" Text="Фио:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
+            <TextBlock TextWrapping="Wrap" Text="Фио:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
             <TextBox x:Name="txtName" TextWrapping="Wrap" Height="20" Width="194" MaxLength="70"/>
-            <TextBlock TextWrapping="Wrap" Text="Логин:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5" />
+            <TextBlock TextWrapping="Wrap" Text="Логин:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5" />
             <TextBox x:Name="txtLogin" TextWrapping="Wrap" Height="20" Width="194" MaxLength="50"/>
-            <TextBlock TextWrapping="Wrap" Text="Пароль:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
+            <TextBlock TextWrapping="Wrap" Text="Пароль:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
             <PasswordBox x:Name="txtPassword" Height="20" Width="194" MaxLength="50"/>
-            <TextBlock TextWrapping="Wrap" Text="Повторите пароль:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
+            <TextBlock TextWrapping="Wrap" Text="Повторите пароль:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
             <PasswordBox x:Name="txtPasswordRepeat" Height="20" Width="194" MaxLength="50"/>
-            <TextBlock TextWrapping="Wrap" Text="Электронная почта:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
+            <TextBlock TextWrapping="Wrap" Text="Электронная почта:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
             <TextBox x:Name="txtEmail" TextWrapping="Wrap" Height="20" Width="194" MaxLength="50"/>
-            <TextBlock TextWrapping="Wrap" Text="Номер телефона:" Foreground="White" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
+            <TextBlock TextWrapping="Wrap" Text="Номер телефона:" Foreground="#FF2E2E2E" Width="194" FontFamily="Segoe UI Semibold" FontSize="16" Margin="5"/>
             <TextBox x:Name="txtPhone" TextWrapping="Wrap" Height="20" Width="194" MaxLength="30"/>
             <StackPanel
                 Orientation="Horizontal"
