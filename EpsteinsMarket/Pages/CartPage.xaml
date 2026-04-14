@@ -21,16 +21,16 @@
             <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>
 
-        <ListView x:Name="lvCartItems" Grid.Row="1" Margin="12,0,12,12">
+        <ListView x:Name="lvCartItems" Grid.Row="1" Margin="12,0,12,12" BorderThickness="0" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource CardBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="120"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
@@ -39,7 +39,7 @@
                             </StackPanel>
 
                             <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat=Количество: {0}}" VerticalAlignment="Center" TextAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="{Binding TotalPrice, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding TotalPrice, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center" TextAlignment="Center" FontWeight="SemiBold"/>
                             <Button Grid.Column="3" Content="Удалить" Width="90" Tag="{Binding}" Click="btnDelete_Click"/>
                         </Grid>
                     </Border>
@@ -47,14 +47,16 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Grid.Row="2" Background="{StaticResource PanelBackgroundBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="2" Background="{StaticResource PanelBackgroundBrush}" Padding="10,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="tbTotal" Grid.Column="0" Text="Итог: 0 ₽" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="20,8"/>
-            <Button x:Name="btnOrder" Grid.Column="1" Content="Оформить заказ" Width="170" Margin="12,8" Click="btnOrder_Click"/>
-        </Grid>
+                <TextBlock x:Name="tbTotal" Grid.Column="0" Text="Итог: 0 ₽" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="8,0"/>
+                <Button x:Name="btnOrder" Grid.Column="1" Content="Оформить заказ" Width="180" Margin="8,0" Click="btnOrder_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

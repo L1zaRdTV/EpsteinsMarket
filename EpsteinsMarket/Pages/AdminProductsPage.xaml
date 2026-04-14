@@ -18,27 +18,29 @@
             </StackPanel>
         </DockPanel>
 
-        <WrapPanel Grid.Row="1" Margin="12,0,12,8">
-            <Button x:Name="btnAdd" Content="Добавить товар" Click="btnAdd_Click"/>
-            <Button x:Name="btnEdit" Content="Редактировать" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Удалить" Click="btnDelete_Click"/>
-        </WrapPanel>
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,8">
+            <WrapPanel>
+                <Button x:Name="btnAdd" Content="Добавить товар" Click="btnAdd_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+                <Button x:Name="btnEdit" Content="Редактировать" Click="btnEdit_Click"/>
+                <Button x:Name="btnDelete" Content="Удалить" Click="btnDelete_Click"/>
+            </WrapPanel>
+        </Border>
 
-        <ListView x:Name="lvAdminProducts" Grid.Row="2" Margin="12,0,12,12">
+        <ListView x:Name="lvAdminProducts" Grid.Row="2" Margin="12,0,12,12" BorderThickness="0" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource CardBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="180"/>
                                 <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" Text="{Binding ProductName}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1" Text="{Binding Categories.CategoryName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat={}{0} ₽}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat={}{0} ₽}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                             <TextBlock Grid.Column="3" Text="{Binding QuantityInStock, StringFormat=Остаток: {0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
