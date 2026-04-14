@@ -3,126 +3,43 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AdminProductsPage">
 
-    <Grid Background="#FFFAFAFA">
+    <Grid Background="{StaticResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Шапка -->
-        <Grid Grid.Row="0" Background="#FFE4E4E4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="290"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,8">
+            <TextBlock Style="{StaticResource PageHeaderTextStyle}" Margin="16,10" DockPanel.Dock="Left"><Run Text="Админ-панель "/><Run Text="товаров"/></TextBlock>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8">
+                <Button x:Name="btnUsers" Content="Пользователи" Click="btnUsers_Click"/>
+                <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click"/>
+            </StackPanel>
+        </DockPanel>
 
-            <TextBlock Grid.Column="0"
-                       FontSize="23"
-                       FontWeight="Bold"
-                       Foreground="#FF2E2E2E"
-                       VerticalAlignment="Center"
-                       Margin="20,0,0,0"><Run Text="Админ-панель "/><LineBreak/><Run Text="товаров"/></TextBlock>
-            <Button Grid.Column="1"
-        x:Name="btnUsers"
-        Content="Пользователи"
-        Width="140"
-        Height="35"
-                    Margin="0,0,70,0"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Click="btnUsers_Click"/>
+        <WrapPanel Grid.Row="1" Margin="12,0,12,8">
+            <Button x:Name="btnAdd" Content="Добавить товар" Click="btnAdd_Click"/>
+            <Button x:Name="btnEdit" Content="Редактировать" Click="btnEdit_Click"/>
+            <Button x:Name="btnDelete" Content="Удалить" Click="btnDelete_Click"/>
+        </WrapPanel>
 
-            <Button Grid.Column="1"
-                    x:Name="btnBack"
-                    Content="Назад"
-                    Width="90"
-                    Height="35"
-                    Margin="180,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnBack_Click"/>
-        </Grid>
-
-        <!-- Панель действий -->
-        <Grid Grid.Row="1" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="160"/>
-                <ColumnDefinition Width="160"/>
-                <ColumnDefinition Width="160"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0"
-                    x:Name="btnAdd"
-                    Content="Добавить товар"
-                    Width="140"
-                    Height="35"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnAdd_Click"/>
-
-            <Button Grid.Column="1"
-                    x:Name="btnEdit"
-                    Content="Редактировать"
-                    Width="140"
-                    Height="35"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnEdit_Click"/>
-
-            <Button Grid.Column="2"
-                    x:Name="btnDelete"
-                    Content="Удалить"
-                    Width="140"
-                    Height="35"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnDelete_Click"/>
-        </Grid>
-
-        <!-- Список товаров -->
-        <ListView x:Name="lvAdminProducts"
-                  Grid.Row="2"
-                  Margin="10">
+        <ListView x:Name="lvAdminProducts" Grid.Row="2" Margin="12,0,12,12">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="#FFBDBDBD"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Margin="5"
-                            Padding="10"
-                            Width="1880"
-                            Background="White">
+                    <Border Style="{StaticResource CardBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="160"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0"
-                                       Text="{Binding ProductName}"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       VerticalAlignment="Center"/>
-
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding Categories.CategoryName}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-
-                            <TextBlock Grid.Column="2"
-                                       Text="{Binding Price, StringFormat={}{0} ₽}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-
-                            <TextBlock Grid.Column="3"
-                                       Text="{Binding QuantityInStock, StringFormat=Остаток: {0}}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                            
+                            <TextBlock Grid.Column="0" Text="{Binding ProductName}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Categories.CategoryName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat={}{0} ₽}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="{Binding QuantityInStock, StringFormat=Остаток: {0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </DataTemplate>

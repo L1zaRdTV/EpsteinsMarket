@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EpsteinMarket"
         mc:Ignorable="d"
-        Title="EpsteinsMarket" Height="500" Width="900"
+        Title="EpsteinsMarket"
+        Height="700"
+        Width="1100"
         MinWidth="900"
-        MinHeight="500"
-        WindowStartupLocation="CenterScreen">
+        MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PageBackgroundBrush}">
     <Grid>
         <Frame x:Name="FrmMain" NavigationUIVisibility="Hidden"/>
     </Grid>
