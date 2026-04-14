@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AdminUsersPage">
 
-    <Grid Background="#F5F5F5">
+    <Grid Background="#FFFAFAFA">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="70"/>
@@ -11,7 +11,7 @@
         </Grid.RowDefinitions>
 
         <!-- Шапка -->
-        <Grid Grid.Row="0" Background="#2D2D30">
+        <Grid Grid.Row="0" Background="#FFE4E4E4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="120"/>
@@ -21,7 +21,7 @@
                        Text="Админ-панель пользователей"
                        FontSize="26"
                        FontWeight="Bold"
-                       Foreground="White"
+                       Foreground="#FF2E2E2E"
                        VerticalAlignment="Center"
                        Margin="20,0,0,0"/>
 
@@ -68,7 +68,7 @@
                   Margin="10">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Black"
+                    <Border BorderBrush="#FFBDBDBD"
                             BorderThickness="1"
                             CornerRadius="8"
                             Margin="5"

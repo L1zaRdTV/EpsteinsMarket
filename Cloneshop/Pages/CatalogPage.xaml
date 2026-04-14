@@ -3,19 +3,19 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CloneShop.Pages"
+      xmlns:local="clr-namespace:EpsteinMarket.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CatalogPage">
 
-    <Grid Background="#FF202020">
+    <Grid Background="#FFF2F2F2">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Верхняя панель -->
-        <Grid Grid.Row="0" Background="#2D2D30">
+        <Grid Grid.Row="0" Background="#FFE4E4E4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="305"/>
                 <ColumnDefinition Width="*"/>
@@ -26,7 +26,7 @@
                        Text="Каталог товаров"
                        FontSize="26"
                        FontWeight="Bold"
-                       Foreground="White"
+                       Foreground="#FF2E2E2E"
                        VerticalAlignment="Center"
                        Margin="5,0,0,0"/>
             <Button Grid.Column="0"
@@ -36,7 +36,7 @@
         Height="50"
         Margin="0,0,40,0"
         HorizontalAlignment="Right"
-         Foreground="White" Click="btnProfile_Click" BorderBrush="#FF2D2D30">
+         Foreground="#FF2E2E2E" Click="btnProfile_Click" BorderBrush="#FFBDBDBD">
                 <Button.Background>
                     <ImageBrush ImageSource="/Pages/free-icon-user-847969.png"/>
                 </Button.Background>
@@ -48,7 +48,7 @@ Width="40"
 Height="40"
 Margin="0,10,0,0"
 HorizontalAlignment="Right"
- Foreground="White" Click="btnQr_Click" BorderBrush="#FF2D2D30">
+ Foreground="#FF2E2E2E" Click="btnQr_Click" BorderBrush="#FFBDBDBD">
                 <Button.Background>
                     <ImageBrush ImageSource="/Pages/free-icon-help-desk-4961736.png"/>
                 </Button.Background>
@@ -103,13 +103,13 @@ HorizontalAlignment="Right"
                    Text="Добро пожаловать"
                    FontSize="22"
                    FontWeight="Bold"
-                   HorizontalAlignment="Center" Foreground="White"/>
+                   HorizontalAlignment="Center" Foreground="#FF2E2E2E"/>
 
                     <TextBlock x:Name="tbRole"
                    Text="Роль:"
                    FontSize="16"
                    Margin="0,10,0,0"
-                   HorizontalAlignment="Center" Foreground="White"/>
+                   HorizontalAlignment="Center" Foreground="#FF2E2E2E"/>
                 </StackPanel>
 
                 <!-- Правая часть -->
@@ -136,7 +136,7 @@ HorizontalAlignment="Right"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top" Grid.RowSpan="2">
                             <TextBlock Text="Сортировка"
-                   Foreground="White"
+                   Foreground="#FF2E2E2E"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,5"/>
                             <ComboBox x:Name="cmbSort"
@@ -149,7 +149,7 @@ HorizontalAlignment="Right"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top" Grid.RowSpan="2">
                             <TextBlock Text="Категория"
-                   Foreground="White"
+                   Foreground="#FF2E2E2E"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,5"/>
                             <ComboBox x:Name="cmbCategory"
@@ -163,7 +163,7 @@ HorizontalAlignment="Right"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top" Grid.RowSpan="2">
                             <TextBlock Text="Поиск"
-                   Foreground="White"
+                   Foreground="#FF2E2E2E"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,5"/>
                             <TextBox x:Name="txtSearch"
@@ -183,7 +183,7 @@ HorizontalAlignment="Right"
           Margin="10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Black"
+                        <Border BorderBrush="#FFBDBDBD"
                     BorderThickness="1"
                                 Width="1855"
                     CornerRadius="8"
@@ -199,7 +199,7 @@ HorizontalAlignment="Right"
 
                                 <!-- Главная картинка -->
                                 <Border Grid.Column="0"
-                            BorderBrush="Gray"
+                            BorderBrush="#FFBDBDBD"
                             BorderThickness="1"
                             Margin="0,0,10,0">
                                     <Image Source="{Binding ImagePath}"
