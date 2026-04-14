@@ -215,10 +215,6 @@ namespace EpsteinMarket.Pages
             AppFrame.frmMain.Navigate(new ProfilePage());
         }
 
-        private void btnQr_Click(object sender, RoutedEventArgs e)
-        {
-            AppFrame.frmMain.Navigate(new QrPage());
-        }
         public class ProductDisplayItem
         {
             public Products SourceProduct { get; set; }
