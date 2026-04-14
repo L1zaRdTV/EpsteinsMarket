@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using EpsteinMarket.ApplicationData;
-using EpsteinMarket.Pages;
 
 namespace EpsteinMarket.Pages
 {
@@ -25,7 +13,6 @@ namespace EpsteinMarket.Pages
         public AutorizationPage()
         {
             InitializeComponent();
-
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -49,17 +36,18 @@ namespace EpsteinMarket.Pages
 
             var userObj = AppConnect.model01.Users.FirstOrDefault(x =>
                 x.Login == login && x.Password == password);
-            if (userObj.IsBlocked)
-            {
-                MessageBox.Show("Ваш аккаунт заблокирован");
-                return;
-            }
 
             if (userObj == null)
             {
                 MessageBox.Show("Неверный логин или пароль");
                 txtPassword.Clear();
                 txtLogin.Focus();
+                return;
+            }
+
+            if (userObj.IsBlocked)
+            {
+                MessageBox.Show("Ваш аккаунт заблокирован");
                 return;
             }
 
