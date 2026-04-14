@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace EpsteinMarket.ApplicationData
@@ -115,6 +116,7 @@ namespace EpsteinMarket.ApplicationData
             Users = new HashSet<Users>();
         }
 
+        [Key]
         public int RoleID { get; set; }
         public string RoleName { get; set; }
 
@@ -128,6 +130,7 @@ namespace EpsteinMarket.ApplicationData
             Products = new HashSet<Products>();
         }
 
+        [Key]
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
 
@@ -141,6 +144,7 @@ namespace EpsteinMarket.ApplicationData
             Products = new HashSet<Products>();
         }
 
+        [Key]
         public int BrandID { get; set; }
         public string BrandName { get; set; }
 
@@ -154,6 +158,7 @@ namespace EpsteinMarket.ApplicationData
             Products = new HashSet<Products>();
         }
 
+        [Key]
         public int StatusID { get; set; }
         public string StatusName { get; set; }
 
@@ -167,6 +172,7 @@ namespace EpsteinMarket.ApplicationData
             Orders = new HashSet<Orders>();
         }
 
+        [Key]
         public int OrderStatusID { get; set; }
         public string StatusName { get; set; }
 
@@ -181,6 +187,7 @@ namespace EpsteinMarket.ApplicationData
             Orders = new HashSet<Orders>();
         }
 
+        [Key]
         public int UserID { get; set; }
         public string FullName { get; set; }
         public string Login { get; set; }
@@ -205,6 +212,7 @@ namespace EpsteinMarket.ApplicationData
             OrderItems = new HashSet<OrderItems>();
         }
 
+        [Key]
         public int ProductID { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
@@ -225,6 +233,7 @@ namespace EpsteinMarket.ApplicationData
 
     public class ProductImages
     {
+        [Key]
         public int ImageID { get; set; }
         public int ProductID { get; set; }
         public string ImagePath { get; set; }
@@ -239,6 +248,7 @@ namespace EpsteinMarket.ApplicationData
             CartItems = new HashSet<CartItems>();
         }
 
+        [Key]
         public int CartID { get; set; }
         public int UserID { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -249,6 +259,7 @@ namespace EpsteinMarket.ApplicationData
 
     public class CartItems
     {
+        [Key]
         public int CartItemID { get; set; }
         public int CartID { get; set; }
         public int ProductID { get; set; }
@@ -267,6 +278,7 @@ namespace EpsteinMarket.ApplicationData
             Receipts = new HashSet<Receipts>();
         }
 
+        [Key]
         public int OrderID { get; set; }
         public int UserID { get; set; }
         public DateTime OrderDate { get; set; }
@@ -281,6 +293,7 @@ namespace EpsteinMarket.ApplicationData
 
     public class OrderItems
     {
+        [Key]
         public int OrderItemID { get; set; }
         public int OrderID { get; set; }
         public int ProductID { get; set; }
@@ -293,6 +306,7 @@ namespace EpsteinMarket.ApplicationData
 
     public class Receipts
     {
+        [Key]
         public int ReceiptID { get; set; }
         public int OrderID { get; set; }
         public string PdfPath { get; set; }
