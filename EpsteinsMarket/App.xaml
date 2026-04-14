@@ -4,48 +4,69 @@
              xmlns:local="clr-namespace:EpsteinMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FFF5F5F5"/>
-        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFE9E9E9"/>
-        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FFCCCCCC"/>
-        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF2E2E2E"/>
+        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FFF3F6FB"/>
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFE7EDF7"/>
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FFD1DCEC"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF1C2A3A"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF4D78CC"/>
+
+        <Style TargetType="Page">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+        </Style>
 
         <Style TargetType="Button">
-            <Setter Property="Height" Value="34"/>
-            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="12,4"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Background" Value="#FFFFFFFF"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryButtonBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style TargetType="PasswordBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style x:Key="CardBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Padding" Value="12"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14"/>
             <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="PageHeaderTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>

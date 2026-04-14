@@ -3,156 +3,92 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AddEditProductPage">
 
-    <Grid Background="#FFFAFAFA">
+    <Grid Background="{StaticResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Шапка -->
-        <Grid Grid.Row="0" Background="#FFE4E4E4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="120"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,8">
+            <TextBlock x:Name="tbTitle" Text="Товар" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
+            <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
+        </DockPanel>
 
-            <TextBlock x:Name="tbTitle"
-                       Grid.Column="0"
-                       Text="Товар"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       Foreground="#FF2E2E2E"
-                       VerticalAlignment="Center"
-                       Margin="20,0,0,0"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="10">
+            <Border Style="{StaticResource CardBorderStyle}" Width="560" HorizontalAlignment="Center" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Название товара" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtName" MaxLength="150"/>
 
-            <Button Grid.Column="1"
-                    x:Name="btnBack"
-                    Content="Назад"
-                    Width="90"
-                    Height="35"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnBack_Click"/>
-        </Grid>
+                    <TextBlock Text="Описание" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtDescription" Height="90" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="120"/>
 
-        <!-- Форма -->
-        <ScrollViewer Grid.Row="1"
-              VerticalScrollBarVisibility="Auto"
-              HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Grid.Row="1"
-                    Width="350"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Название товара"/>
-            <TextBox x:Name="txtName"
-                     Height="30"
-                     Margin="0,5,0,10" MaxLength="150"/>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Цена" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtPrice" MaxLength="15"/>
+                        </StackPanel>
 
-            <TextBlock Text="Описание"/>
-            <TextBox x:Name="txtDescription"
-                     Height="80"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     Margin="0,5,0,10"
-                     MaxLength="120"/>
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Количество" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtQuantity" MaxLength="4"/>
+                        </StackPanel>
+                    </Grid>
 
-            <TextBlock Text="Цена"/>
-            <TextBox x:Name="txtPrice"
-                     Height="30"
-                     Margin="0,5,0,10" MaxLength="15"/>
+                    <TextBlock Text="Категория" FontWeight="SemiBold"/>
+                    <Grid Margin="0,4,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Количество"/>
-            <TextBox x:Name="txtQuantity"
-                     Height="30"
-                     Margin="0,5,0,10"
-                     MaxLength="4"/>
+                        <ComboBox x:Name="cmbCategory" Grid.Column="0" Margin="0,0,10,0"/>
+                        <Button x:Name="btnAddCategory" Grid.Column="1" Content="+ Категория" Click="btnAddCategory_Click"/>
+                    </Grid>
 
-                <TextBlock Text="Категория"/>
-                <Grid Margin="0,5,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="110"/>
-                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Бренд" FontWeight="SemiBold"/>
+                    <Grid Margin="0,4,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
 
-                    <ComboBox x:Name="cmbCategory"
-              Grid.Column="0"
-              Height="30"
-              Margin="0,0,10,0"/>
+                        <ComboBox x:Name="cmbBrand" Grid.Column="0" Margin="0,0,10,0"/>
+                        <Button x:Name="btnAddBrand" Grid.Column="1" Content="+ Бренд" Click="btnAddBrand_Click"/>
+                    </Grid>
 
-                    <Button x:Name="btnAddCategory"
-            Grid.Column="1"
-            Content="+ Категория"
-            Height="30"
-            Click="btnAddCategory_Click"/>
-                </Grid>
+                    <TextBlock Text="Статус" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cmbStatus" Margin="0,4,0,10"/>
 
-                <TextBlock Text="Бренд"/>
-                <Grid Margin="0,5,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="110"/>
-                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Изображение" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtImage" MaxLength="255" IsReadOnly="True"/>
+                    <Button x:Name="btnChooseImage" Content="Выбрать изображение" Click="btnChooseImage_Click" Margin="0,0,0,10"/>
 
-                    <ComboBox x:Name="cmbBrand"
-              Grid.Column="0"
-              Height="30"
-              Margin="0,0,10,0"/>
+                    <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,12">
+                        <Image x:Name="imgPreview" Height="150" Stretch="Uniform"/>
+                    </Border>
 
-                    <Button x:Name="btnAddBrand"
-            Grid.Column="1"
-            Content="+ Бренд"
-            Height="30"
-            Click="btnAddBrand_Click"/>
-                </Grid>
+                    <TextBlock Text="Дополнительные изображения" FontWeight="SemiBold"/>
+                    <ListBox x:Name="lbAdditionalImages" Height="120" Margin="0,4,0,10"/>
 
-                <TextBlock Text="Статус"/>
-            <ComboBox x:Name="cmbStatus"
-                      Height="30"
-                      Margin="0,5,0,20"/>
-            <TextBlock Text="Изображение"/>
-            <TextBox x:Name="txtImage"
-         Height="30"
-         Margin="0,5,0,10"
-                     MaxLength="255"
-         IsReadOnly="True"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnChooseImage"
-        Content="Выбрать изображение"
-        Height="35"
-        Margin="0,0,0,10"
-        Click="btnChooseImage_Click"/>
+                        <Button x:Name="btnAddAdditionalImage" Grid.Column="0" Content="Добавить изображение" Margin="0,0,8,0" Click="btnAddAdditionalImage_Click"/>
+                        <Button x:Name="btnRemoveAdditionalImage" Grid.Column="1" Content="Удалить выбранное" Margin="8,0,0,0" Click="btnRemoveAdditionalImage_Click"/>
+                    </Grid>
 
-            <Image x:Name="imgPreview"
-       Height="150"
-       Stretch="Uniform"
-       Margin="0,0,0,20"/>
-            <TextBlock Text="Дополнительные изображения"/>
-            <ListBox x:Name="lbAdditionalImages"
-         Height="120"
-         Margin="0,5,0,10"/>
-
-            <StackPanel Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            Margin="0,0,0,20">
-                <Button x:Name="btnAddAdditionalImage"
-            Content="Добавить изображение"
-            Width="150"
-            Height="35"
-            Margin="0,0,10,0"
-            Click="btnAddAdditionalImage_Click"/>
-
-                <Button x:Name="btnRemoveAdditionalImage"
-            Content="Удалить выбранное"
-            Width="150"
-            Height="35"
-            Click="btnRemoveAdditionalImage_Click"/>
-            </StackPanel>
-            <Button x:Name="btnSave"
-                    Content="Сохранить"
-                    Height="35"
-                    Click="btnSave_Click"/>
-        </StackPanel>
+                    <Button x:Name="btnSave" Content="Сохранить" Click="btnSave_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+                </StackPanel>
+            </Border>
         </ScrollViewer>
     </Grid>
 </Page>
