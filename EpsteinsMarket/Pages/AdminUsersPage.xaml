@@ -15,21 +15,23 @@
             <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>
 
-        <WrapPanel Grid.Row="1" Margin="12,0,12,8">
-            <Button x:Name="btnChangeRole" Content="Сменить роль" Click="btnChangeRole_Click"/>
-            <Button x:Name="btnToggleBlock" Content="Блок / разблок" Click="btnToggleBlock_Click"/>
-        </WrapPanel>
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,8">
+            <WrapPanel>
+                <Button x:Name="btnChangeRole" Content="Сменить роль" Click="btnChangeRole_Click"/>
+                <Button x:Name="btnToggleBlock" Content="Блок / разблок" Click="btnToggleBlock_Click"/>
+            </WrapPanel>
+        </Border>
 
-        <ListView x:Name="lvUsers" Grid.Row="2" Margin="12,0,12,12">
+        <ListView x:Name="lvUsers" Grid.Row="2" Margin="12,0,12,12" BorderThickness="0" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource CardBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="220"/>
-                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="240"/>
+                                <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
