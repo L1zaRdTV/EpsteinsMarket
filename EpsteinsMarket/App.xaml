@@ -4,11 +4,11 @@
              xmlns:local="clr-namespace:EpsteinMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FFF3F6FB"/>
-        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFE7EDF7"/>
-        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FFD1DCEC"/>
-        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF1C2A3A"/>
-        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF4D78CC"/>
+        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FF08090D"/>
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF0F111A"/>
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FF272A39"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF71F4D2"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF7B2CF3"/>
 
         <Style TargetType="Page">
             <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -19,7 +19,7 @@
             <Setter Property="Height" Value="36"/>
             <Setter Property="Padding" Value="12,4"/>
             <Setter Property="Margin" Value="4"/>
-            <Setter Property="Background" Value="#FFFFFFFF"/>
+            <Setter Property="Background" Value="#FF131622"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
@@ -37,6 +37,8 @@
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
@@ -45,6 +47,8 @@
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
@@ -52,12 +56,14 @@
         <Style TargetType="ComboBox">
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style x:Key="CardBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#FF11131C"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="12"/>

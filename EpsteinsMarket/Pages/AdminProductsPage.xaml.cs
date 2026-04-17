@@ -28,13 +28,12 @@ namespace EpsteinMarket.Pages
             AppFrame.frmMain.Navigate(new AddEditProductPage(null));
         }
 
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private void lvAdminProducts_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Products selectedProduct = lvAdminProducts.SelectedItem as Products;
 
             if (selectedProduct == null)
             {
-                MessageBox.Show("Выберите товар для редактирования");
                 return;
             }
 

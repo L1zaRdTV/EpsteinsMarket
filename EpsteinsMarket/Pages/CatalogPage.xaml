@@ -26,7 +26,8 @@
                 <TextBlock Text="Каталог товаров" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="0"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button x:Name="btnAdmin" Content="Админ-панель" Click="btnAdmin_Click"/>
+                    <Button x:Name="btnManageProducts" Content="Товары" Click="btnManageProducts_Click"/>
+                    <Button x:Name="btnManageUsers" Content="Пользователи" Click="btnManageUsers_Click"/>
                     <Button x:Name="BtnCart" Content="Корзина" Click="BtnCart_Click"/>
                     <Button x:Name="btnExit" Content="Выйти" Click="btnExit_Click"/>
                     <Button x:Name="btnProfile"
