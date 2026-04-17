@@ -4,11 +4,6 @@
              xmlns:local="clr-namespace:EpsteinMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FFC0C0C0"/>
-        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF000080"/>
-        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FF808080"/>
-        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF000000"/>
-        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FFC0C0C0"/>
         <SolidColorBrush x:Key="ClassicLightBrush" Color="#FFFFFFFF"/>
         <SolidColorBrush x:Key="ClassicDarkBrush" Color="#FF404040"/>
         <SolidColorBrush x:Key="ClassicShadowBrush" Color="#FF808080"/>
