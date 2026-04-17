@@ -19,7 +19,7 @@ namespace EpsteinMarket.Pages
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string login = txtLogin.Text;
+            string login = txtLogin.Text.Trim();
             string password = txtPassword.Password;
 
             if (string.IsNullOrWhiteSpace(login))
@@ -33,6 +33,14 @@ namespace EpsteinMarket.Pages
             {
                 MessageBox.Show("Введите пароль");
                 txtPassword.Focus();
+                return;
+            }
+
+            string loginValidationError = InputValidationHelper.ValidateLogin(login);
+            if (loginValidationError != null)
+            {
+                MessageBox.Show(loginValidationError);
+                txtLogin.Focus();
                 return;
             }
 

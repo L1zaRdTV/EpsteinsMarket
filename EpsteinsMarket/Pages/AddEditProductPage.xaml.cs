@@ -82,33 +82,38 @@ namespace EpsteinMarket.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            string productName = txtName.Text.Trim();
+            string description = txtDescription.Text.Trim();
+            string rawPrice = txtPrice.Text.Trim();
+            string rawQuantity = txtQuantity.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(productName))
             {
                 MessageBox.Show("Введите название товара");
                 txtName.Focus();
                 return;
             }
 
-            if (txtName.Text.Length > MaxFieldLength ||
-                txtDescription.Text.Length > MaxFieldLength ||
-                txtPrice.Text.Length > MaxFieldLength ||
-                txtQuantity.Text.Length > MaxFieldLength ||
+            if (productName.Length > MaxFieldLength ||
+                description.Length > MaxFieldLength ||
+                rawPrice.Length > MaxFieldLength ||
+                rawQuantity.Length > MaxFieldLength ||
                 txtImage.Text.Length > MaxFieldLength)
             {
                 MessageBox.Show("Каждое поле должно быть не длиннее 200 символов");
                 return;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price))
+            if (!InputValidationHelper.TryParsePrice(rawPrice, out decimal price, out string priceError))
             {
-                MessageBox.Show("Цена введена неверно");
+                MessageBox.Show(priceError);
                 txtPrice.Focus();
                 return;
             }
 
-            if (!int.TryParse(txtQuantity.Text, out int quantity))
+            if (!InputValidationHelper.TryParseQuantity(rawQuantity, out int quantity, out string quantityError))
             {
-                MessageBox.Show("Количество введено неверно");
+                MessageBox.Show(quantityError);
                 txtQuantity.Focus();
                 return;
             }
@@ -137,8 +142,8 @@ namespace EpsteinMarket.Pages
                 return;
             }
 
-            currentProduct.ProductName = txtName.Text;
-            currentProduct.Description = txtDescription.Text;
+            currentProduct.ProductName = productName;
+            currentProduct.Description = description;
             currentProduct.Price = price;
             currentProduct.QuantityInStock = quantity;
             currentProduct.CategoryID = (int)cmbCategory.SelectedValue;

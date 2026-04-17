@@ -20,12 +20,12 @@ namespace EpsteinMarket.Pages
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            string name = txtName.Text;
-            string login = txtLogin.Text;
+            string name = txtName.Text.Trim();
+            string login = txtLogin.Text.Trim();
             string password = txtPassword.Password;
             string passwordRepeat = txtPasswordRepeat.Password;
-            string email = txtEmail.Text;
-            string phone = txtPhone.Text;
+            string email = txtEmail.Text.Trim();
+            string phone = txtPhone.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -52,6 +52,30 @@ namespace EpsteinMarket.Pages
             {
                 MessageBox.Show("Повторите пароль");
                 txtPasswordRepeat.Focus();
+                return;
+            }
+
+            string loginValidationError = InputValidationHelper.ValidateLogin(login);
+            if (loginValidationError != null)
+            {
+                MessageBox.Show(loginValidationError);
+                txtLogin.Focus();
+                return;
+            }
+
+            string emailValidationError = InputValidationHelper.ValidateEmail(email);
+            if (emailValidationError != null)
+            {
+                MessageBox.Show(emailValidationError);
+                txtEmail.Focus();
+                return;
+            }
+
+            string phoneValidationError = InputValidationHelper.ValidatePhone(phone);
+            if (phoneValidationError != null)
+            {
+                MessageBox.Show(phoneValidationError);
+                txtPhone.Focus();
                 return;
             }
 
