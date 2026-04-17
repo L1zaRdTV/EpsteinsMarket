@@ -14,6 +14,11 @@
         <SolidColorBrush x:Key="ClassicShadowBrush" Color="#FF808080"/>
         <SolidColorBrush x:Key="ClassicFaceBrush" Color="#FFC0C0C0"/>
         <SolidColorBrush x:Key="ClassicTitleTextBrush" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FF08090D"/>
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF0F111A"/>
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FF272A39"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF71F4D2"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF7B2CF3"/>
 
         <Style TargetType="Page">
             <Setter Property="FontFamily" Value="Tahoma"/>
@@ -26,6 +31,8 @@
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Background" Value="{StaticResource ClassicFaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="FontWeight" Value="Normal"/>
@@ -64,6 +71,9 @@
             <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
@@ -74,6 +84,9 @@
             <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
@@ -83,12 +96,17 @@
             <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style x:Key="CardBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource ClassicFaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="Background" Value="#FF11131C"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="14"/>
