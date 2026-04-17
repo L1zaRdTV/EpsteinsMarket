@@ -9,7 +9,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,8">
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,8">
             <TextBlock Text="Карточка товара" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
             <Button Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>

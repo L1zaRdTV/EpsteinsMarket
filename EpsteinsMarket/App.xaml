@@ -4,30 +4,34 @@
              xmlns:local="clr-namespace:EpsteinMarket"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="ClassicLightBrush" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ClassicDarkBrush" Color="#FF404040"/>
-        <SolidColorBrush x:Key="ClassicShadowBrush" Color="#FF808080"/>
-        <SolidColorBrush x:Key="ClassicFaceBrush" Color="#FFC0C0C0"/>
-        <SolidColorBrush x:Key="ClassicTitleTextBrush" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FF08090D"/>
-        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF0F111A"/>
-        <SolidColorBrush x:Key="BorderBrushSoft" Color="#FF272A39"/>
-        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF71F4D2"/>
-        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF7B2CF3"/>
+        <SolidColorBrush x:Key="ClassicLightBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ClassicDarkBrush" Color="#000000"/>
+        <SolidColorBrush x:Key="ClassicShadowBrush" Color="#808080"/>
+        <SolidColorBrush x:Key="ClassicFaceBrush" Color="#C0C0C0"/>
+        <SolidColorBrush x:Key="ClassicTitleTextBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ClassicTitleBrush" Color="#000080"/>
+        <SolidColorBrush x:Key="ClassicWindowBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="PageBackgroundBrush" Color="#008080"/>
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#C0C0C0"/>
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#808080"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#000000"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#C0C0C0"/>
 
         <Style TargetType="Page">
             <Setter Property="FontFamily" Value="Tahoma"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
         </Style>
 
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+        </Style>
+
         <Style TargetType="Button">
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="10,2"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Background" Value="{StaticResource ClassicFaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
-            <Setter Property="Background" Value="#FF131622"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="FontWeight" Value="Normal"/>
@@ -63,12 +67,9 @@
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
+            <Setter Property="Background" Value="{StaticResource ClassicWindowBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
-            <Setter Property="Background" Value="#FF131622"/>
-            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
@@ -76,32 +77,39 @@
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
             <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
+            <Setter Property="Background" Value="{StaticResource ClassicWindowBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
-            <Setter Property="Background" Value="#FF131622"/>
-            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style TargetType="ComboBox">
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="0,4,0,10"/>
-            <Setter Property="Background" Value="{StaticResource ClassicLightBrush}"/>
+            <Setter Property="Background" Value="{StaticResource ClassicWindowBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
-            <Setter Property="Background" Value="#FF131622"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="ListView">
+            <Setter Property="Background" Value="{StaticResource ClassicWindowBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="{StaticResource ClassicWindowBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
         <Style x:Key="CardBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource ClassicFaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
-            <Setter Property="Background" Value="#FF11131C"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="14"/>
@@ -113,6 +121,13 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="{StaticResource ClassicTitleTextBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="WindowHeaderBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource ClassicTitleBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ClassicDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,8"/>
         </Style>
     </Application.Resources>
 </Application>

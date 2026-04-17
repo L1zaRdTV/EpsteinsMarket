@@ -11,7 +11,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,10">
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,10">
             <TextBlock Text="Профиль пользователя" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
             <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>
@@ -33,7 +33,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="История заказов" FontSize="22" FontWeight="Bold" Margin="0,0,0,6"/>
-            <ListView x:Name="lvOrders" Grid.Row="1" BorderThickness="0" Background="Transparent">
+            <ListView x:Name="lvOrders" Grid.Row="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Style="{StaticResource CardBorderStyle}">
@@ -63,7 +63,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="Чеки" FontSize="22" FontWeight="Bold" Margin="0,0,0,6"/>
-            <ListView x:Name="lvReceipts" Grid.Row="1" BorderThickness="0" Background="Transparent">
+            <ListView x:Name="lvReceipts" Grid.Row="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Style="{StaticResource CardBorderStyle}">
