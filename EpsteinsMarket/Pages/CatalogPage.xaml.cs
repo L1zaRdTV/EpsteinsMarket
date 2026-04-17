@@ -21,12 +21,14 @@ namespace EpsteinMarket.Pages
             if (AppConnect.CurrentUser.RoleID == 1)
             {
                 tbRole.Text = "Роль: Администратор";
-                btnAdmin.Visibility = System.Windows.Visibility.Visible;
+                btnManageProducts.Visibility = Visibility.Visible;
+                btnManageUsers.Visibility = Visibility.Visible;
             }
             else
             {
                 tbRole.Text = "Роль: Пользователь";
-                btnAdmin.Visibility = System.Windows.Visibility.Collapsed;
+                btnManageProducts.Visibility = Visibility.Collapsed;
+                btnManageUsers.Visibility = Visibility.Collapsed;
             }
             
             LoadCategories();
@@ -41,9 +43,14 @@ namespace EpsteinMarket.Pages
 
         }
 
-        private void btnAdmin_Click(object sender, RoutedEventArgs e)
+        private void btnManageProducts_Click(object sender, RoutedEventArgs e)
         {
             AppFrame.frmMain.Navigate(new AdminProductsPage());
+        }
+
+        private void btnManageUsers_Click(object sender, RoutedEventArgs e)
+        {
+            AppFrame.frmMain.Navigate(new AdminUsersPage());
         }
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
