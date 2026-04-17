@@ -13,6 +13,7 @@ namespace EpsteinMarket.Pages
 {
     public partial class AddEditProductPage : Page
     {
+        private const int MaxFieldLength = 200;
         private Products currentProduct;
 
         public AddEditProductPage(Products product)
@@ -85,6 +86,16 @@ namespace EpsteinMarket.Pages
             {
                 MessageBox.Show("Введите название товара");
                 txtName.Focus();
+                return;
+            }
+
+            if (txtName.Text.Length > MaxFieldLength ||
+                txtDescription.Text.Length > MaxFieldLength ||
+                txtPrice.Text.Length > MaxFieldLength ||
+                txtQuantity.Text.Length > MaxFieldLength ||
+                txtImage.Text.Length > MaxFieldLength)
+            {
+                MessageBox.Show("Каждое поле должно быть не длиннее 200 символов");
                 return;
             }
 
@@ -296,9 +307,9 @@ namespace EpsteinMarket.Pages
             if (string.IsNullOrWhiteSpace(newCategoryName))
                 return;
 
-            if (newCategoryName.Length > 100)
+            if (newCategoryName.Length > MaxFieldLength)
             {
-                MessageBox.Show("Название слишком длинное. Максимум 100 символов.");
+                MessageBox.Show("Название слишком длинное. Максимум 200 символов.");
                 return;
             }
 
@@ -328,9 +339,9 @@ namespace EpsteinMarket.Pages
             if (string.IsNullOrWhiteSpace(newBrandName))
                 return;
 
-            if (newBrandName.Length > 50)
+            if (newBrandName.Length > MaxFieldLength)
             {
-                MessageBox.Show("Название слишком длинное. Максимум 50 символов.");
+                MessageBox.Show("Название слишком длинное. Максимум 200 символов.");
                 return;
             }
             if (existingBrand != null)

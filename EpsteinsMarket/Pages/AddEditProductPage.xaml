@@ -18,10 +18,10 @@
             <Border Style="{StaticResource CardBorderStyle}" Width="560" HorizontalAlignment="Center" Padding="20">
                 <StackPanel>
                     <TextBlock Text="Название товара" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtName" MaxLength="150"/>
+                    <TextBox x:Name="txtName" MaxLength="200"/>
 
                     <TextBlock Text="Описание" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtDescription" Height="90" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="120"/>
+                    <TextBox x:Name="txtDescription" Height="90" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="200"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -31,12 +31,12 @@
 
                         <StackPanel Grid.Column="0" Margin="0,0,8,0">
                             <TextBlock Text="Цена" FontWeight="SemiBold"/>
-                            <TextBox x:Name="txtPrice" MaxLength="15"/>
+                            <TextBox x:Name="txtPrice" MaxLength="200"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="8,0,0,0">
                             <TextBlock Text="Количество" FontWeight="SemiBold"/>
-                            <TextBox x:Name="txtQuantity" MaxLength="4"/>
+                            <TextBox x:Name="txtQuantity" MaxLength="200"/>
                         </StackPanel>
                     </Grid>
 
@@ -66,7 +66,7 @@
                     <ComboBox x:Name="cmbStatus" Margin="0,4,0,10"/>
 
                     <TextBlock Text="Изображение" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtImage" MaxLength="255" IsReadOnly="True"/>
+                    <TextBox x:Name="txtImage" MaxLength="200" IsReadOnly="True"/>
                     <Button x:Name="btnChooseImage" Content="Выбрать изображение" Click="btnChooseImage_Click" Margin="0,0,0,10"/>
 
                     <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,12">

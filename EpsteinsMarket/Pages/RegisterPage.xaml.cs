@@ -11,6 +11,8 @@ namespace EpsteinMarket.Pages
     /// </summary>
     public partial class RegisterPage : Page
     {
+        private const int MaxFieldLength = 200;
+
         public RegisterPage()
         {
             InitializeComponent();
@@ -50,6 +52,17 @@ namespace EpsteinMarket.Pages
             {
                 MessageBox.Show("Повторите пароль");
                 txtPasswordRepeat.Focus();
+                return;
+            }
+
+            if (name.Length > MaxFieldLength ||
+                login.Length > MaxFieldLength ||
+                password.Length > MaxFieldLength ||
+                passwordRepeat.Length > MaxFieldLength ||
+                email.Length > MaxFieldLength ||
+                phone.Length > MaxFieldLength)
+            {
+                MessageBox.Show("Каждое поле должно быть не длиннее 200 символов");
                 return;
             }
 

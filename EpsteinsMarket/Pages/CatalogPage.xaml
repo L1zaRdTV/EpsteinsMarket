@@ -73,7 +73,7 @@
                     </StackPanel>
                     <StackPanel Width="200" Margin="4,0">
                         <TextBlock Text="Поиск" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                        <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged"/>
+                        <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged" MaxLength="200"/>
                     </StackPanel>
                 </WrapPanel>
             </Grid>
