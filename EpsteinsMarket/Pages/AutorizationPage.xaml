@@ -34,10 +34,10 @@
                            Margin="0,0,0,20"/>
 
                 <TextBlock Text="Логин" FontSize="15" FontWeight="SemiBold"/>
-                <TextBox x:Name="txtLogin" MaxLength="50"/>
+                <TextBox x:Name="txtLogin" MaxLength="200"/>
 
                 <TextBlock Text="Пароль" FontSize="15" FontWeight="SemiBold"/>
-                <PasswordBox x:Name="txtPassword" MaxLength="50"/>
+                <PasswordBox x:Name="txtPassword" MaxLength="200"/>
 
                 <Button x:Name="btnLogin"
                         Content="Войти"

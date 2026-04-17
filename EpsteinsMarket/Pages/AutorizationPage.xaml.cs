@@ -10,6 +10,8 @@ namespace EpsteinMarket.Pages
     /// </summary>
     public partial class AutorizationPage : Page
     {
+        private const int MaxFieldLength = 200;
+
         public AutorizationPage()
         {
             InitializeComponent();
@@ -31,6 +33,12 @@ namespace EpsteinMarket.Pages
             {
                 MessageBox.Show("Введите пароль");
                 txtPassword.Focus();
+                return;
+            }
+
+            if (login.Length > MaxFieldLength || password.Length > MaxFieldLength)
+            {
+                MessageBox.Show("Логин и пароль должны быть не длиннее 200 символов");
                 return;
             }
 

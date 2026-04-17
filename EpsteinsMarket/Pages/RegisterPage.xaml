@@ -25,17 +25,17 @@
                                Margin="0,0,0,14"/>
 
                     <TextBlock Text="ФИО:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtName" MaxLength="70"/>
+                    <TextBox x:Name="txtName" MaxLength="200"/>
                     <TextBlock Text="Логин:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtLogin" MaxLength="50"/>
+                    <TextBox x:Name="txtLogin" MaxLength="200"/>
                     <TextBlock Text="Пароль:" FontWeight="SemiBold"/>
-                    <PasswordBox x:Name="txtPassword" MaxLength="50"/>
+                    <PasswordBox x:Name="txtPassword" MaxLength="200"/>
                     <TextBlock Text="Повторите пароль:" FontWeight="SemiBold"/>
-                    <PasswordBox x:Name="txtPasswordRepeat" MaxLength="50"/>
+                    <PasswordBox x:Name="txtPasswordRepeat" MaxLength="200"/>
                     <TextBlock Text="Электронная почта:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtEmail" MaxLength="50"/>
+                    <TextBox x:Name="txtEmail" MaxLength="200"/>
                     <TextBlock Text="Номер телефона:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtPhone" MaxLength="30"/>
+                    <TextBox x:Name="txtPhone" MaxLength="200"/>
 
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
