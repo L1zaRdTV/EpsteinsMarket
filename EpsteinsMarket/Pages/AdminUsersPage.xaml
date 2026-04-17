@@ -10,7 +10,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Background="{StaticResource PanelBackgroundBrush}" LastChildFill="False" Margin="0,0,0,8">
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,8">
             <TextBlock Text="Админ-панель пользователей" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
             <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>
@@ -22,7 +22,7 @@
             </WrapPanel>
         </Border>
 
-        <ListView x:Name="lvUsers" Grid.Row="2" Margin="12,0,12,12" BorderThickness="0" Background="Transparent">
+        <ListView x:Name="lvUsers" Grid.Row="2" Margin="12,0,12,12">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource CardBorderStyle}">
