@@ -1,0 +1,50 @@
+<Page x:Class="EpsteinMarket.Pages.AdminOrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AdminOrdersPage">
+
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,8">
+            <TextBlock Text="Админ-панель заказов" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
+            <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
+        </DockPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,8">
+            <WrapPanel>
+                <Button x:Name="btnRefresh" Content="Обновить" Click="btnRefresh_Click"/>
+                <Button x:Name="btnOpenDetails" Content="Детали" Click="btnOpenDetails_Click"/>
+                <Button x:Name="btnCancelOrder" Content="Отменить заказ" Click="btnCancelOrder_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+            </WrapPanel>
+        </Border>
+
+        <ListView x:Name="lvOrders" Grid.Row="2" Margin="12,0,12,12">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="220"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding OrderID, StringFormat=Заказ #{0}}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding UserFullName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" Text="{Binding OrderDate, StringFormat=Дата: {0:dd.MM.yyyy HH:mm}}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="{Binding TotalAmount, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="{Binding StatusName, StringFormat=Статус: {0}}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
