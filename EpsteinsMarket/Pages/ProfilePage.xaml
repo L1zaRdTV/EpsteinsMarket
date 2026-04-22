@@ -48,7 +48,13 @@
                                 <TextBlock Grid.Column="0" Text="{Binding OrderID, StringFormat=Заказ #{0}}" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="1" Text="{Binding OrderDate, StringFormat=Дата: {0}}" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="2" Text="{Binding TotalAmount, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="3" Text="{Binding OrderStatuses.StatusName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding OrderStatuses.StatusName}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <Button Content="Детали"
+                                            Width="70"
+                                            Tag="{Binding}"
+                                            Click="btnOpenOrderDetails_Click"/>
+                                </StackPanel>
                             </Grid>
                         </Border>
                     </DataTemplate>

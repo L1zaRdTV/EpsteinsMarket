@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using EpsteinMarket.ApplicationData;
+using System.Data.Entity.Infrastructure;
 
 namespace EpsteinMarket.Pages
 {
@@ -58,11 +59,48 @@ namespace EpsteinMarket.Pages
 
             if (result == MessageBoxResult.Yes)
             {
-                AppConnect.model01.Products.Remove(selectedProduct);
-                AppConnect.model01.SaveChanges();
+                bool hasOrderItems = AppConnect.model01.OrderItems
+                    .Any(x => x.ProductID == selectedProduct.ProductID);
 
-                MessageBox.Show("Товар удален");
-                LoadProducts();
+                var cartItems = AppConnect.model01.CartItems
+                    .Where(x => x.ProductID == selectedProduct.ProductID)
+                    .ToList();
+
+                foreach (var cartItem in cartItems)
+                {
+                    AppConnect.model01.CartItems.Remove(cartItem);
+                }
+
+                try
+                {
+                    if (hasOrderItems)
+                    {
+                        var endedStatus = AppConnect.model01.ProductStatuses
+                            .FirstOrDefault(x => x.StatusName.ToLower().Contains("законч"));
+
+                        if (endedStatus != null)
+                        {
+                            selectedProduct.StatusID = endedStatus.StatusID;
+                        }
+
+                        selectedProduct.QuantityInStock = 0;
+
+                        AppConnect.model01.SaveChanges();
+                        MessageBox.Show("Товар есть в истории заказов, поэтому он снят с продажи и удален из корзин.");
+                    }
+                    else
+                    {
+                        AppConnect.model01.Products.Remove(selectedProduct);
+                        AppConnect.model01.SaveChanges();
+                        MessageBox.Show("Товар удален");
+                    }
+
+                    LoadProducts();
+                }
+                catch (DbUpdateException)
+                {
+                    MessageBox.Show("Не удалось удалить товар из-за связанных данных. Товар оставлен в системе.");
+                }
             }
         }
 

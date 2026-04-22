@@ -1,0 +1,57 @@
+<Page x:Class="EpsteinMarket.Pages.OrderDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="OrderDetailsPage">
+
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,10">
+            <TextBlock Text="Детали заказа" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
+            <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
+        </DockPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,10">
+            <StackPanel>
+                <TextBlock x:Name="tbOrderNumber" FontSize="22" FontWeight="Bold"/>
+                <TextBlock x:Name="tbOrderDate" Margin="0,8,0,0" FontSize="16"/>
+                <TextBlock x:Name="tbOrderStatus" Margin="0,8,0,0" FontSize="16"/>
+                <TextBlock x:Name="tbOrderTotal" Margin="0,8,0,0" FontSize="16" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="12,0,12,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Позиции заказа" FontSize="22" FontWeight="Bold" Margin="0,0,0,6"/>
+            <ListView x:Name="lvOrderItems" Grid.Row="1">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardBorderStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="160"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding ProductName}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat=Кол-во: {0}}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding PriceAtMoment, StringFormat=Цена: {0} ₽}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="{Binding TotalPrice, StringFormat=Сумма: {0} ₽}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
