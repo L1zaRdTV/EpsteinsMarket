@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
+using System.Text;
 using QRCoder;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -223,13 +224,37 @@ namespace EpsteinMarket.Pages
             addLine("Итоговая сумма: " + order.TotalAmount + " ₽", boldFont);
             addLine(" ", normalFont);
 
-            string orderDetailsLink = "https://epsteins.market/orders/" + order.OrderID;
-            addLine("Детали заказа: " + orderDetailsLink, normalFont);
-            AddQrCodeToDocument(document, orderDetailsLink);
+            string qrOrderDetails = BuildOrderQrContent(order, cartItems);
+            addLine("QR содержит детали заказа для PDF", normalFont);
+            AddQrCodeToDocument(document, qrOrderDetails);
 
             document.Close();
 
             return fullPath;
+        }
+
+
+        private string BuildOrderQrContent(Orders order, List<CartItems> cartItems)
+        {
+            StringBuilder qrBuilder = new StringBuilder();
+            qrBuilder.AppendLine("Детали заказа");
+            qrBuilder.AppendLine("Номер заказа: " + order.OrderID);
+            qrBuilder.AppendLine("Дата заказа: " + order.OrderDate.ToString("dd.MM.yyyy HH:mm"));
+            qrBuilder.AppendLine("Покупатель: " + AppConnect.CurrentUser.FullName);
+            qrBuilder.AppendLine("Логин: " + AppConnect.CurrentUser.Login);
+            qrBuilder.AppendLine("Состав:");
+
+            foreach (var item in cartItems)
+            {
+                qrBuilder.AppendLine(
+                    item.Products.ProductName +
+                    " x" + item.Quantity +
+                    " = " + (item.Quantity * item.PriceAtMoment) + " ₽");
+            }
+
+            qrBuilder.AppendLine("Итог: " + order.TotalAmount + " ₽");
+
+            return qrBuilder.ToString();
         }
 
         private void AddQrCodeToDocument(Document document, string qrContent)
