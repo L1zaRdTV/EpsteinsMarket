@@ -75,5 +75,20 @@ namespace EpsteinMarket.Pages
 
             Process.Start(selectedReceipt.PdfPath);
         }
+
+        private void btnOpenOrderDetails_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            if (button == null)
+                return;
+
+            Orders selectedOrder = button.Tag as Orders;
+
+            if (selectedOrder == null)
+                return;
+
+            AppFrame.frmMain.Navigate(new OrderDetailsPage(selectedOrder.OrderID));
+        }
     }
 }

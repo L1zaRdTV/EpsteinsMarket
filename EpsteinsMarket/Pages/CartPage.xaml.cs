@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
+using QRCoder;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 
 namespace EpsteinMarket.Pages
@@ -138,9 +142,22 @@ namespace EpsteinMarket.Pages
 
             AppConnect.model01.SaveChanges();
 
-            MessageBox.Show("Заказ успешно оформлен");
+            OpenReceiptPdf(pdfPath);
+            MessageBox.Show("Заказ успешно оформлен. Чек открыт автоматически.");
             LoadCartItems();
         }
+
+        private void OpenReceiptPdf(string pdfPath)
+        {
+            if (!File.Exists(pdfPath))
+            {
+                MessageBox.Show("Файл чека не найден");
+                return;
+            }
+
+            Process.Start(pdfPath);
+        }
+
         private string GenerateReceiptPdf(Orders order, List<CartItems> cartItems)
         {
             string receiptsFolder = System.IO.Path.Combine(
@@ -157,26 +174,26 @@ namespace EpsteinMarket.Pages
 
             string fontPath = @"C:\Windows\Fonts\arial.ttf";
 
-            iTextSharp.text.pdf.BaseFont baseFont =
-                iTextSharp.text.pdf.BaseFont.CreateFont(
+            BaseFont baseFont =
+                BaseFont.CreateFont(
                     fontPath,
-                    iTextSharp.text.pdf.BaseFont.IDENTITY_H,
-                    iTextSharp.text.pdf.BaseFont.EMBEDDED);
+                    BaseFont.IDENTITY_H,
+                    BaseFont.EMBEDDED);
 
-            iTextSharp.text.Font normalFont = new iTextSharp.text.Font(baseFont, 12);
-            iTextSharp.text.Font boldFont = new iTextSharp.text.Font(baseFont, 14, iTextSharp.text.Font.BOLD);
+            Font normalFont = new Font(baseFont, 12);
+            Font boldFont = new Font(baseFont, 14, Font.BOLD);
 
-            iTextSharp.text.Document document = new iTextSharp.text.Document();
-            iTextSharp.text.pdf.PdfWriter.GetInstance(
+            Document document = new Document();
+            PdfWriter.GetInstance(
                 document,
                 new FileStream(fullPath, FileMode.Create));
 
             document.Open();
 
-            Action<string, iTextSharp.text.Font> addLine = (textLine, font) =>
+            Action<string, Font> addLine = (textLine, font) =>
             {
-                iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph();
-                paragraph.Add(new iTextSharp.text.Chunk(textLine, font));
+                Paragraph paragraph = new Paragraph();
+                paragraph.Add(new Chunk(textLine, font));
                 document.Add(paragraph);
             };
 
@@ -204,10 +221,31 @@ namespace EpsteinMarket.Pages
 
             addLine(" ", normalFont);
             addLine("Итоговая сумма: " + order.TotalAmount + " ₽", boldFont);
+            addLine(" ", normalFont);
+
+            string orderDetailsLink = "https://epsteins.market/orders/" + order.OrderID;
+            addLine("Детали заказа: " + orderDetailsLink, normalFont);
+            AddQrCodeToDocument(document, orderDetailsLink);
 
             document.Close();
 
             return fullPath;
+        }
+
+        private void AddQrCodeToDocument(Document document, string qrContent)
+        {
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            {
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrContent, QRCodeGenerator.ECCLevel.Q);
+
+                PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
+                byte[] qrCodeBytes = qrCode.GetGraphic(20);
+
+                iTextSharp.text.Image qrImage = iTextSharp.text.Image.GetInstance(qrCodeBytes);
+                qrImage.ScaleAbsolute(140f, 140f);
+                qrImage.Alignment = Element.ALIGN_LEFT;
+                document.Add(qrImage);
+            }
         }
     }
 
