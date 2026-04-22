@@ -87,6 +87,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AdminOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\AdminUsersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +130,9 @@
     </Compile>
     <Compile Include="Pages\AdminProductsPage.xaml.cs">
       <DependentUpon>AdminProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AdminOrdersPage.xaml.cs">
+      <DependentUpon>AdminOrdersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AdminUsersPage.xaml.cs">
       <DependentUpon>AdminUsersPage.xaml</DependentUpon>

@@ -28,6 +28,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Button x:Name="btnManageProducts" Content="Товары" Click="btnManageProducts_Click"/>
                     <Button x:Name="btnManageUsers" Content="Пользователи" Click="btnManageUsers_Click"/>
+                    <Button x:Name="btnManageOrders" Content="Заказы" Click="btnManageOrders_Click"/>
                     <Button x:Name="BtnCart" Content="Корзина" Click="BtnCart_Click"/>
                     <Button x:Name="btnExit" Content="Выйти" Click="btnExit_Click"/>
                     <Button x:Name="btnProfile"
