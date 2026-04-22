@@ -19,6 +19,8 @@ namespace EpsteinMarket.Pages
     /// </summary>
     public partial class CartPage : Page
     {
+        private const string StoreName = "EpsteinsMarket";
+
         public CartPage()
         {
             InitializeComponent();
@@ -198,7 +200,7 @@ namespace EpsteinMarket.Pages
                 document.Add(paragraph);
             };
 
-            addLine("Чек магазина клонов", boldFont);
+            addLine("Чек магазина " + StoreName, boldFont);
             addLine(" ", normalFont);
             addLine("Номер заказа: " + order.OrderID, normalFont);
             addLine("Дата заказа: " + order.OrderDate.ToString("dd.MM.yyyy HH:mm"), normalFont);
@@ -225,8 +227,8 @@ namespace EpsteinMarket.Pages
             addLine(" ", normalFont);
 
             string qrOrderDetails = BuildOrderQrContent(order, cartItems);
-            addLine("QR содержит детали заказа для PDF", normalFont);
             AddQrCodeToDocument(document, qrOrderDetails);
+            addLine("Спасибо за покупку в " + StoreName + "!", normalFont);
 
             document.Close();
 
@@ -237,6 +239,7 @@ namespace EpsteinMarket.Pages
         private string BuildOrderQrContent(Orders order, List<CartItems> cartItems)
         {
             StringBuilder qrBuilder = new StringBuilder();
+            qrBuilder.AppendLine("Магазин: " + StoreName);
             qrBuilder.AppendLine("Детали заказа");
             qrBuilder.AppendLine("Номер заказа: " + order.OrderID);
             qrBuilder.AppendLine("Дата заказа: " + order.OrderDate.ToString("dd.MM.yyyy HH:mm"));
