@@ -48,21 +48,18 @@ namespace EpsteinMarket.Pages
 
         private void LoadPreviewImage(string imageName)
         {
-            if (string.IsNullOrWhiteSpace(imageName))
+            string imagePath = ImagePathHelper.ResolveImageSourceOrDefault(imageName);
+
+            if (string.IsNullOrWhiteSpace(imagePath))
                 return;
 
-            string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", imageName);
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
 
-            if (File.Exists(imagePath))
-            {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(imagePath);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-
-                imgPreview.Source = bitmap;
-            }
+            imgPreview.Source = bitmap;
         }
 
         private void LoadComboBoxes()
@@ -216,7 +213,7 @@ namespace EpsteinMarket.Pages
 
             if (dialog.ShowDialog() == true)
             {
-                string imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+                string imagesFolder = GetProductPhotoFolder();
 
                 if (!Directory.Exists(imagesFolder))
                 {
@@ -229,15 +226,35 @@ namespace EpsteinMarket.Pages
                 File.Copy(dialog.FileName, destinationPath, true);
 
                 txtImage.Text = fileName;
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(destinationPath);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-
-                imgPreview.Source = bitmap;
+                LoadPreviewImage(fileName);
             }
+        }
+
+
+        private static string GetProductPhotoFolder()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string[] candidates =
+            {
+                Path.Combine(baseDir, "Photo"),
+                Path.GetFullPath(Path.Combine(baseDir, "..", "Photo")),
+                Path.GetFullPath(Path.Combine(baseDir, "..", "..", "Photo")),
+                Path.GetFullPath(Path.Combine(baseDir, "..", "..", "..", "Photo"))
+            };
+
+            foreach (string candidate in candidates)
+            {
+                if (Directory.Exists(candidate))
+                    return candidate;
+            }
+
+            Directory.CreateDirectory(candidates[0]);
+            return candidates[0];
+        }
+
+        private void txtImage_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoadPreviewImage(txtImage.Text);
         }
         private void LoadAdditionalImages()
         {
@@ -256,7 +273,7 @@ namespace EpsteinMarket.Pages
 
             if (dialog.ShowDialog() == true)
             {
-                string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+                string imagesFolder = GetProductPhotoFolder();
 
                 if (!Directory.Exists(imagesFolder))
                 {

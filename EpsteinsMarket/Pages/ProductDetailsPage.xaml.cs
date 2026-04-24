@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,37 +38,21 @@ namespace EpsteinMarket.Pages
 
         private void LoadMainImage()
         {
-            if (string.IsNullOrWhiteSpace(currentProduct.MainImage))
+            string imagePath = ImagePathHelper.ResolveImageSourceOrDefault(currentProduct.MainImage);
+
+            if (string.IsNullOrWhiteSpace(imagePath))
                 return;
 
-            string imagePath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Images",
-                currentProduct.MainImage);
-
-            if (File.Exists(imagePath))
-            {
-                imgMain.Source = new BitmapImage(new Uri(imagePath));
-            }
+            imgMain.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
         }
 
         private void LoadAdditionalImages()
         {
             List<string> imagePaths = new List<string>();
 
-            // Сначала добавляем главную картинку
-            if (!string.IsNullOrWhiteSpace(currentProduct.MainImage))
-            {
-                string mainImagePath = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    "Images",
-                    currentProduct.MainImage);
-
-                if (File.Exists(mainImagePath))
-                {
-                    imagePaths.Add(mainImagePath);
-                }
-            }
+            string mainImagePath = ImagePathHelper.ResolveImageSourceOrDefault(currentProduct.MainImage);
+            if (!string.IsNullOrWhiteSpace(mainImagePath))
+                imagePaths.Add(mainImagePath);
 
             // Потом добавляем дополнительные изображения
             var images = AppConnect.model01.ProductImages
@@ -78,12 +61,9 @@ namespace EpsteinMarket.Pages
 
             foreach (var image in images)
             {
-                string imagePath = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    "Images",
-                    image.ImagePath);
+                string imagePath = ImagePathHelper.ResolveImageSourceOrDefault(image.ImagePath);
 
-                if (File.Exists(imagePath) && !imagePaths.Contains(imagePath))
+                if (!string.IsNullOrWhiteSpace(imagePath) && !imagePaths.Contains(imagePath))
                 {
                     imagePaths.Add(imagePath);
                 }
@@ -147,7 +127,7 @@ namespace EpsteinMarket.Pages
             if (string.IsNullOrWhiteSpace(selectedImage))
                 return;
 
-            imgMain.Source = new BitmapImage(new Uri(selectedImage));
+            imgMain.Source = new BitmapImage(new Uri(selectedImage, UriKind.RelativeOrAbsolute));
         }
     }
 }
