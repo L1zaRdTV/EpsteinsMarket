@@ -62,6 +62,16 @@ namespace EpsteinMarket.Pages
             imgPreview.Source = bitmap;
         }
 
+        private static BitmapImage BuildBitmapImage(string imagePath)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
+        }
+
         private void LoadComboBoxes()
         {
             cmbCategory.ItemsSource = AppConnect.model01.Categories.ToList();
