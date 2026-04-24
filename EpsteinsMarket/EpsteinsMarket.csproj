@@ -74,6 +74,7 @@
     <Compile Include="ApplicationData\AppConnect.cs" />
     <Compile Include="ApplicationData\AppFrame.cs" />
     <Compile Include="ApplicationData\DatabaseModels.cs" />
+    <Compile Include="ApplicationData\ImagePathHelper.cs" />
     <Compile Include="ApplicationData\InputValidationHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
