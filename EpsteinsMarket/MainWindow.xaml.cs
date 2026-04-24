@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Data.Entity;
 using EpsteinMarket.ApplicationData;
 using EpsteinMarket.Pages;
 
@@ -19,7 +20,9 @@ namespace EpsteinMarket
         {
             try
             {
+                Database.SetInitializer<EpsteinMarketDBEntities>(null);
                 AppConnect.model01 = new EpsteinMarketDBEntities();
+                AppConnect.model01.Database.Initialize(false);
             }
             catch (System.Exception ex)
             {
