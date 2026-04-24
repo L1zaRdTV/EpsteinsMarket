@@ -53,15 +53,13 @@ namespace EpsteinMarket.Pages
             if (string.IsNullOrWhiteSpace(imagePath))
                 return;
 
-            try
-            {
-                imgPreview.Source = BuildBitmapImage(imagePath);
-            }
-            catch (System.IO.IOException)
-            {
-                string fallbackPath = ImagePathHelper.ResolveImageSourceOrDefault(null);
-                imgPreview.Source = BuildBitmapImage(fallbackPath);
-            }
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+
+            imgPreview.Source = bitmap;
         }
 
         private static BitmapImage BuildBitmapImage(string imagePath)

@@ -6,7 +6,7 @@ namespace EpsteinMarket.ApplicationData
 {
     internal static class ImagePathHelper
     {
-        private const string DefaultPlaceholderResourcePath = "pack://application:,,,/Pages/free-icon-user-847969.png";
+        private const string DefaultPlaceholderResourcePath = "/Pages/free-icon-user-847969.png";
 
         public static string ResolveImageSource(string rawPath)
         {
@@ -31,31 +31,23 @@ namespace EpsteinMarket.ApplicationData
             string trimmedPath = rawPath.Trim();
             string normalizedPath = trimmedPath.Replace("\\", "/");
 
-            if (normalizedPath.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            if (normalizedPath.StartsWith("pack://", StringComparison.OrdinalIgnoreCase) || normalizedPath.StartsWith("/", StringComparison.Ordinal))
                 return normalizedPath;
 
-            if (normalizedPath.StartsWith("/", StringComparison.Ordinal))
-                return "pack://application:,,," + normalizedPath;
-
-            if (normalizedPath.StartsWith("Pages/", StringComparison.OrdinalIgnoreCase))
-                return "pack://application:,,,/" + normalizedPath;
-
-            if (Path.IsPathRooted(trimmedPath))
-                return File.Exists(trimmedPath) ? trimmedPath : null;
-
-            string relativePath = trimmedPath.TrimStart('\\', '/');
+            if (Path.IsPathRooted(trimmedPath) && File.Exists(trimmedPath))
+                return trimmedPath;
 
             foreach (string root in GetSearchRoots())
             {
-                string directCandidate = Path.Combine(root, relativePath);
+                string directCandidate = Path.Combine(root, trimmedPath);
                 if (File.Exists(directCandidate))
                     return directCandidate;
 
-                string photoCandidate = Path.Combine(root, "Photo", relativePath);
+                string photoCandidate = Path.Combine(root, "Photo", trimmedPath);
                 if (File.Exists(photoCandidate))
                     return photoCandidate;
 
-                string legacyImagesCandidate = Path.Combine(root, "Images", relativePath);
+                string legacyImagesCandidate = Path.Combine(root, "Images", trimmedPath);
                 if (File.Exists(legacyImagesCandidate))
                     return legacyImagesCandidate;
             }
