@@ -66,18 +66,7 @@ namespace EpsteinMarket.Pages
         }
         private string GetImagePath(string imageName)
         {
-            if (string.IsNullOrWhiteSpace(imageName))
-                return null;
-
-            string imagePath = System.IO.Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Images",
-                imageName);
-
-            if (System.IO.File.Exists(imagePath))
-                return imagePath;
-
-            return null;
+            return ImagePathHelper.ResolveImageSourceOrDefault(imageName);
         }
         private void btnDetails_Click(object sender, RoutedEventArgs e)
         {

@@ -66,7 +66,7 @@
                     <ComboBox x:Name="cmbStatus" Margin="0,4,0,10"/>
 
                     <TextBlock Text="Изображение" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtImage" MaxLength="200" IsReadOnly="True"/>
+                    <TextBox x:Name="txtImage" MaxLength="200" TextChanged="txtImage_TextChanged"/>
                     <Button x:Name="btnChooseImage" Content="Выбрать изображение" Click="btnChooseImage_Click" Margin="0,0,0,10"/>
 
                     <Border BorderBrush="{StaticResource ClassicDarkBrush}" BorderThickness="1" Padding="10" Margin="0,0,0,12">
