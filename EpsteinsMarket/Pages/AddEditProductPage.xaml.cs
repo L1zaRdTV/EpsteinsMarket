@@ -1,4 +1,4 @@
-﻿using EpsteinMarket.ApplicationData;
+using EpsteinMarket.ApplicationData;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -52,16 +52,7 @@ namespace EpsteinMarket.Pages
 
             if (string.IsNullOrWhiteSpace(imagePath))
                 return;
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-
-            imgPreview.Source = bitmap;
         }
-
         private static BitmapImage BuildBitmapImage(string imagePath)
         {
             BitmapImage bitmap = new BitmapImage();
