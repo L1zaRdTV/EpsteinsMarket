@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="EntityFramework" />
     <Reference Include="EntityFramework.SqlServer" />
+    <Reference Include="MySql.Data" />
+    <Reference Include="MySql.Data.EntityFramework" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="QRCoder" />
     <Reference Include="itextsharp" />
@@ -76,6 +78,7 @@
     <Compile Include="ApplicationData\DatabaseModels.cs" />
     <Compile Include="ApplicationData\ImagePathHelper.cs" />
     <Compile Include="ApplicationData\InputValidationHelper.cs" />
+    <Compile Include="ApplicationData\WarehouseService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -167,6 +170,7 @@
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.33" />
     <PackageReference Include="iTextSharp" Version="5.5.13.5" />
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
