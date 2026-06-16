@@ -1,7 +1,7 @@
-﻿<Page x:Class="EpsteinMarket.Pages.AddEditProductPage"
+<Page x:Class="EpsteinMarket.Pages.ProductCardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="AddEditProductPage">
+      Title="ProductCardPage">
 
     <Grid Background="{StaticResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
@@ -51,7 +51,7 @@
                         <Button x:Name="btnAddCategory" Grid.Column="1" Content="+ Категория" Click="btnAddCategory_Click"/>
                     </Grid>
 
-                    <TextBlock Text="Бренд" FontWeight="SemiBold"/>
+                    <TextBlock Text="Поставщик" FontWeight="SemiBold"/>
                     <Grid Margin="0,4,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -59,32 +59,11 @@
                         </Grid.ColumnDefinitions>
 
                         <ComboBox x:Name="cmbBrand" Grid.Column="0" Margin="0,0,10,0"/>
-                        <Button x:Name="btnAddBrand" Grid.Column="1" Content="+ Бренд" Click="btnAddBrand_Click"/>
+                        <Button x:Name="btnAddBrand" Grid.Column="1" Content="+ Поставщик" Click="btnAddBrand_Click"/>
                     </Grid>
 
-                    <TextBlock Text="Статус" FontWeight="SemiBold"/>
+                    <TextBlock Text="Единица измерения" FontWeight="SemiBold"/>
                     <ComboBox x:Name="cmbStatus" Margin="0,4,0,10"/>
-
-                    <TextBlock Text="Изображение" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtImage" MaxLength="200" TextChanged="txtImage_TextChanged"/>
-                    <Button x:Name="btnChooseImage" Content="Выбрать изображение" Click="btnChooseImage_Click" Margin="0,0,0,10"/>
-
-                    <Border BorderBrush="{StaticResource ClassicDarkBrush}" BorderThickness="1" Padding="10" Margin="0,0,0,12">
-                        <Image x:Name="imgPreview" Height="150" Stretch="Uniform"/>
-                    </Border>
-
-                    <TextBlock Text="Дополнительные изображения" FontWeight="SemiBold"/>
-                    <ListBox x:Name="lbAdditionalImages" Height="120" Margin="0,4,0,10"/>
-
-                    <Grid Margin="0,0,0,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Button x:Name="btnAddAdditionalImage" Grid.Column="0" Content="Добавить изображение" Margin="0,0,8,0" Click="btnAddAdditionalImage_Click"/>
-                        <Button x:Name="btnRemoveAdditionalImage" Grid.Column="1" Content="Удалить выбранное" Margin="8,0,0,0" Click="btnRemoveAdditionalImage_Click"/>
-                    </Grid>
 
                     <Button x:Name="btnSave" Content="Сохранить" Click="btnSave_Click" Style="{StaticResource PrimaryButtonStyle}"/>
                 </StackPanel>

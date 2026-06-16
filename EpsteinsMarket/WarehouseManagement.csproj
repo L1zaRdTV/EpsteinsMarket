@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CF097DEA-3ECE-4B99-B3D5-0154D8D0C727}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>EpsteinsMarket</RootNamespace>
-    <AssemblyName>EpsteinsMarket</AssemblyName>
+    <RootNamespace>WarehouseManagement</RootNamespace>
+    <AssemblyName>WarehouseManagement</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,20 +39,12 @@
     <Reference Include="EntityFramework.SqlServer" />
     <Reference Include="MySql.Data" />
     <Reference Include="MySql.Data.EntityFramework" />
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="QRCoder" />
-    <Reference Include="itextsharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -76,22 +68,21 @@
     <Compile Include="ApplicationData\AppConnect.cs" />
     <Compile Include="ApplicationData\AppFrame.cs" />
     <Compile Include="ApplicationData\DatabaseModels.cs" />
-    <Compile Include="ApplicationData\ImagePathHelper.cs" />
     <Compile Include="ApplicationData\InputValidationHelper.cs" />
     <Compile Include="ApplicationData\WarehouseService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\AddEditProductPage.xaml">
+    <Page Include="Pages\ProductCardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\AdminProductsPage.xaml">
+    <Page Include="Pages\WarehouseProductsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\AdminOrdersPage.xaml">
+    <Page Include="Pages\ShipmentsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,68 +90,61 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\AutorizationPage.xaml">
+    <Page Include="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\CartPage.xaml">
+    <Page Include="Pages\StockBalancesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\CatalogPage.xaml">
+    <Page Include="Pages\InventoryOverviewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ProductDetailsPage.xaml">
+    <Page Include="Pages\StockItemDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\OrderDetailsPage.xaml">
+    <Page Include="Pages\EmployeeProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ProfilePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\RegisterPage.xaml">
+    <Page Include="Pages\UserRegistrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pages\AddEditProductPage.xaml.cs">
-      <DependentUpon>AddEditProductPage.xaml</DependentUpon>
+    <Compile Include="Pages\ProductCardPage.xaml.cs">
+      <DependentUpon>ProductCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\AdminProductsPage.xaml.cs">
-      <DependentUpon>AdminProductsPage.xaml</DependentUpon>
+    <Compile Include="Pages\WarehouseProductsPage.xaml.cs">
+      <DependentUpon>WarehouseProductsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\AdminOrdersPage.xaml.cs">
-      <DependentUpon>AdminOrdersPage.xaml</DependentUpon>
+    <Compile Include="Pages\ShipmentsPage.xaml.cs">
+      <DependentUpon>ShipmentsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AdminUsersPage.xaml.cs">
       <DependentUpon>AdminUsersPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\AutorizationPage.xaml.cs">
-      <DependentUpon>AutorizationPage.xaml</DependentUpon>
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\CartPage.xaml.cs">
-      <DependentUpon>CartPage.xaml</DependentUpon>
+    <Compile Include="Pages\StockBalancesPage.xaml.cs">
+      <DependentUpon>StockBalancesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\CatalogPage.xaml.cs">
-      <DependentUpon>CatalogPage.xaml</DependentUpon>
+    <Compile Include="Pages\InventoryOverviewPage.xaml.cs">
+      <DependentUpon>InventoryOverviewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ProductDetailsPage.xaml.cs">
-      <DependentUpon>ProductDetailsPage.xaml</DependentUpon>
+    <Compile Include="Pages\StockItemDetailsPage.xaml.cs">
+      <DependentUpon>StockItemDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\OrderDetailsPage.xaml.cs">
-      <DependentUpon>OrderDetailsPage.xaml</DependentUpon>
+    <Compile Include="Pages\EmployeeProfilePage.xaml.cs">
+      <DependentUpon>EmployeeProfilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ProfilePage.xaml.cs">
-      <DependentUpon>ProfilePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\RegisterPage.xaml.cs">
-      <DependentUpon>RegisterPage.xaml</DependentUpon>
+    <Compile Include="Pages\UserRegistrationPage.xaml.cs">
+      <DependentUpon>UserRegistrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -168,18 +152,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.33" />
-    <PackageReference Include="iTextSharp" Version="5.5.13.5" />
-    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
-    <PackageReference Include="QRCoder" Version="1.4.3" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pages\free-icon-user-847969.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
