@@ -33,6 +33,12 @@ namespace WarehouseManagement.ApplicationData
         public virtual DbSet<Inventories> Inventories { get; set; }
         public virtual DbSet<InventoryResults> InventoryResults { get; set; }
         public virtual DbSet<ActionLogs> ActionLogs { get; set; }
+        public virtual DbSet<EquipmentTypes> EquipmentTypes { get; set; }
+        public virtual DbSet<WarehouseEquipment> WarehouseEquipment { get; set; }
+        public virtual DbSet<MaintenancePlans> MaintenancePlans { get; set; }
+        public virtual DbSet<QualityChecks> QualityChecks { get; set; }
+        public virtual DbSet<ProductionLines> ProductionLines { get; set; }
+        public virtual DbSet<WorkOrders> WorkOrders { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -52,6 +58,15 @@ namespace WarehouseManagement.ApplicationData
             modelBuilder.Entity<InventoryResults>().HasRequired(x => x.Inventories).WithMany(x => x.InventoryResults).HasForeignKey(x => x.InventoryID).WillCascadeOnDelete(true);
             modelBuilder.Entity<InventoryResults>().HasRequired(x => x.StockBalances).WithMany(x => x.InventoryResults).HasForeignKey(x => x.BalanceID).WillCascadeOnDelete(false);
             modelBuilder.Entity<ActionLogs>().HasOptional(x => x.Users).WithMany(x => x.ActionLogs).HasForeignKey(x => x.UserID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<WarehouseEquipment>().HasRequired(x => x.Warehouses).WithMany().HasForeignKey(x => x.WarehouseID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<WarehouseEquipment>().HasRequired(x => x.EquipmentTypes).WithMany(x => x.WarehouseEquipment).HasForeignKey(x => x.EquipmentTypeID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<MaintenancePlans>().HasRequired(x => x.WarehouseEquipment).WithMany(x => x.MaintenancePlans).HasForeignKey(x => x.EquipmentID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<QualityChecks>().HasRequired(x => x.Products).WithMany().HasForeignKey(x => x.ProductID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<QualityChecks>().HasRequired(x => x.Employees).WithMany().HasForeignKey(x => x.EmployeeID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<ProductionLines>().HasRequired(x => x.Warehouses).WithMany().HasForeignKey(x => x.WarehouseID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<WorkOrders>().HasRequired(x => x.ProductionLines).WithMany(x => x.WorkOrders).HasForeignKey(x => x.LineID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<WorkOrders>().HasRequired(x => x.Products).WithMany().HasForeignKey(x => x.ProductID).WillCascadeOnDelete(false);
+            modelBuilder.Entity<WorkOrders>().HasRequired(x => x.Employees).WithMany().HasForeignKey(x => x.EmployeeID).WillCascadeOnDelete(false);
         }
     }
 
@@ -75,4 +90,11 @@ namespace WarehouseManagement.ApplicationData
     public class Inventories { public Inventories(){InventoryResults=new HashSet<InventoryResults>();} [Key] public int InventoryID{get;set;} public string InventoryNumber{get;set;} public int WarehouseID{get;set;} public int EmployeeID{get;set;} public DateTime InventoryDate{get;set;} public string Status{get;set;} public virtual Warehouses Warehouses{get;set;} public virtual Employees Employees{get;set;} public virtual ICollection<InventoryResults> InventoryResults{get;set;} }
     public class InventoryResults { [Key] public int ResultID{get;set;} public int InventoryID{get;set;} public int BalanceID{get;set;} public int ExpectedQuantity{get;set;} public int ActualQuantity{get;set;} public int Difference{get;set;} public string Comment{get;set;} public virtual Inventories Inventories{get;set;} public virtual StockBalances StockBalances{get;set;} }
     public class ActionLogs { [Key] public int LogID{get;set;} public int? UserID{get;set;} public DateTime ActionDate{get;set;} public string ActionType{get;set;} public string EntityName{get;set;} public int? EntityID{get;set;} public string Details{get;set;} public virtual Users Users{get;set;} }
+
+    public class EquipmentTypes { public EquipmentTypes(){WarehouseEquipment=new HashSet<WarehouseEquipment>();} [Key] public int EquipmentTypeID{get;set;} public string TypeName{get;set;} public int MaintenanceIntervalDays{get;set;} public virtual ICollection<WarehouseEquipment> WarehouseEquipment{get;set;} }
+    public class WarehouseEquipment { public WarehouseEquipment(){MaintenancePlans=new HashSet<MaintenancePlans>();} [Key] public int EquipmentID{get;set;} public int WarehouseID{get;set;} public int EquipmentTypeID{get;set;} public string InventoryNumber{get;set;} public string EquipmentName{get;set;} public DateTime CommissionedAt{get;set;} public string Status{get;set;} public virtual Warehouses Warehouses{get;set;} public virtual EquipmentTypes EquipmentTypes{get;set;} public virtual ICollection<MaintenancePlans> MaintenancePlans{get;set;} }
+    public class MaintenancePlans { [Key] public int PlanID{get;set;} public int EquipmentID{get;set;} public DateTime PlannedDate{get;set;} public string WorkDescription{get;set;} public string Status{get;set;} public virtual WarehouseEquipment WarehouseEquipment{get;set;} }
+    public class QualityChecks { [Key] public int QualityCheckID{get;set;} public int ProductID{get;set;} public int EmployeeID{get;set;} public DateTime CheckDate{get;set;} public string Result{get;set;} public string Comment{get;set;} public virtual Products Products{get;set;} public virtual Employees Employees{get;set;} }
+    public class ProductionLines { public ProductionLines(){WorkOrders=new HashSet<WorkOrders>();} [Key] public int LineID{get;set;} public int WarehouseID{get;set;} public string LineName{get;set;} public string ShiftCode{get;set;} public bool IsActive{get;set;} public virtual Warehouses Warehouses{get;set;} public virtual ICollection<WorkOrders> WorkOrders{get;set;} }
+    public class WorkOrders { [Key] public int WorkOrderID{get;set;} public int LineID{get;set;} public int ProductID{get;set;} public int EmployeeID{get;set;} public string OrderNumber{get;set;} public int PlannedQuantity{get;set;} public int CompletedQuantity{get;set;} public string Status{get;set;} public DateTime CreatedAt{get;set;} public virtual ProductionLines ProductionLines{get;set;} public virtual Products Products{get;set;} public virtual Employees Employees{get;set;} }
 }
