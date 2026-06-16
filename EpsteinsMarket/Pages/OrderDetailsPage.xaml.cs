@@ -1,1 +1,0 @@
-using System.Windows; using System.Windows.Controls; namespace EpsteinMarket.Pages { public partial class OrderDetailsPage:Page { public OrderDetailsPage(){InitializeComponent();} private void btnBack_Click(object s,RoutedEventArgs e){EpsteinMarket.ApplicationData.AppFrame.frmMain.GoBack();} }}

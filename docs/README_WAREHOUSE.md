@@ -3,7 +3,7 @@
 ## Запуск
 1. Откройте MySQL Workbench и выполните `database/warehouse_schema_and_seed.sql`.
 2. В `EpsteinsMarket/App.config` укажите логин и пароль MySQL в строке `WarehouseDBEntities`.
-3. Откройте `EpsteinsMarket/EpsteinsMarket.csproj` в Visual Studio, восстановите NuGet-пакеты и запустите проект.
+3. Откройте `EpsteinsMarket/WarehouseManagement.csproj` в Visual Studio, восстановите NuGet-пакеты и запустите проект.
 
 Тестовые пользователи: `admin/admin`, `store/store`, `manager/manager`.
 

@@ -6,9 +6,9 @@ using System.Data.Entity;
 
 namespace EpsteinMarket.ApplicationData
 {
-    public class EpsteinMarketDBEntities : DbContext
+    public class WarehouseDBEntitiesContext : DbContext
     {
-        public EpsteinMarketDBEntities() : base("name=WarehouseDBEntities")
+        public WarehouseDBEntitiesContext() : base("name=WarehouseDBEntities")
         {
             Configuration.LazyLoadingEnabled = true;
             Configuration.ProxyCreationEnabled = true;

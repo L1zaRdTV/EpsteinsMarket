@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Data.Entity;
 using EpsteinMarket.ApplicationData;
 using EpsteinMarket.Pages;
@@ -20,8 +20,8 @@ namespace EpsteinMarket
         {
             try
             {
-                Database.SetInitializer<EpsteinMarketDBEntities>(null);
-                AppConnect.model01 = new EpsteinMarketDBEntities();
+                Database.SetInitializer<WarehouseDBEntitiesContext>(null);
+                AppConnect.model01 = new WarehouseDBEntitiesContext();
                 AppConnect.model01.Database.Initialize(false);
             }
             catch (System.Exception ex)
@@ -41,7 +41,7 @@ namespace EpsteinMarket
 
         private void LoadAuthorizationPage()
         {
-            FrmMain.Navigate(new AutorizationPage());
+            FrmMain.Navigate(new LoginPage());
         }
     }
 }
