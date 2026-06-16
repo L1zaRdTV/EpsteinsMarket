@@ -6,7 +6,6 @@
     <Grid Background="{StaticResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -15,36 +14,93 @@
             <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
         </DockPanel>
 
-        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,8">
-            <WrapPanel>
-                <Button x:Name="btnRefresh" Content="Обновить" Click="btnRefresh_Click"/>
-                <Button x:Name="btnOpenDetails" Content="Детали" Click="btnOpenDetails_Click"/>
-                <Button x:Name="btnCancelOrder" Content="Запретить удаление" Click="btnCancelOrder_Click" Style="{StaticResource PrimaryButtonStyle}"/>
-            </WrapPanel>
-        </Border>
+        <Grid Grid.Row="1" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <ListView x:Name="lvOrders" Grid.Row="2" Margin="12,0,12,12">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource CardBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="220"/>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="180"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Новая отгрузка" FontSize="22" FontWeight="Bold" Margin="0,0,0,12"/>
+                    <TextBlock Text="Клиент" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cmbClient" DisplayMemberPath="ClientName"/>
+                    <TextBlock Text="Товар" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cmbProduct" DisplayMemberPath="ProductName" SelectionChanged="cmbProduct_SelectionChanged"/>
+                    <TextBlock Text="Место хранения" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cmbLocation" DisplayMemberPath="DisplayName"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Количество" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtQuantity" Text="1" MaxLength="8"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Цена" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtPrice" MaxLength="12"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="Комментарий" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtComment" Height="74" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="300"/>
 
-                            <TextBlock Grid.Column="0" Text="{Binding OrderID, StringFormat=Отгрузка #{0}}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" Text="{Binding UserFullName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                            <TextBlock Grid.Column="2" Text="{Binding OrderDate, StringFormat=Дата: {0:dd.MM.yyyy HH:mm}}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="3" Text="{Binding TotalAmount, StringFormat=Стоимость: {0} ₽}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="4" Text="{Binding StatusName, StringFormat=Номер: {0}}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    <Button x:Name="btnCreateShipment" Content="Создать отгрузку" Click="btnCreateShipment_Click" Style="{StaticResource PrimaryButtonStyle}" Margin="0,8,0,0"/>
+                    <Button x:Name="btnRefresh" Content="Обновить списки" Click="btnRefresh_Click" Margin="0,4,0,0"/>
+                    <TextBlock x:Name="tbStatus" Text="Выберите товар, место хранения и количество." Margin="0,12,0,0" TextWrapping="Wrap" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="История отгрузок" FontSize="22" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <ListView x:Name="lvShipments" Grid.Row="1" SelectionChanged="lvShipments_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding ShipmentNumber}" Width="140"/>
+                                    <GridViewColumn Header="Клиент" DisplayMemberBinding="{Binding ClientName}" Width="180"/>
+                                    <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding DateText}" Width="140"/>
+                                    <GridViewColumn Header="Позиций" DisplayMemberBinding="{Binding ItemsCount}" Width="80"/>
+                                    <GridViewColumn Header="Сумма" DisplayMemberBinding="{Binding TotalText}" Width="110"/>
+                                    <GridViewColumn Header="Комментарий" DisplayMemberBinding="{Binding Comment}" Width="220"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="tbDetailsTitle" Text="Состав выбранной отгрузки" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <ListView x:Name="lvShipmentItems" Grid.Row="1">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}" Width="220"/>
+                                    <GridViewColumn Header="Место" DisplayMemberBinding="{Binding LocationCode}" Width="120"/>
+                                    <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" Width="80"/>
+                                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding PriceText}" Width="90"/>
+                                    <GridViewColumn Header="Сумма" DisplayMemberBinding="{Binding TotalText}" Width="90"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
