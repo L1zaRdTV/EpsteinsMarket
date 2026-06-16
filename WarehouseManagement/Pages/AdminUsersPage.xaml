@@ -1,0 +1,51 @@
+<Page x:Class="WarehouseManagement.Pages.AdminUsersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AdminUsersPage">
+
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Background="{StaticResource ClassicTitleBrush}" LastChildFill="False" Margin="0,0,0,8">
+            <TextBlock Text="Админ-панель пользователей" Style="{StaticResource PageHeaderTextStyle}" Margin="16,12" DockPanel.Dock="Left"/>
+            <Button x:Name="btnBack" Content="Назад" Click="btnBack_Click" DockPanel.Dock="Right" Margin="8"/>
+        </DockPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="12,0,12,8">
+            <WrapPanel>
+                <Button x:Name="btnChangeRole" Content="Сменить роль" Click="btnChangeRole_Click"/>
+                <Button x:Name="btnToggleBlock" Content="Блок / разблок" Click="btnToggleBlock_Click"/>
+            </WrapPanel>
+        </Border>
+
+        <ListView x:Name="lvUsers" Grid.Row="2" Margin="12,0,12,12">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="240"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding FullName}" FontSize="18" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Login, StringFormat=Логин: {0}}" Margin="0,5,0,0"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="1" Text="{Binding Roles.RoleName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Email}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="3" Text="{Binding IsBlocked, StringFormat=Заблокирован: {0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

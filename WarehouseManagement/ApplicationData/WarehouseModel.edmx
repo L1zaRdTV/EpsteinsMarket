@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ADO.NET Entity Data Model contract for the warehouse_management database.
+  The EF6 context in DatabaseModels.cs mirrors this database-first model so the
+  application can connect to the schema from database/warehouse_schema_and_seed.sql.
+  Regenerate this EDMX from the MySQL database in Visual Studio with:
+  Add New Item -> ADO.NET Entity Data Model -> EF Designer from database.
+-->
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels />
+    <StorageModels />
+    <Mappings />
+  </Runtime>
+</Edmx>
